@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Case Studies | AutomationWhiz</title>
+	<atom:link href="https://www.automation-whiz.com/case-studies/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.automation-whiz.com</link>
+	<description></description>
+	<lastBuildDate>Thu, 15 Sep 2022 07:26:05 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+	<item>
+		<title>Insurance premium receipts analysis using RPA</title>
+		<link>https://www.automation-whiz.com/case-studies/insurance-premium-receipts-analysis-using-rpa/</link>
+		
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<pubDate>Mon, 12 Sep 2022 13:37:51 +0000</pubDate>
+				<guid isPermaLink="false">https://www.automation-whiz.com/?post_type=case_studies&#038;p=33295</guid>
+
+					<description><![CDATA[]]></description>
+										<content:encoded><![CDATA[]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Automating 80% of manual HR processes for an Indian Private Sector Bank</title>
+		<link>https://www.automation-whiz.com/case-studies/automating-80-of-manual-hr-processes-for-an-indian-private-sector-bank/</link>
+		
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<pubDate>Mon, 12 Sep 2022 13:28:53 +0000</pubDate>
+				<guid isPermaLink="false">https://www.automation-whiz.com/?post_type=case_studies&#038;p=33292</guid>
+
+					<description><![CDATA[]]></description>
+										<content:encoded><![CDATA[]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Automation bots implementation for a walkie talkie and GPS vehicle tracking service provider</title>
+		<link>https://www.automation-whiz.com/case-studies/automation-bots-implementation-for-a-walkie-talkie-and-gps-vehicle-tracking-service-provider/</link>
+		
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<pubDate>Sat, 10 Sep 2022 13:41:00 +0000</pubDate>
+				<guid isPermaLink="false">https://www.automation-whiz.com/?post_type=case_studies&#038;p=33298</guid>
+
+					<description><![CDATA[]]></description>
+										<content:encoded><![CDATA[]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Automating the e-Invoicing checking process for a leading small finance bank</title>
+		<link>https://www.automation-whiz.com/case-studies/manual-testing-efforts-reduced-by-60-for-an-oil-and-energy-company-using-testingwhiz/</link>
+		
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<pubDate>Wed, 17 Aug 2022 14:07:11 +0000</pubDate>
+				<guid isPermaLink="false">https://www.automation-whiz.com/?post_type=case_studies&#038;p=31553</guid>
+
+					<description><![CDATA[]]></description>
+										<content:encoded><![CDATA[]]></content:encoded>
+					
+		
+		
+			</item>
+	</channel>
+</rss>
