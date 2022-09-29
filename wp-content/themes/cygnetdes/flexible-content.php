@@ -12,11 +12,14 @@
 									<div class="col-lg-7">
 										<div class="d-flex align-items-center h-100">
 											<div class="text-content ">
+												<?php if (get_sub_field('sub_title')) :  ?>
+													<h3 class="text-white wow fadeInUp" data-wow-delay="0.6s"><?php echo the_sub_field('sub_title'); ?></h3>
+												<?php endif; ?>
 												<?php if (get_sub_field('title')) :  ?>
 													<h1 class="wow fadeInUp" data-wow-delay="0.3s"><?php echo the_sub_field('title'); ?></h1>
 												<?php endif; ?>
-												<?php if (get_sub_field('sub_title')) :  ?>
-													<h3 class="text-white wow fadeInUp" data-wow-delay="0.6s"><?php echo the_sub_field('sub_title'); ?></h3>
+												<?php if (get_sub_field('sub_sub_title')) :  ?>
+													<h4 class="text-white wow fadeInUp" data-wow-delay="0.6s"><?php echo the_sub_field('sub_sub_title'); ?></h4>
 												<?php endif; ?>										
 												<?php if (get_sub_field('primary_button_url') && get_sub_field('primary_button_label')) : ?>
 													<a href="<?php echo the_sub_field('primary_button_url'); ?>" class="btn me-3 wow fadeInUp " data-wow-delay="0.9s"><span class="text"><?php echo the_sub_field('primary_button_label'); ?></span><span class="effect"></span></a>
@@ -62,6 +65,53 @@
 					});
 				});
 				</script>
+				<!-- Start count section -->				
+				<?php if (have_rows('count_section')) :  ?>
+					<div class="count-section-main <?php echo the_field('count_section_class'); ?>">
+						<?php if (get_field('count_section_title')){ ?>
+							<div class="count-section-title">
+								<h2 class="wow fadeInUp" data-wow-delay="0.9s"><?php echo the_field('count_section_title'); ?></h2>
+							</div>
+						<?php } ?>
+						<div class="count-section-main-inner">
+							<?php $cnt=1;
+							while (have_rows('count_section')) : the_row(); 
+								if($cnt < 7){ ?>
+								<div class="count-inner">
+									<?php if (get_sub_field('count_section_icon_image')){ 
+											$extension = pathinfo(get_sub_field('count_section_icon_image'), PATHINFO_EXTENSION);
+											if($extension == 'svg'){
+												$count_section_icon_image = get_sub_field('count_section_icon_image');
+												$stream_opts = [
+													"ssl" => [
+														"verify_peer"=>false,
+														"verify_peer_name"=>false,
+													]
+												];														 
+												echo file_get_contents($count_section_icon_image, false, stream_context_create($stream_opts));
+											} else { ?>
+												<img src="<?php echo the_sub_field('count_section_icon_image'); ?>" alt="<?php echo the_sub_field('count_section_label'); ?>">
+										<?php } ?>										
+										
+									<?php } ?>
+									<?php if (get_sub_field('count_section_value')){ ?>
+										<div class="count-label">
+											<span class="counter" data-count="<?php echo the_sub_field('count_section_value');?>">0</span>+
+										</div>
+									<?php } ?>
+									<?php if (get_sub_field('count_section_label')){ ?>
+										<div class="count-value">
+											<h2><?php echo the_sub_field('count_section_label'); ?></h2>
+										</div>
+									<?php } ?>
+								</div>
+								<?php }
+								$cnt++;
+							endwhile;	?> 
+						</div>
+					</div>
+				<?php endif; ?>
+				<!-- End count section -->
 			</section>
 		<?php endif;
 	/* End banner content */	
