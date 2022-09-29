@@ -960,7 +960,23 @@
 													$img_cnt = 1; 
 													while (have_rows('features_components')) : the_row(); ?>
 														<div class="nav-link <?php if($img_cnt == 1){ ?> active <?php } ?>" id="v-pills-home-tab-<?php echo $img_cnt; ?>" data-bs-toggle="pill" data-bs-target="#v-pills-home-<?php echo $img_cnt; ?>" role="tab" aria-controls="v-pills-home-<?php echo $img_cnt; ?>" aria-selected="true">
-															<?php echo the_sub_field('features_components_tab_title'); ?>
+															<?php if (get_sub_field('features_components_tab_icon')){ ?>
+																<span class="icon">
+																	<?php $extension = pathinfo(get_sub_field('features_components_tab_icon'), PATHINFO_EXTENSION);
+																		if($extension == 'svg'){
+																			$tab_image = get_sub_field('features_components_tab_icon');
+																			$stream_opts = [
+																				"ssl" => [
+																					"verify_peer"=>false,
+																					"verify_peer_name"=>false,
+																				]
+																			];														 
+																			echo file_get_contents($tab_image, false, stream_context_create($stream_opts));
+																		} else { ?>
+																			<img src="<?php echo the_sub_field('features_components_tab_icon'); ?>" alt="<?php echo the_sub_field('features_components_tab_title'); ?>">
+																	<?php } ?>
+																</span>
+															<?php } ?> <?php echo the_sub_field('features_components_tab_title'); ?>
 														</div>
 											<?php 	$img_cnt++; 
 													endwhile;
