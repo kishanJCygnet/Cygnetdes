@@ -4,9 +4,11 @@
     background-color: #0F3764;
 
     &.home-banner {
+        position: relative;
         .banner-inner-content {
-        background-image: url('../../images/BG.jpg') !important;
+        // background-image: url('../../images/BG.jpg') !important;
         overflow: hidden;
+        padding-bottom: 215px;
         .img-content{            
             text-align: right;
             position: relative;
@@ -49,6 +51,33 @@
                 top:40px;
             }
         }
+        .col-lg-5 {
+            display: none !important;
+        }
+        .col-lg-7{
+            width: 100% !important;
+        }
+        }
+        .text-content {
+            margin: auto;
+            .inner-text{
+                text-align: center;
+                ul{
+                    list-style-type: none;
+                    color: #fff;
+                    padding-left: 0;
+                    li{
+                        display: none;
+                        &.active{
+                            display: block;
+                        }
+                    }
+                    h2{
+                    margin-bottom: 50px;
+                    font-size: 64px;
+                }
+                }
+            }
         }
     }
     .banner-inner-content {
@@ -142,6 +171,45 @@
     @include bp(lg-max) {
         background-position: 0px -50px;
     }
+
+    .count-section-main {
+        position: absolute;
+        bottom: 65px;
+        left: 0;
+        z-index: 1;
+        right: 0;
+        .count-section-main-inner{
+            display: flex;
+            width: 1140px;
+            max-width: 100%;
+            margin: auto;
+            background-color: #ffffff30;
+            padding: 10px 0;
+            
+            .count-inner{
+                width: 25%;
+                text-align: center;
+                color: #fff;
+                border-right: 1px solid rgba(255, 255, 255, 0.46);
+                padding: 15px;
+                &:last-child{
+                    border-right: 0;
+                }
+                .count-value{
+                    h2{
+                        margin-top: 20px;
+                        font-size: 14px;
+                        font-weight: normal;
+                        line-height: 1.4;
+                    }
+                }
+                .count-label{
+                    color: #80DBFF;
+                    font-size: 28px;
+                }
+            }
+        }
+    }
 }
 
 .post-type-archive-webinars,
@@ -216,6 +284,18 @@
         background-blend-mode: multiply;
         .banner-caption{
             text-align: center;
+        }
+    }
+}
+.breadcrumb {
+    justify-content: center;
+    i{
+        margin: 0 10px;
+    }
+    a{
+        color: #fff;
+        &:hover{
+            color: #80DBFF;
         }
     }
 }

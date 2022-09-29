@@ -212,13 +212,17 @@ a:active {
   text-align: center;
   h2{
       color: #0C3761;
-     font-size:28px !important;
+     font-size:40px !important;
       padding-bottom:20px;
       margin-bottom:30px;
       line-height:38px;
       display: inline-block;
       position: relative;
-      font-weight: 700;
+      font-weight: normal;
+      span{
+        font-weight: 500;
+        color: #3cb4e7;
+      }
        @include bp(lg-max){
        font-size:30px !important;
       }
