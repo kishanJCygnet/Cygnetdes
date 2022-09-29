@@ -934,7 +934,8 @@
 			/* Features Components Section Start */
 			if (get_row_layout() == 'features_components_section') : ?>
 				<section class="<?php echo the_sub_field('features_components_custom_class'); ?>" <?php echo $slugid; ?>>
-						<div class="row">
+				<div class="container">		
+				<div class="row">
 							<div class="col-md-12">
 								<div class="title-heading">	
 									<?php if (get_sub_field('features_components_title')){ ?>
@@ -996,7 +997,8 @@
 										endwhile; ?>
 									</div>
 							<?php endif; ?>
-						</div>											
+						</div>	
+				</div>										
 				</section>
 		    <?php endif; 
 			/* Features Components Section End */
