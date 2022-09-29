@@ -115,6 +115,8 @@ class Email_Subscribers_Admin {
 		add_action( 'ig_es_campaign_failed', array( $this, 'add_campaign_failed_flag' ) );
 		add_action( 'ig_es_campaign_sent', array( $this, 'remove_campaign_failed_flag' ) );
 		add_action( 'admin_notices', array( $this, 'show_email_sending_failed_notice' ) );
+
+		add_action( 'admin_init', array( $this, 'select_all_contact' ) );
 	}
 
 	/**
@@ -1312,9 +1314,92 @@ class Email_Subscribers_Admin {
 			wp_send_json_error();
 		}
 		?>
-		
+
 		<?php
 	}
+
+	public function select_all_contact() {
+
+		$page = ig_es_get_request_data( 'page' );
+		if ( 'es_subscribers' !== $page ) {
+			return;
+		}
+
+		$is_ajax = ig_es_get_request_data( 'is_ajax' );
+		if ( ! $is_ajax ) {
+			return;
+		}
+
+		$completed = false;
+		
+		$contacts_table = new ES_Contacts_Table();
+		$current_action = $contacts_table->current_action();
+		if ( empty( $current_action ) ) {
+			return;
+		}
+
+		$current_page = $contacts_table->get_pagenum();
+		$per_page     = $contacts_table->get_items_per_page( $contacts_table::$option_per_page, 200 );
+		$total_pages  = ig_es_get_request_data( 'total_pages', 0 );
+
+		if ( empty( $total_pages ) ) {
+			$total_contacts = $contacts_table->get_subscribers( $per_page, $current_page, true );
+			$total_pages    = ceil( $total_contacts / $per_page );
+		}
+
+
+		$start_page = ig_es_get_request_data( 'start_page', 0 );
+		
+		if ( empty( $start_page ) ) {
+			$start_page = $current_page;
+		}
+
+		// For pages greater then the start page, get subscriber ids from db.
+		$use_db_ids = (int) $current_page > (int) $start_page;
+		if ( $use_db_ids ) {
+			
+			if ( 'bulk_delete' === $current_action ) {
+				$page_to_process = $start_page;// When deleting contacts keep page to process same as start page since using current page results in incorrect calculation.
+			} else {
+				$page_to_process = $current_page;
+			}
+			
+			$contacts = $contacts_table->get_subscribers( $per_page, $page_to_process );
+			
+			if ( ! empty( $contacts ) ) {
+				$subscribers = array_column( $contacts, 'id' );
+				if ( ! empty( $subscribers ) ) {
+					$exclude_subscribers = ig_es_get_request_data( 'exclude_subscribers', array() );
+					if ( ! empty( $exclude_subscribers ) ) {
+						$exclude_subscribers = explode( ',', $exclude_subscribers );
+						$subscribers         = array_diff( $subscribers, $exclude_subscribers );
+					}
+					$_REQUEST['subscribers'] = $subscribers;
+				}
+			}
+		}
+
+		$return_response = true;
+		$action_response = $contacts_table->process_bulk_action( $return_response );
+		$completed       = (int) $current_page === (int) $total_pages;
+		$response        = array(
+			'paged'       => $current_page + 1,
+			'start_page'  => $start_page,
+			'total_pages' => $total_pages,
+			'completed'   => $completed,
+			'message'     => $action_response['message'],	
+			'bulk_action' => $current_action, 			
+		);
+
+		if ( 'success' === $action_response['status'] ) {
+			wp_send_json_success( $response );
+		} else {
+			wp_send_json_error( $response );
+		}
+	}
+
+
+
 
 	/**
 	 * Method to display Activity table in Reports through Ajax
@@ -1324,7 +1409,7 @@ class Email_Subscribers_Admin {
 	public function ajax_fetch_report_list_callback() {
 
 		check_ajax_referer( 'ig-es-admin-ajax-nonce', 'security' );
-		
+
 		$wp_list_table = new ES_Campaign_Report();
 		$wp_list_table->ajax_response();
 	}
@@ -1415,7 +1500,7 @@ class Email_Subscribers_Admin {
 						</div>
 						<div class="w-1/4 px-4">
 							<span class="text-2xl font-bold leading-none text-indigo-600">
-							<?php echo esc_html( $total_message_sent ); ?> 
+							<?php echo esc_html( $total_message_sent ); ?>
 							</span>
 							<p class="font-medium text-gray-500">
 							<?php echo esc_html__( 'Messages Sent', 'email-subscribers' ); ?>
@@ -1424,7 +1509,7 @@ class Email_Subscribers_Admin {
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="overflow-hidden">
 				<p class="px-4 text-base font-medium leading-6 text-gray-600">
 					<span class="rounded-md bg-gray-200 px-2 py-0.5">
@@ -1520,7 +1605,7 @@ class Email_Subscribers_Admin {
 									</div>
 								</a>
 							</li>
-						<?php } ?>	
+						<?php } ?>
 					</ul>
 				</div>
 			</div>
@@ -1652,9 +1737,9 @@ class Email_Subscribers_Admin {
 		if ( ! ES()->is_es_admin_screen() ) {
 			return;
 		}
-		
+
 		$current_page = ig_es_get_request_data( 'page' );
-		
+
 		if ( 'es_dashboard' === $current_page ) {
 			return;
 		}
@@ -1681,7 +1766,7 @@ class Email_Subscribers_Admin {
 	 *
 	 * @since 5.x
 	 */
-	
+
 	public function send_authentication_header_test_email() {
 
 		check_ajax_referer( 'ig-es-admin-ajax-nonce', 'security' );
@@ -1692,7 +1777,7 @@ class Email_Subscribers_Admin {
 		);
 
 		$mailbox = ES_Common::get_email_verify_test_email();
-			
+
 		if ( ! empty( $_REQUEST['action'] ) && 'es_send_auth_test_email' == $_REQUEST['action'] ) {
 
 			$test_email = new ES_Send_Test_Email();

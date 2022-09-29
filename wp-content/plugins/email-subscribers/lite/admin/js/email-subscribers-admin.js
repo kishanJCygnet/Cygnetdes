@@ -24,6 +24,110 @@
 				}
 			});
 
+			var $newDiv = $("<div/>").addClass("pt-2 pb-2").html(`<div class="ig_es_process_message">Page <span id="ig_es_page_number">1</span> is processing <svg class="es-btn-loader animate-spin h-4 w-4 text-indigo inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+			<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+			<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+			</svg> </div>`);
+
+			
+			var getUrlParameter = function getUrlParameter(sParam) {
+				var sPageURL = window.location.search.substring(1),
+					sURLVariables = sPageURL.split('&'),
+					sParameterName,
+					i;
+			
+				for (i = 0; i < sURLVariables.length; i++) {
+					sParameterName = sURLVariables[i].split('=');
+			
+					if (sParameterName[0] === sParam) {
+						return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+					}
+				}
+				return false;
+			};
+
+			
+			$('.es-audience-view table.contacts #cb-select-all-1').click(function (e) {
+
+				if($('.es-audience-view table.contacts #cb-select-all-1').prop('checked') == true){
+					flag = confirm("Want to select contacts on all pages?");
+				}
+
+				if( flag ) {
+					$('.es-audience-view .tablenav.top #doaction').click(function (e) {
+						e.preventDefault();
+						let actionData = $(this).closest('form').serializeArray();
+						let unchecked_subscriber_checkboxes = $('.es-audience-view form input[type="checkbox"][name="subscribers[]"]:not(:checked)');
+						let exclude_subscribers = [];
+						if ( unchecked_subscriber_checkboxes.length > 0 ) {
+							$(unchecked_subscriber_checkboxes).each((index,unchecked_subscriber_checkbox) => {
+								let unchecked_subscriber_id = $(unchecked_subscriber_checkbox).val();
+								exclude_subscribers.push(unchecked_subscriber_id);
+							});
+						}
+						actionData.push({ name: "exclude_subscribers", value: exclude_subscribers });
+						actionData.push({ name: "is_ajax", value: true });
+						let pageNumber = getUrlParameter('paged');
+						pageNumber = pageNumber ? pageNumber : 1;
+						ig_es_apply_contacts_bulk_action( actionData, pageNumber );
+						$(".es-audience-view table.contacts").addClass("ig_es_contacts_table");
+						
+					});
+				}
+				
+				
+				
+
+			});
+
+
+			function ig_es_apply_contacts_bulk_action( actionData, pageNumber ) {
+				jQuery.ajax({
+					method: 'POST',
+					url: location.href,
+					data: actionData,
+					dataType: 'json',
+					beforeSend: function () {
+						$($newDiv).find("#ig_es_page_number").text(pageNumber);
+						$('.es-audience-view .tablenav.top').append($newDiv);
+					},
+					success: function (response) {
+						if ( 'undefined' !== typeof response.success  ) {
+							if (response.success) {
+								if ( ! response.data.completed ) {									
+									actionData.push({name: 'paged', value: response.data.paged });
+									actionData.push({name: 'total_pages', value: response.data.total_pages });
+									actionData.push({name: 'start_page', value: response.data.start_page });
+									ig_es_apply_contacts_bulk_action( actionData, response.data.paged );									
+								} else {									
+									$('.ig_es_process_message').text('Process completed , reloading the page!');
+									let current_url = new URL(window.location.href);
+									let bulk_action = response.data.bulk_action;
+									
+									setTimeout(()=>{
+										current_url.searchParams.append('bulk_action', bulk_action);
+										window.location.href = current_url;								
+									},1000);
+								}
+							} else {
+								alert(response.data.message);
+							}
+						} else {
+							alert( response.i18n_data.ajax_error_message );
+						}
+					},
+					error: function (err) {
+						alert( ig_es_js_data.i18n_data.ajax_error_message );
+					}
+				});
+			}
+
+
+
+
+
+
+
 			// Toggle Dropdown
 			$('#ig-es-add-tag-icon').click(function () {
 				$('#ig-es-tag-icon-dropdown').toggle();
