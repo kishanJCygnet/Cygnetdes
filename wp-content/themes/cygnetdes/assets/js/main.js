@@ -157,11 +157,24 @@ jQuery(document).ready(function(){
       jQuery('.testimonials h2 a').attr("href","#");
       jQuery('.testimonials h2 a').attr("href","#");
 
-       
+      jQuery('.banner-content .inner-text ul li:first-child').addClass('active animate__animated animate__fadeIn');
   });
 // jQuery(window).on('resize', function(){
 //   solution();
 // });
+setInterval(function()
+{
+    // Remove .active class from the active li, select next li sibling.
+    var next = jQuery('.banner-content .inner-text ul > li.active').removeClass('active animate__animated animate__fadeIn').next('li');
+
+    // Did we reach the last element? Of so: select first sibling
+    if (!next.length) next = next.prevObject.siblings('li:first-child');
+
+    // Add .active class to the li next in line.
+    next.addClass('active animate__animated animate__fadeIn');
+    
+}, 5000);
+
 
 jQuery(window).scroll(function() {    
   var scroll = jQuery(window).scrollTop();
@@ -282,4 +295,24 @@ window.addEventListener('resize', checkScroll, false);
 // }
 // //...
 // videos.play();
+
+jQuery('.counter').each(function() {
+  var $this = jQuery(this),
+      countTo = $this.attr('data-count');
+  
+      jQuery({ countNum: $this.text()}).animate({
+    countNum: countTo
+  },  
+  {  
+    duration: 4000,
+    easing:'linear',
+    step: function() {
+      $this.text(Math.floor(this.countNum));
+    },
+    complete: function() {
+      $this.text(this.countNum);
+      //alert('finished');
+    }
+  });  
+});
 
