@@ -5,7 +5,7 @@
 
     &.home-banner {
         .banner-inner-content {
-        background-image: url('../../images/BG.jpg') !important;
+        // background-image: url('../../images/BG.jpg') !important;
         overflow: hidden;
         .img-content{            
             text-align: right;
@@ -49,6 +49,26 @@
                 top:40px;
             }
         }
+        .col-lg-5 {
+            display: none !important;
+        }
+        .col-lg-7{
+            width: 100% !important;
+        }
+        }
+        .text-content {
+            margin: auto;
+            .inner-text{
+                text-align: center;
+                ul{
+                    list-style-type: none;
+                    color: #fff;
+                    h2{
+                    margin-bottom: 50px;
+                    font-size: 64px;
+                }
+                }
+            }
         }
     }
     .banner-inner-content {
@@ -141,6 +161,30 @@
     }
     @include bp(lg-max) {
         background-position: 0px -50px;
+    }
+
+    .count-section-main {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        right: 0;
+        .count-section-main-inner{
+            display: flex;
+            .count-inner{
+                width: 25%;
+                text-align: center;
+                color: #fff;
+                .count-value{
+                    h2{
+                        margin-top: 20px;
+                        font-size: 14px;
+                        font-weight: 500;
+                        line-height: 1.4;
+                    }
+                }
+            }
+        }
     }
 }
 
