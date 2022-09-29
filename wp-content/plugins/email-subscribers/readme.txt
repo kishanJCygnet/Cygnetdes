@@ -6,7 +6,7 @@ Tags: email marketing, subscription, autoresponder, post notification, welcome e
 Requires at least: 3.9
 Tested up to: 6.0.2
 Requires PHP: 5.6
-Stable tag: 5.4.12
+Stable tag: 5.4.13
 License: GPLv3
 License URI: http://www.gnu.org/licenses
 
@@ -310,14 +310,17 @@ Refer [here](https://www.icegram.com/documentation/es-faq/).
 
 == Upgrade Notice ==
 
-= 5.4.12 =
+= 5.4.13 =
 
-* Enhancement: Add title for list names on add contact screen
-* Enhancement: Improve error handling when email sending fails for some email addresses
-* Fix: Fatal error when getmypid function is disabled on hosts with PHP v8
-* Fix: Fatal error Fatal error: Uncaught TypeError: number_format() on dashboard
+* Enhancement: Bulk actions can now apply to all the contacts
+* Fix: Some keywords are not getting converted correctly in Amazon SES
 
 == Changelog ==
+
+**5.4.13 (22.09.2022)**
+
+* Enhancement: Bulk actions can now apply to all the contacts
+* Fix: Some keywords are not getting converted correctly in Amazon SES
 
 **5.4.12 (14.09.2022)**
 

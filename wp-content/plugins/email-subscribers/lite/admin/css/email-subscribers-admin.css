@@ -2665,6 +2665,10 @@ span.feedback_reason_dot {
     width: 120px;
 }
 
+.ig_es_contacts_table {
+	margin-top: 2rem !important;
+}
+
 /* .es-tooltip .tooltip-text #device_open_graph svg,
 .es-tooltip .tooltip-text #sources_graph svg,
 .es-tooltip .tooltip-text #unsubscribe_feedbacks_graph svg {
