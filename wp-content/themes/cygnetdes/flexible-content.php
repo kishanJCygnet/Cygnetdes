@@ -12,7 +12,10 @@
 									<div class="col-lg-7">
 										<div class="d-flex align-items-center h-100">
 											<div class="text-content ">
-												<?php if (get_sub_field('sub_title')) :  ?>
+												<?php if (get_sub_field('title')) :  ?>
+													<?php echo the_sub_field('title'); ?>
+												<?php endif; ?>
+												<?php /*if (get_sub_field('sub_title')) :  ?>
 													<h3 class="text-white wow fadeInUp" data-wow-delay="0.6s"><?php echo the_sub_field('sub_title'); ?></h3>
 												<?php endif; ?>
 												<?php if (get_sub_field('title')) :  ?>
@@ -26,11 +29,11 @@
 												<?php endif; ?>
 												<?php if (get_sub_field('secondary_button_url') && get_sub_field('secondary_button_label')) : ?>
 													<a href="<?php echo the_sub_field('secondary_button_url'); ?>" class="btn wow fadeInUp btn-white " data-wow-delay="0.9s"><span class="text"><?php echo the_sub_field('secondary_button_label'); ?></span><span class="effect"></span></a>
-												<?php endif; ?>
+												<?php endif; */?>
 											</div>
 										</div>
 									</div>
-									<div class="col-lg-5 d-md-none d-none d-lg-block">
+									<!--<div class="col-lg-5 d-md-none d-none d-lg-block">
 										<div class="img-content">
 										<?php if(get_sub_field('video_url')){ 
 											?>
@@ -44,7 +47,7 @@
 											endif;
 										} ?>
 										</div>
-									</div>
+									</div>-->
 								</div>
 							</div>
 						</div>    
@@ -96,7 +99,7 @@
 									<?php } ?>
 									<?php if (get_sub_field('count_section_value')){ ?>
 										<div class="count-label">
-											<span class="counter" data-count="<?php echo the_sub_field('count_section_value');?>">0</span>+
+											<span class="counter" data-count="<?php echo the_sub_field('count_section_value');?>">0</span><span><?php echo the_sub_field('count_section_value_symbol');?></span>
 										</div>
 									<?php } ?>
 									<?php if (get_sub_field('count_section_label')){ ?>
