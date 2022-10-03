@@ -299,33 +299,69 @@ if ( ! class_exists( 'IG_ES_Campaign_Rules' ) ) {
 																				?>
 																			</select>
 																		</div>
-																		<div class="ig-es-conditions-operator-field" data-fields=",lang,client,referer,firstname,lastname,email,">
-																			<select name="<?php echo esc_attr( $input_name ); ?>[<?php echo esc_attr( $i ); ?>][<?php echo esc_attr( $j ); ?>][operator]" class="condition-operator form-select" disabled>
-																				<?php
-																				foreach ( $this->string_operators as $key => $name ) :
-																					echo '<option value="' . esc_attr( $key ) . '"' . selected( $field_operator, $key, false ) . '>' . esc_html( $name ) . '</option>';
-																				endforeach;
-																				?>
-																			</select>
-																		</div>
-																		<div class="ig-es-conditions-operator-field" data-fields=",engagement_score,">
-																			<select name="<?php echo esc_attr( $input_name ); ?>[<?php echo esc_attr( $i ); ?>][<?php echo esc_attr( $j ); ?>][operator]" class="condition-operator form-select" disabled>
-																				<?php
-																				foreach ( $this->simple_operators as $key => $name ) :
-																					echo '<option value="' . esc_attr( $key ) . '"' . selected( $field_operator, $key, false ) . '>' . esc_html( $name ) . '</option>';
-																				endforeach;
-																				?>
-																			</select>
-																		</div>
-																		<div class="ig-es-conditions-operator-field" data-fields=",country_code,bounce_status,">
-																			<select name="<?php echo esc_attr( $input_name ); ?>[<?php echo esc_attr( $i ); ?>][<?php echo esc_attr( $j ); ?>][operator]" class="condition-operator form-select" disabled>
-																				<?php
-																				foreach ( $this->bool_operators as $key => $name ) :
-																					echo '<option value="' . esc_attr( $key ) . '"' . selected( $field_operator, $key, false ) . '>' . esc_html( $name ) . '</option>';
-																				endforeach;
-																				?>
-																			</select>
-																		</div>
+																		<?php
+																		$campaign_rules_data_fields = array(
+																			'string_fields' => array( 'email' ),
+																		);
+																		$campaign_rules_data_fields = apply_filters( 'ig_es_campaign_rules_data_fields', $campaign_rules_data_fields );
+																		if ( ! empty( $campaign_rules_data_fields['string_fields'] ) ) {
+																			?>
+																			<div class="ig-es-conditions-operator-field" data-fields=",<?php echo esc_attr( implode( ',', $campaign_rules_data_fields['string_fields'] ) ); ?>,">
+																				<select name="<?php echo esc_attr( $input_name ); ?>[<?php echo esc_attr( $i ); ?>][<?php echo esc_attr( $j ); ?>][operator]" class="condition-operator form-select" disabled>
+																					<?php
+																					foreach ( $this->string_operators as $key => $name ) :
+																						echo '<option value="' . esc_attr( $key ) . '"' . selected( $field_operator, $key, false ) . '>' . esc_html( $name ) . '</option>';
+																					endforeach;
+																					?>
+																				</select>
+																			</div>
+																			<?php
+																		}
+																		?>
+																		<?php
+																		if ( ! empty( $campaign_rules_data_fields['simple_fields'] ) ) {
+																			?>
+																			<div class="ig-es-conditions-operator-field" data-fields=",<?php echo esc_attr( implode( ',', $campaign_rules_data_fields['simple_fields'] ) ); ?>,">
+																				<select name="<?php echo esc_attr( $input_name ); ?>[<?php echo esc_attr( $i ); ?>][<?php echo esc_attr( $j ); ?>][operator]" class="condition-operator form-select" disabled>
+																					<?php
+																					foreach ( $this->simple_operators as $key => $name ) :
+																						echo '<option value="' . esc_attr( $key ) . '"' . selected( $field_operator, $key, false ) . '>' . esc_html( $name ) . '</option>';
+																					endforeach;
+																					?>
+																				</select>
+																			</div>
+																			<?php
+																		}
+																		?>
+																		<?php
+																		if ( ! empty( $campaign_rules_data_fields['date_fields'] ) ) {
+																			?>
+																			<div class="ig-es-conditions-operator-field" data-fields=",<?php echo esc_attr( implode( ',', $campaign_rules_data_fields['date_fields'] ) ); ?>,">
+																				<select name="<?php echo esc_attr( $input_name ); ?>[<?php echo esc_attr( $i ); ?>][<?php echo esc_attr( $j ); ?>][operator]" class="condition-operator form-select" disabled>
+																					<?php
+																					foreach ( $this->simple_operators as $key => $name ) :
+																						echo '<option value="' . esc_attr( $key ) . '"' . selected( $field_operator, $key, false ) . '>' . esc_html( $name ) . '</option>';
+																					endforeach;
+																					?>
+																				</select>
+																			</div>
+																			<?php
+																		}
+
+																		if ( ! empty( $campaign_rules_data_fields['boolean_fields'] ) ) {
+																			?>
+																			<div class="ig-es-conditions-operator-field" data-fields=",<?php echo esc_attr( implode( ',', $campaign_rules_data_fields['boolean_fields'] ) ); ?>,">
+																				<select name="<?php echo esc_attr( $input_name ); ?>[<?php echo esc_attr( $i ); ?>][<?php echo esc_attr( $j ); ?>][operator]" class="condition-operator form-select" disabled>
+																					<?php
+																					foreach ( $this->bool_operators as $key => $name ) :
+																						echo '<option value="' . esc_attr( $key ) . '"' . selected( $field_operator, $key, false ) . '>' . esc_html( $name ) . '</option>';
+																					endforeach;
+																					?>
+																				</select>
+																			</div>
+																			<?php
+																		}
+																		?>
 																		<div class="ig-es-conditions-operator-field" data-fields=",_sent,_sent__not_in,_open,_open__not_in,_click,_click__not_in,_lists__not_in,_lists__in,">
 																			<input type="hidden" name="<?php echo esc_attr( $input_name ); ?>[<?php echo esc_attr( $i ); ?>][<?php echo esc_attr( $j ); ?>][operator]" class="condition-operator" disabled value="is">
 																		</div>
@@ -559,6 +595,12 @@ if ( ! class_exists( 'IG_ES_Campaign_Rules' ) ) {
 				}
 				$return['operator'] = '<em>' . $this->nice_name( $operator, 'operator', $field ) . '</em>';
 				$return['value']    = $opening_quote . implode( $closing_quote . ' ' . esc_html__( 'or', 'email-subscribers' ) . ' ' . $opening_quote, array_map( array( $this, 'get_bounce_status_name' ), $value ) ) . $closing_quote;
+			} elseif ( false !== strpos( $field, 'cf_' ) ) {
+				if ( ! is_array( $value ) ) {
+					$value = array( $value );
+				}
+				$return['operator'] = '<em>' . $this->nice_name( $operator, 'operator', $field ) . '</em>';
+				$return['value']    = $opening_quote . implode( $closing_quote . ' ' . esc_html__( 'or', 'email-subscribers' ) . ' ' . $opening_quote, $value ) . $closing_quote;
 			} else {
 				$return['operator'] = '<em>' . $this->nice_name( $operator, 'operator', $field ) . '</em>';
 				$return['value']    = $opening_quote . '<span class="font-medium text-gray-500 tracking-wide mr-1">' . $this->nice_name( $value, 'value', $field ) . '</span>' . $closing_quote;

@@ -341,8 +341,7 @@ if ( ! class_exists( 'ES_Install' ) ) {
 
 				self::install();
 			}
-			// Do we need to load templates?
-			self::load_templates();
+			
 		}
 
 		/**
@@ -418,10 +417,6 @@ if ( ! class_exists( 'ES_Install' ) ) {
 				self::create_options();
 
 				self::$logger->info( 'Create Options.', self::$logger_context );
-
-				self::load_templates();
-
-				self::$logger->info( 'Load readymade template', self::$logger_context );
 
 				self::$logger->info( 'Installation Complete.', self::$logger_context );
 			}
@@ -1547,6 +1542,7 @@ if ( ! class_exists( 'ES_Install' ) ) {
 		 * @since 4.3.2
 		 */
 		public static function load_templates( $force = false ) {
+			
 			// TODO :: Add template with custom post type
 			global $wpdb;
 

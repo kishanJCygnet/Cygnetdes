@@ -1,6 +1,9 @@
 <?php
 
 // Exit if accessed directly
+
+use BaconQrCode\Common\ReedSolomonCodec;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -43,7 +46,7 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 		}
 
 		/**
-		 * Register the JavaScript for campaign rules.
+		 * Register the JavaScript for ES gallery.
 		 */
 		public function enqueue_scripts() {
 
@@ -59,6 +62,9 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 					'post_notification_campaign_type' => esc_attr( IG_CAMPAIGN_TYPE_POST_NOTIFICATION ),
 					'newsletter_campaign_type'        => esc_attr( IG_CAMPAIGN_TYPE_NEWSLETTER ),
 					'post_digest_campaign_type'       => esc_attr( IG_CAMPAIGN_TYPE_POST_DIGEST ),
+					'local_gallery_type'              => 'local',
+					'remote_gallery_type'             => 'remote',
+					'es_plan'						  => ES()->get_plan(),
 				);
 
 				if ( ! wp_script_is( 'wp-i18n' ) ) {
@@ -82,10 +88,11 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 			
 			if ( 'ig_es_import_gallery_item' === $action ) {
 				check_admin_referer( 'ig-es-admin-ajax-nonce' );
+				$gallery_type         = ig_es_get_request_data( 'gallery-type' );
 				$template_id          = ig_es_get_request_data( 'template-id' );
 				$campaign_id          = ig_es_get_request_data( 'campaign-id' );
 				$campaign_type        = ig_es_get_request_data( 'campaign-type' );
-				$imported_campaign_id = $this->import_gallery_item_handler( $template_id, $campaign_type, $campaign_id );
+				$imported_campaign_id = $this->import_gallery_item_handler( $gallery_type, $template_id, $campaign_type, $campaign_id );
 				if ( ! empty( $imported_campaign_id ) ) {
 					if ( IG_CAMPAIGN_TYPE_POST_DIGEST === $campaign_type || IG_CAMPAIGN_TYPE_POST_NOTIFICATION === $campaign_type ) {
 						$redirect_url = admin_url( 'admin.php?page=es_notifications&action=edit&list=' . $imported_campaign_id );
@@ -98,8 +105,18 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 			}
 		}
 
-		public function import_gallery_item_handler( $template_id, $campaign_type, $campaign_id = 0 ) {
+		public function import_gallery_item_handler( $gallery_type, $template_id, $campaign_type, $campaign_id = 0 ) {
 			
+			if ( 'remote' === $gallery_type ) {
+				$campaign_id = $this->import_remote_gallery_item( $template_id, $campaign_type, $campaign_id );
+			} else {
+				$campaign_id = $this->import_local_gallery_item( $template_id, $campaign_type, $campaign_id );
+			}
+			
+			return $campaign_id;
+		}
+
+		public function import_local_gallery_item( $template_id, $campaign_type, $campaign_id = 0 ) {
 			if ( ! empty( $template_id ) ) {
 				$template = get_post( $template_id );
 				if ( ! empty( $template ) ) {
@@ -127,6 +144,10 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 							// In classic edior, we need to add p tag to content when not already added.
 							$content = wpautop( $content );
 						}
+						$custom_css = get_post_meta( $template_id, 'es_custom_css', true );
+						if ( ! empty( $custom_css ) ) {
+							$campaign_meta['es_custom_css'] = $custom_css;
+						}
 					}
 
 					$campaign_meta = maybe_serialize( $campaign_meta );
@@ -150,7 +171,88 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 
 				}
 			}
+
+			return $campaign_id;
+		}
+
+		public function import_remote_gallery_item( $template_id, $campaign_type, $campaign_id = 0 ) {
+			$gallery_item  = $this->get_remote_gallery_item( $template_id );
+			if ( empty( $gallery_item ) ) {
+				return $campaign_id;
+			}
+
+			$template_version = ! empty( $gallery_item->template_version ) ? $gallery_item->template_version : '';
 			
+			if ( '1.0.0' === $template_version ) {
+				$subject       = $gallery_item->title->rendered;
+				$content       = $gallery_item->content->rendered;
+				$from_email    = ES_Common::get_ig_option( 'from_email' );
+				$from_name     = ES_Common::get_ig_option( 'from_name' );
+				$editor_type   = ! empty( $gallery_item->es_editor_type ) ? $gallery_item->es_editor_type : IG_ES_CLASSIC_EDITOR;
+				$campaign_meta = array(
+					'editor_type' => $editor_type,
+				);
+				if ( IG_ES_DRAG_AND_DROP_EDITOR === $editor_type ) {
+					$dnd_editor_data = maybe_unserialize( $gallery_item->es_dnd_editor_data );
+					if ( ! empty( $dnd_editor_data ) ) {
+						$campaign_meta['dnd_editor_data'] = $gallery_item->es_dnd_editor_data;
+					}
+				} else {
+					if ( false === strpos( $content, '<html' ) ) {
+						// In classic edior, we need to add p tag to content when not already added.
+						$content = wpautop( $content );
+					}
+
+					$custom_css = ! empty( $gallery_item->es_custom_css ) ? $gallery_item->es_custom_css : '';
+					if ( ! empty( $custom_css ) ) {
+						$campaign_meta['es_custom_css'] = $custom_css;
+					}
+				}
+
+				$campaign_meta = maybe_serialize( $campaign_meta );
+
+				preg_match_all( '#<img\s+(?:[^>]*?\s+)?src=(\'|")?(https?[^\'"]+)(\'|")?#', $content, $image_urls );
+				$image_urls = ! empty( $image_urls[2] ) ? $image_urls[2] : array();
+				if ( ! empty( $image_urls ) ) {
+					foreach ( $image_urls as $image_url ) {
+						$is_ig_image_link = false !== strpos( $image_url , 'icegram.com' );
+						if ( $is_ig_image_link ) {
+							$new_image_url = ES_Common::download_image_from_url( $image_url );
+							if ( ! empty( $new_image_url ) ) {
+								$old_url       = ' src="' . $image_url . '"';
+								$new_url       = ' src="' . $new_image_url . '"';
+								$pos           = strpos( $content, $old_url );
+								if ( false !== $pos ) {
+									$content = preg_replace( '/' . preg_quote( $old_url, '/' ) . '/', $new_url, $content, 1 );
+								}
+							}
+						}
+					}
+				}
+
+				$campaign_data = array(
+					'name'       => $subject,
+					'subject'    => $subject,
+					'slug'       => sanitize_title( sanitize_text_field( $subject ) ),
+					'body'       => $content,
+					'from_name'  => $from_name,
+					'from_email' => $from_email,
+					'type'       => $campaign_type,
+					'meta'		 => $campaign_meta,
+				);
+
+				if ( ! empty( $campaign_id ) ) {
+					ES()->campaigns_db->update( $campaign_id, $campaign_data );
+				} else {
+					$campaign_id = ES()->campaigns_db->save_campaign( $campaign_data );
+					if ( ! empty( $campaign_id ) ) {
+						$imported_gallery_template_ids   = get_option( 'ig_es_imported_remote_gallery_template_ids', array() );
+						$imported_gallery_template_ids[] = $template_id;
+						update_option( 'ig_es_imported_remote_gallery_template_ids', $imported_gallery_template_ids );
+					}
+				}
+			}
+
 			return $campaign_id;
 		}
 
@@ -164,16 +266,55 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 			$response = array();
 			$gallery_items = array();
 
+			$remote_gallery_items = $this->get_remote_gallery_items();
+			if ( ! empty( $remote_gallery_items ) ) {
+				foreach ( $remote_gallery_items as $item ) {
+					$template_version = $item->template_version;
+					if ( '1.0.0' === $template_version ) {
+						$template_slug = $item->slug;
+						$item_id       = $item->id;
+						$item_title    = $item->title->rendered;
+						$thumbnail_url = ! empty( $item->thumbnail->guid ) ? $item->thumbnail->guid : '';
+						$editor_type   = ! empty( $item->es_editor_type ) ? $item->es_editor_type : IG_ES_CLASSIC_EDITOR;
+						$campaign_type = ! empty( $item->es_template_type ) ? $item->es_template_type : IG_CAMPAIGN_TYPE_NEWSLETTER;
+						$es_plan       = ! empty( $item->es_plan ) ? $item->es_plan : 'lite';
+						$gallery_type  = 'remote';
+						
+						$categories = array(
+							$campaign_type,
+							$editor_type
+						);
+
+						if ( 'lite' !== $es_plan ) {
+							$categories[] = $es_plan;
+						}
+
+						$gallery_items[$template_slug] = array(
+							'ID'           => $item_id,
+							'title'        => $item_title,
+							'thumbnail'    => $thumbnail_url,
+							'categories'   => $categories,
+							'type'		   => $campaign_type,
+							'editor_type'  => $editor_type,
+							'gallery_type' => 'remote',
+							'es_plan'      => $es_plan,
+						);
+					}
+				}
+			}
+
 			$campaign_templates = ES_Common::get_templates();
 			
 			if ( !empty( $campaign_templates ) ) {
 				foreach ( $campaign_templates as $campaign_template) {
+					$template_slug = $campaign_template->post_name;
 					$editor_type = get_post_meta( $campaign_template->ID, 'es_editor_type', true );
 					$categories = array();
 					$gallery_item['ID'] = $campaign_template->ID;
 					$gallery_item['title'] = $campaign_template->post_title;
 					$gallery_item['type'] = get_post_meta( $campaign_template->ID, 'es_template_type', true );
 					$gallery_item['editor_type'] = !empty($editor_type) ? $editor_type : IG_ES_CLASSIC_EDITOR;
+					$gallery_type  = 'local';
 					$categories[] = !empty($gallery_item['type']) ?  $gallery_item['type'] : IG_CAMPAIGN_TYPE_NEWSLETTER;
 					$categories[] = !empty($editor_type) ? $editor_type : IG_ES_CLASSIC_EDITOR;
 					$gallery_item['categories'] = $categories;
@@ -184,14 +325,58 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 							'200',
 						) ): '';
 					$gallery_item['thumbnail'] = ( !empty ($thumbnail_url) ) ? $thumbnail_url : '';
-					$gallery_items[] = $gallery_item;
+					$gallery_item['gallery_type'] = $gallery_type;
+					$gallery_items[$template_slug] = $gallery_item;
 				}
 			}
 			
-			
-			$response['items'] = $gallery_items;
+			$response['items'] = array_values( $gallery_items );
 
 			wp_send_json_success( $response );
+		}
+
+		public function get_remote_gallery_items() {
+			$remote_gallery_items_updated = get_transient( 'ig_es_remote_gallery_items_updated' );
+			if ( ! $remote_gallery_items_updated ) {
+				$remote_gallery_items_url = 'https://icegram.com/gallery/wp-json/wp/v2/es_gallery_item?filter[posts_per_page]=200';
+
+				$response = wp_remote_get( $remote_gallery_items_url );
+				if ( ! is_wp_error( $response ) ) {
+					$json_response = wp_remote_retrieve_body( $response );
+					if ( ! empty( $json_response ) && ES_Common::is_valid_json( $json_response ) ) {
+						$gallery_items = json_decode( $json_response );
+						if ( is_array( $gallery_items ) ) {
+							update_option( 'ig_es_remote_gallery_items', $gallery_items, 'no' );
+							set_transient( 'ig_es_remote_gallery_items_updated', time(), 24 * HOUR_IN_SECONDS ); // 1 day
+						}
+					}
+				} 
+			}
+
+			$remote_gallery_items = get_option( 'ig_es_remote_gallery_items', array() );
+			return $remote_gallery_items;
+		}
+
+		public function get_remote_gallery_item( $item_id ) {
+
+			$gallery_item = array();
+			if ( empty( $item_id ) ) {
+				return $gallery_item;
+			}
+
+			$remote_gallery_item_url = 'https://icegram.com/gallery/wp-json/wp/v2/es_gallery_item/' . $item_id;
+			$response                = wp_remote_get( $remote_gallery_item_url );
+			
+			if ( ! is_wp_error( $response ) ) {
+				if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
+					$json_response = wp_remote_retrieve_body( $response );
+					if ( ! empty( $json_response ) && ES_Common::is_valid_json( $json_response ) ) {
+						$gallery_item = json_decode( $json_response );
+					}
+				}
+			}
+			
+			return $gallery_item;
 		}
 	}
 

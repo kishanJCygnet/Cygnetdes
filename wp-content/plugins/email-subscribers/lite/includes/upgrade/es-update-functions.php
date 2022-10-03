@@ -1047,7 +1047,7 @@ function ig_es_update_431_db_version() {
  * @sicne 4.3.2
  */
 function ig_es_update_432_import_bfcm_templates() {
-	ES_Install::load_templates();
+	// ES_Install::load_templates();
 }
 
 /**
@@ -1174,7 +1174,7 @@ function ig_es_update_449_db_version() {
  * @since 4.4.10
  */
 function ig_es_update_4410_load_templates() {
-	ES_Install::load_templates( true );
+	// ES_Install::load_templates( true );
 }
 
 /**

@@ -407,12 +407,12 @@ class ES_DB_Contacts extends ES_DB {
 
 
 		// Get all contact ids
-		public function get_all_contact_ids() {
-			global $wpbd;
+	public function get_all_contact_ids() {
+		global $wpbd;
 
-			$query = "SELECT id FROM $this->table_name";
-			return $wpbd->get_results( $query );
-		}
+		$query = "SELECT id FROM $this->table_name";
+		return $wpbd->get_results( $query );
+	}
 
 
 	/**

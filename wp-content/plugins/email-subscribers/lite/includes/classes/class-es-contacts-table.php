@@ -1397,6 +1397,7 @@ class ES_Contacts_Table extends ES_List_Table {
 				}
 				$response['status']  = 'error';
 				$response['message'] = $message;
+				$response['errortype'] = false;
 				return $response;
 			}
 
@@ -1414,6 +1415,7 @@ class ES_Contacts_Table extends ES_List_Table {
 					}
 					$response['status']  = 'success';
 					$response['message'] = $message;
+					$response['errortype'] = false;
 				}
 
 				return $response;
@@ -1431,6 +1433,7 @@ class ES_Contacts_Table extends ES_List_Table {
 					}
 					$response['status']  = 'error';
 					$response['message'] = $message;
+					$response['errortype'] = false;
 					return $response;
 				}
 
@@ -1448,6 +1451,7 @@ class ES_Contacts_Table extends ES_List_Table {
 					}
 					$response['status']  = 'success';
 					$response['message'] = $message;
+					$response['errortype'] = false;
 					return $response;
 				}
 
@@ -1465,6 +1469,7 @@ class ES_Contacts_Table extends ES_List_Table {
 					}
 					$response['status']  = 'error';
 					$response['message'] = $message;
+					$response['errortype'] = false;
 					return $response;
 				}
 
@@ -1477,6 +1482,7 @@ class ES_Contacts_Table extends ES_List_Table {
 					}
 					$response['status']  = 'success';
 					$response['message'] = $message;
+					$response['errortype'] = false;
 					return $response;
 				}
 
@@ -1494,6 +1500,7 @@ class ES_Contacts_Table extends ES_List_Table {
 					}
 					$response['status']  = 'error';
 					$response['message'] = $message;
+					$response['errortype'] = false;
 					return $response;
 				}
 
@@ -1506,6 +1513,7 @@ class ES_Contacts_Table extends ES_List_Table {
 					}
 					$response['status']  = 'success';
 					$response['message'] = $message;
+					$response['errortype'] = false;
 					return $response;
 				}
 			}
