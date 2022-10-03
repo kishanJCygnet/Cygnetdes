@@ -162,3 +162,41 @@
 // sup{
 //     font-size: 11px;
 // }
+.solution-tab-content{
+    .nav-inner{
+        min-width: 300px;
+        .nav-link{
+            background-color: #fff;
+            padding: 25px 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px 0px #dadada;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #0D0D0D;
+            &.active{
+                background-color: #253B61;
+                color: #fff;
+            }
+        }
+    }
+    .tab-content{
+        width: calc(100% - 330px);
+        margin-left: 30px;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 10px 0 #0000001f;
+        .tab-pane{
+            .content{
+                h2{
+                    font-size: 28px;
+                    color: #3DB5E5;
+                    margin-bottom: 15px
+                }
+                p.p2 {
+                    font-size: 16px !important;
+                }
+            }
+        }
+    }
+}
