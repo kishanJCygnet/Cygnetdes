@@ -10,6 +10,18 @@ if ( 'undefined' !== typeof wp.i18n ) {
     }
 }
 
+var canUpsellESTemplate = ( templatePlan ) => {
+    let canUpsellTemplate = false;
+    if ( 'lite' === ig_es_main_js_data.es_plan ) {
+        canUpsellTemplate = templatePlan === 'starter' || templatePlan === 'pro';
+    } else if ( 'starter' === ig_es_main_js_data.es_plan ) {
+        canUpsellTemplate = templatePlan === 'pro';
+    }
+    return canUpsellTemplate;
+}
+
+global.canUpsellESTemplate = canUpsellESTemplate;
+
 const campaignGalleryItemsWrapper = document.querySelector('#ig-es-campaign-gallery-items-wrapper');
 
 let campaignType = location.search.split('campaign-type=')[1];

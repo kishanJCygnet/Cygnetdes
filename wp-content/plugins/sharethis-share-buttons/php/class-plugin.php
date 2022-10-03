@@ -121,4 +121,48 @@ class Plugin extends Plugin_Base {
 			filemtime( "{$this->dir_path}css/meta-box.css" )
 		);
 	}
+
+	/**
+	 * Helper to get the formated network image.
+	 *
+	 * @param string $title The netwokr title.
+	 *
+	 * @return string
+	 */
+	public static function getFormattedNetworkImage( string $title ): string {
+		return 'https://platform-cdn.sharethis.com/img/' . self::getPlatformName( $title ) . '.svg';
+	}
+
+	/**
+	 * Helper to format network title for image retrieval.
+	 *
+	 * @param string $title The network title.
+	 *
+	 * @return string
+	 */
+	public static function getFormattedNetworkTitle( string $title ): string {
+		return sanitize_title(
+			str_replace(
+				array( ' Share Button', 'Google Bookmarks', 'Yahoo Mail' ),
+				array( '', 'Bookmarks', 'YahooMail' ),
+				$title
+			)
+		);
+	}
+
+	/**
+	 *
+	 * Strips name to look like platform name.
+	 *
+	 * @param string $title Title string.
+	 *
+	 * @return string Modified title string.
+	 */
+	public static function getPlatformName( string $title ): string {
+		return str_replace(
+			array( '-pin', 'facebook-messenger', 'sina-', '-ru', 'yahoo-mail', 'okru' ),
+			array( '', 'messenger', '', 'ru', 'yahoomail', 'odnoklassniki' ),
+			$title
+		);
+	}
 }

@@ -836,19 +836,6 @@ if ( ! class_exists( 'IG_ES_Onboarding' ) ) {
 			$title   = esc_html__( 'Welcome To Email Subscribers', 'email-subscribers' );
 			$subject = esc_html__( 'Welcome To Email Subscribers', 'email-subscribers' );
 
-			$es_post = array(
-				'post_title'   => $title,
-				'post_content' => $sample,
-				'post_status'  => 'publish',
-				'post_type'    => 'es_template',
-				'meta_input'   => array(
-					'es_template_type' => 'newsletter',
-				),
-			);
-
-			// Insert the post into the database
-			$post_id = wp_insert_post( $es_post );
-
 			// Create Broadcast Campaign
 
 			$default_list = ES()->lists_db->get_list_by_name( IG_DEFAULT_LIST );
@@ -856,44 +843,40 @@ if ( ! class_exists( 'IG_ES_Onboarding' ) ) {
 			if ( ! empty( $default_list ) ) {
 				$list_id = $default_list['id'];
 
-				if ( ! empty( $post_id ) ) {
+				$data['slug']             = sanitize_title( $title );
+				$data['name']             = $title;
+				$data['subject']          = $subject;
+				$data['type']             = IG_CAMPAIGN_TYPE_NEWSLETTER;
+				$data['from_email']       = $from_email;
+				$data['reply_to_email']   = $from_email;
+				$data['from_name']        = $from_name;
+				$data['reply_to_name']    = $from_name;
+				$data['body']             = $sample;
+				$data['status']           = 1;
 
-					$data['slug']             = sanitize_title( $title );
-					$data['name']             = $title;
-					$data['subject']          = $subject;
-					$data['type']             = IG_CAMPAIGN_TYPE_NEWSLETTER;
-					$data['from_email']       = $from_email;
-					$data['reply_to_email']   = $from_email;
-					$data['from_name']        = $from_name;
-					$data['reply_to_name']    = $from_name;
-					$data['base_template_id'] = $post_id;
-					$data['body']             = $sample;
-					$data['status']           = 1;
-
-					$meta = array(
-						'enable_open_tracking' => ES()->mailer->can_track_open() ? 'yes' : 'no',
-						'enable_link_tracking' => ES()->mailer->can_track_clicks() ? 'yes' : 'no',
-						'list_conditions' => array(
+				$meta = array(
+					'enable_open_tracking' => ES()->mailer->can_track_open() ? 'yes' : 'no',
+					'enable_link_tracking' => ES()->mailer->can_track_clicks() ? 'yes' : 'no',
+					'list_conditions' => array(
+						array(
 							array(
-								array(
-									'field'    => '_lists__in',
-									'operator' => 'is',
-									'value'    => $list_id,
-								)
-							),
+								'field'    => '_lists__in',
+								'operator' => 'is',
+								'value'    => $list_id,
+							)
 						),
+					),
+				);
+
+				$data['meta'] = maybe_serialize( $meta );
+
+				$broadcast_id = ES()->campaigns_db->save_campaign( $data );
+
+				if ( $broadcast_id ) {
+					$response['status']     = 'success';
+					$response['tasks_data'] = array(
+						'broadcast_id' => $broadcast_id,
 					);
-
-					$data['meta'] = maybe_serialize( $meta );
-
-					$broadcast_id = ES()->campaigns_db->save_campaign( $data );
-
-					if ( $broadcast_id ) {
-						$response['status']     = 'success';
-						$response['tasks_data'] = array(
-							'broadcast_id' => $broadcast_id,
-						);
-					}
 				}
 			}
 
@@ -1118,76 +1101,61 @@ if ( ! class_exists( 'IG_ES_Onboarding' ) ) {
 			$content .= 'You received this email because in the past you have provided us your email address : {{EMAIL}} to receive notifications when new updates are posted.';
 
 			$title = esc_html__( 'New Post Published - {{POSTTITLE}}', 'email-subscribers' );
-			// Create Post Notification object
-			$post = array(
-				'post_title'   => $title,
-				'post_content' => $content,
-				'post_status'  => 'publish',
-				'post_type'    => 'es_template',
-				'meta_input'   => array(
-					'es_template_type' => 'post_notification',
-				),
-			);
-			// Insert the post into the database
-			$post_id = wp_insert_post( $post );
 
 			$default_list = ES()->lists_db->get_list_by_name( IG_DEFAULT_LIST );
 
-			if ( ! empty( $post_id ) ) {
-				$list_id = $default_list['id'];
+			$list_id = $default_list['id'];
 
-				$categories_objects = get_terms(
-					array(
-						'taxonomy'   => 'category',
-						'hide_empty' => false,
-					)
-				);
+			$categories_objects = get_terms(
+				array(
+					'taxonomy'   => 'category',
+					'hide_empty' => false,
+				)
+			);
 
-				$categories = array();
-				if ( count( $categories_objects ) > 0 ) {
-					foreach ( $categories_objects as $category ) {
-						if ( $category instanceof WP_Term ) {
-							$categories[] = $category->term_id;
-						}
+			$categories = array();
+			if ( count( $categories_objects ) > 0 ) {
+				foreach ( $categories_objects as $category ) {
+					if ( $category instanceof WP_Term ) {
+						$categories[] = $category->term_id;
 					}
 				}
+			}
 
-				$meta = array(
-					'list_conditions' => array(
+			$meta = array(
+				'list_conditions' => array(
+					array(
 						array(
-							array(
-								'field'    => '_lists__in',
-								'operator' => 'is',
-								'value'    => $list_id,
-							)
-						),
+							'field'    => '_lists__in',
+							'operator' => 'is',
+							'value'    => $list_id,
+						)
 					),
+				),
+			);
+
+			$categories_str = ES_Common::convert_categories_array_to_string( $categories );
+
+			$data['slug']             = sanitize_title( $title );
+			$data['name']             = $title;
+			$data['subject']          = $title;
+			$data['body']             = $content;
+			$data['type']             = IG_CAMPAIGN_TYPE_POST_NOTIFICATION;
+			$data['from_email']       = $from_name;
+			$data['reply_to_email']   = $from_name;
+			$data['from_name']        = $from_email;
+			$data['reply_to_name']    = $from_email;
+			$data['categories']       = $categories_str;
+			$data['list_ids']         = $list_id;
+			$data['status']           = 0;
+			$data['meta']             = maybe_serialize( $meta );
+
+			$post_notification_id = ES()->campaigns_db->save_campaign( $data );
+			if ( $post_notification_id ) {
+				$response['status']     = 'success';
+				$response['tasks_data'] = array(
+					'post_notification_id' => $post_notification_id,
 				);
-
-				$categories_str = ES_Common::convert_categories_array_to_string( $categories );
-
-				$data['slug']             = sanitize_title( $title );
-				$data['name']             = $title;
-				$data['subject']          = $title;
-				$data['body']             = $content;
-				$data['type']             = IG_CAMPAIGN_TYPE_POST_NOTIFICATION;
-				$data['from_email']       = $from_name;
-				$data['reply_to_email']   = $from_name;
-				$data['from_name']        = $from_email;
-				$data['reply_to_name']    = $from_email;
-				$data['categories']       = $categories_str;
-				$data['list_ids']         = $list_id;
-				$data['base_template_id'] = $post_id;
-				$data['status']           = 0;
-				$data['meta']             = maybe_serialize( $meta );
-
-				$post_notification_id = ES()->campaigns_db->save_campaign( $data );
-				if ( $post_notification_id ) {
-					$response['status']     = 'success';
-					$response['tasks_data'] = array(
-						'post_notification_id' => $post_notification_id,
-					);
-				}
 			}
 
 			return $response;

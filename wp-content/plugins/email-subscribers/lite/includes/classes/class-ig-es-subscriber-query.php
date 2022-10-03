@@ -109,6 +109,8 @@ class IG_ES_Subscribers_Query {
 		'_subscribed_before',
 	);
 
+	private $custom_fields = array();
+
 	private static $_instance = null;
 
 	public function __construct( $args = null, $campaign_id = null ) {
@@ -562,7 +564,12 @@ class IG_ES_Subscribers_Query {
 			case '<':
 			case 'is_smaller':
 				$f     = "subscribers.$field";
-				$value = (float) $value;
+				$is_numeric = is_numeric( $value );
+				if ( $is_numeric ) {
+					$value = (float) $value;
+				} else {
+					$value = ! empty( $value ) ? "'$value'" : '';
+				}
 
 				$c = $f . ' ' . ( in_array( $operator, array( 'is_greater', 'is_greater_equal', '>', '>=' ) ) ? '>' . $extra : '<' . $extra ) . " $value";
 

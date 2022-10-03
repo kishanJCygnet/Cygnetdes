@@ -2041,7 +2041,7 @@ body.email-subscribers_page_es_campaigns .column-status .dashicons[title="Finish
 	padding-right: 4px;
 }
 
-.ig-es-conditions-value-fields:not([data-condition="email"]):not([data-condition="country_code"]):not([data-condition="engagement_score"]):not([data-condition="bounce_status"]) {
+.ig-es-conditions-value-fields:not([data-condition="email"]):not([data-condition="country_code"]):not([data-condition="engagement_score"]):not([data-condition="bounce_status"]):not([data-condition^="cf_"]) {
     max-width: 60%;
 }
 

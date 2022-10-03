@@ -50,7 +50,7 @@
 			$('.es-audience-view table.contacts #cb-select-all-1').click(function (e) {
 
 				if($('.es-audience-view table.contacts #cb-select-all-1').prop('checked') == true){
-					flag = confirm("Want to select contacts on all pages?");
+					flag = confirm( ig_es_js_data.i18n_data.confirm_select_all );					
 				}
 
 				if( flag ) {
@@ -74,9 +74,7 @@
 						
 					});
 				}
-				
-				
-				
+							
 
 			});
 
@@ -110,7 +108,31 @@
 									},1000);
 								}
 							} else {
-								alert(response.data.message);
+
+								if( true !== response.data.errortype ) {
+									alert(response.data.message);
+								}
+
+								if( true == response.data.errortype ) {
+									if ( ! response.data.completed ) {
+										actionData.push({name: 'paged', value: response.data.paged });
+										actionData.push({name: 'total_pages', value: response.data.total_pages });
+										actionData.push({name: 'start_page', value: response.data.start_page });
+										ig_es_apply_contacts_bulk_action( actionData, response.data.paged );
+									} else 
+									{
+										$('.ig_es_process_message').text('Process completed , reloading the page!');
+										let current_url = new URL(window.location.href);
+										let bulk_action = response.data.bulk_action;
+										
+										setTimeout(()=>{
+											current_url.searchParams.append('bulk_action', bulk_action);
+											window.location.href = current_url;								
+										},1000);
+									}							
+
+								}
+
 							}
 						} else {
 							alert( response.i18n_data.ajax_error_message );
