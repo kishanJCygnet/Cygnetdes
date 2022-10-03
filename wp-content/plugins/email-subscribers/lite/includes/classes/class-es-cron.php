@@ -400,14 +400,12 @@ class ES_Cron {
 	 */
 	public function set_last_hit() {
 
-		$last_hit = array();
-
+		$last_hit = get_option( 'ig_es_cron_last_hit', array() );
 		$last_hit['timestamp'] = time();
 
 		if ( isset( $_SERVER['HTTP_X_ES_EMAIL_SENDING_LIMIT'] ) ) {
 			$last_hit['icegram_timestamp'] = time();
 		}
-
 
 		return update_option( 'ig_es_cron_last_hit', $last_hit );
 	}

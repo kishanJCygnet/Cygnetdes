@@ -225,9 +225,11 @@ class Email_Subscribers_Admin {
 			'mailchimp_notice_nowindow_close' => esc_html__( 'Fetching contacts from MailChimp...Please do not close this window', 'email-subscribers' ),
 
 			// verify Email authentication header messages
-			'error_send_test_email'        => esc_html__('SMTP Error : Unable to send test email', 'email-subscribers'),
-			'error_server_busy'				=> esc_html__('Server Busy : Please try again later', 'email-subscribers'),
-			'success_verify_email_headers'  => esc_html__('Headers verified successfully', 'email-subscribers'),
+			'error_send_test_email'           => esc_html__('SMTP Error : Unable to send test email', 'email-subscribers'),
+			'error_server_busy'				  => esc_html__('Server Busy : Please try again later', 'email-subscribers'),
+			'success_verify_email_headers'    => esc_html__('Headers verified successfully', 'email-subscribers'),
+
+			'confirm_select_all'			  => esc_html__('Want to select contacts on all pages?', 'email-subscribers'),
 		),
 		'is_pro'    => ES()->is_pro() ? true : false,
 		);
@@ -691,11 +693,11 @@ class Email_Subscribers_Admin {
 		if ( ! empty( $conditions ) ) {
 			if ( 'yes' === $get_count ) {
 				$args                   = array(
-				'lists'        => $list_id,
-				'conditions'   => $conditions,
-				'status'       => $status,
-				'subscriber_status' => array( 'verified' ),
-				'return_count' => true,
+					'lists'             => $list_id,
+					'conditions'        => $conditions,
+					'status'            => $status,
+					'subscriber_status' => array( 'verified' ),
+					'return_count'      => true,
 				);
 				$query                  = new IG_ES_Subscribers_Query();
 				$response_data['total'] = $query->run( $args );
@@ -1120,7 +1122,12 @@ class Email_Subscribers_Admin {
 
 			$meta            = ! empty( $data['campaign_id'] ) ? ES()->campaigns_db->get_campaign_meta_by_id( $data['campaign_id'] ) : '';
 			$data['html']    = $data['content'];
-			$data['css']     = ! empty( $meta['es_custom_css'] ) ? $meta['es_custom_css'] : get_post_meta( $data['tmpl_id'], 'es_custom_css', true );
+			$data['css']     = '';
+			if ( ! empty( $meta['es_custom_css'] ) ) {
+				$data['css'] = $meta['es_custom_css'];
+			} elseif ( ! empty( $data['tmpl_id'] ) ) {
+				$data['css'] = get_post_meta( $data['tmpl_id'], 'es_custom_css', true );
+			}
 			$data['tasks'][] = 'css-inliner';
 		}
 
@@ -1331,6 +1338,7 @@ class Email_Subscribers_Admin {
 		}
 
 		$completed = false;
+		$errortype = false;
 		
 		$contacts_table = new ES_Contacts_Table();
 		$current_action = $contacts_table->current_action();
@@ -1379,6 +1387,7 @@ class Email_Subscribers_Admin {
 			}
 		}
 
+
 		$return_response = true;
 		$action_response = $contacts_table->process_bulk_action( $return_response );
 		$completed       = (int) $current_page === (int) $total_pages;
@@ -1387,6 +1396,7 @@ class Email_Subscribers_Admin {
 			'start_page'  => $start_page,
 			'total_pages' => $total_pages,
 			'completed'   => $completed,
+			'errortype'	  => $action_response['errortype'] ? $action_response['errortype'] : $errortype ,
 			'message'     => $action_response['message'],	
 			'bulk_action' => $current_action, 			
 		);
@@ -1622,9 +1632,23 @@ class Email_Subscribers_Admin {
 
 		check_ajax_referer( 'ig-es-admin-ajax-nonce', 'security' );
 
-		$template_id = ig_es_get_request_data( 'template_id' );
+		$template_id  = ig_es_get_request_data( 'template_id' );
+		$gallery_type = ig_es_get_request_data( 'gallery_type' );
 
-		$template = get_post( $template_id, ARRAY_A );
+		if ( 'remote' === $gallery_type ) {
+			$gallery  = ES_Gallery::get_instance();
+			$template = $gallery->get_remote_gallery_item( $template_id );
+			
+			$es_template_body = $template->content->rendered;
+			$es_template_type = $template->es_template_type;
+			$custom_css       = $template->es_custom_css;
+			$es_template_body = $custom_css . $es_template_body;
+		} else {
+			$template         = get_post( $template_id, ARRAY_A );
+			$es_template_body = $template['post_content'];
+			$es_template_type = get_post_meta( $template_id, 'es_template_type', true );
+		}
+		
 		if ( $template ) {
 			$current_user = wp_get_current_user();
 			$username     = $current_user->user_login;
@@ -1649,33 +1673,32 @@ class Email_Subscribers_Admin {
 				}
 			}
 
-			$es_template_body = $template['post_content'];
-
-			$es_template_type = get_post_meta( $template_id, 'es_template_type', true );
-
-			if ( 'post_notification' === $es_template_type ) {
-				$args         = array(
-				'numberposts' => '1',
-				'order'       => 'DESC',
-				'post_status' => 'publish',
-				);
-				$recent_posts = wp_get_recent_posts( $args );
-
-				if ( count( $recent_posts ) > 0 ) {
-					$recent_post = array_shift( $recent_posts );
-
-					$post_id          = $recent_post['ID'];
-					$es_template_body = ES_Handle_Post_Notification::prepare_body( $es_template_body, $post_id, $template_id );
+			// Don't replace placeholder keywords in remote templates.
+			if ( 'remote' !== $gallery_type ) {
+				if ( 'post_notification' === $es_template_type ) {
+					$args         = array(
+						'numberposts' => '1',
+						'order'       => 'DESC',
+						'post_status' => 'publish',
+					);
+					$recent_posts = wp_get_recent_posts( $args );
+	
+					if ( count( $recent_posts ) > 0 ) {
+						$recent_post = array_shift( $recent_posts );
+	
+						$post_id          = $recent_post['ID'];
+						$es_template_body = ES_Handle_Post_Notification::prepare_body( $es_template_body, $post_id, $template_id );
+					}
+				} else {
+					$es_template_body = ES_Common::es_process_template_body( $es_template_body, $template_id );
 				}
-			} else {
-				$es_template_body = ES_Common::es_process_template_body( $es_template_body, $template_id );
 			}
 
 			$es_template_body = ES_Common::replace_keywords_with_fallback( $es_template_body, array(
-			'FIRSTNAME' => $first_name,
-			'NAME'      => $username,
-			'LASTNAME'  => $last_name,
-			'EMAIL'     => $useremail
+				'FIRSTNAME' => $first_name,
+				'NAME'      => $username,
+				'LASTNAME'  => $last_name,
+				'EMAIL'     => $useremail
 			) );
 
 			$es_template_body = ES_Common::replace_keywords_with_fallback( $es_template_body, array(
@@ -1685,15 +1708,7 @@ class Email_Subscribers_Admin {
 				'subscriber.email'     => $useremail
 			) );
 
-			$allowedtags      = ig_es_allowed_html_tags_in_esc();
 			add_filter( 'safe_style_css', 'ig_es_allowed_css_style' );
-
-			if ( has_post_thumbnail( $template_id ) ) {
-				$image_array = wp_get_attachment_image_src( get_post_thumbnail_id( $template_id ), 'full' );
-				$image       = '<img src="' . $image_array[0] . '" class="img-responsive" alt="Image for Post ' . $template_id . '" />';
-			} else {
-				$image = '';
-			}
 			$response['template_html'] = apply_filters( 'the_content', $es_template_body );
 		} else {
 			$response['template_html'] = __( 'Please publish it or save it as a draft.', 'email-subscribers' );

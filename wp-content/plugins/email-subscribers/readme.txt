@@ -6,7 +6,7 @@ Tags: email marketing, subscription, autoresponder, post notification, welcome e
 Requires at least: 3.9
 Tested up to: 6.0.2
 Requires PHP: 5.6
-Stable tag: 5.4.13
+Stable tag: 5.4.14
 License: GPLv3
 License URI: http://www.gnu.org/licenses
 
@@ -310,12 +310,15 @@ Refer [here](https://www.icegram.com/documentation/es-faq/).
 
 == Upgrade Notice ==
 
-= 5.4.13 =
+= 5.4.14 =
 
-* Enhancement: Bulk actions can now apply to all the contacts
-* Fix: Some keywords are not getting converted correctly in Amazon SES
+* New : Filter subscribers using custom fields while sending emails[PRO]
 
 == Changelog ==
+
+**5.4.14 (28.09.2022)**
+
+* New : Filter subscribers using custom fields while sending emails[PRO]
 
 **5.4.13 (22.09.2022)**
 
