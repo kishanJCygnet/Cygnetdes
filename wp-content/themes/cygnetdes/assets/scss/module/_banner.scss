@@ -8,7 +8,12 @@
         .banner-inner-content {
         // background-image: url('../../images/BG.jpg') !important;
         overflow: hidden;
-        padding-bottom: 215px;
+       
+        @include bp(sm-max){
+            padding-bottom: 50px;
+            padding-top: 50px;
+            min-height: auto;
+        }
         .img-content{            
             text-align: right;
             position: relative;
@@ -67,17 +72,41 @@
                     color: #fff;
                     padding-left: 0;
                     li{
-                        display: none;
-                        &.active{
-                            display: block;
-                        }
+                        // display: none;
+                        // &.active{
+                        //     display: block;
+                        // }
                     }
                     h2{
                     margin-bottom: 50px;
                     font-size: 64px;
+                    @include bp(lg-max){
+                        font-size: 56px;
+                    }
+                    @include bp(md-max){
+                        font-size: 34px;
+                        margin-bottom: 32px;
+                    }
                 }
+                }
+                .sub-text{
+                    font-size: 16px;
                 }
             }
+        }
+        &.digital-transformation-banner{
+            .banner-inner-content{
+                padding-bottom: 215px;
+            }
+            .text-content {
+                .inner-text{
+                    ul{
+                        li{
+                            display: none;
+                            &.active{
+                                display: block;
+                            }
+                        }}}}
         }
     }
     .banner-inner-content {
@@ -178,6 +207,11 @@
         left: 0;
         z-index: 1;
         right: 0;
+        @include bp(sm-max){
+            position: static;
+            background-color: #fff;
+            padding: 15px;
+        }
         .count-section-main-inner{
             display: flex;
             width: 1140px;
@@ -185,13 +219,36 @@
             margin: auto;
             background-color: #ffffff30;
             padding: 10px 0;
-            
+            @include bp(lg-max){
+                width: 850px;
+            }
+            @include bp(md-max){
+                width: 740px;
+            }
+            @include bp(sm-max){
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }            
             .count-inner{
                 width: 25%;
                 text-align: center;
                 color: #fff;
                 border-right: 1px solid rgba(255, 255, 255, 0.46);
                 padding: 15px;
+                @include bp(md-max){
+                    border-right: 1px solid rgba(255,255,255,.46);
+                    padding: 5px 10px;
+                }
+                @include bp(sm-max){
+                    width: 48%;
+                    background-color: #0c3761;
+                    padding: 15px;
+                    border-radius: 10px;
+                    margin: 10px 0;
+                }
+                @include bp(xs-max){
+                    width: 100%;
+                }
                 &:last-child{
                     border-right: 0;
                 }
@@ -291,11 +348,17 @@
     justify-content: center;
     i{
         margin: 0 10px;
+        @include bp(md-max){
+            font-size: 16px;
+        }
     }
     a{
         color: #fff;
         &:hover{
             color: #80DBFF;
+        }
+        @include bp(md-max){
+            font-size: 14px;
         }
     }
 }
