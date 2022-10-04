@@ -17,7 +17,7 @@
 			<?php $post_slug = $post->post_name;
 			if($post_slug != 'community-version' && $post_slug != 'download-enterprise' && $post_slug != 'sign-up' && $post_slug != 'thank-you-for-contacting-us' && $post_slug != 'thank-you-for-signing-up' && $post_slug != 'thank-you-for-your-interest' && $post_slug != 'thank-you-for-webinar-registration' && $post_slug != 'thank-you-for-downloading-case-study' && $post_slug != 'thank-you-for-signing-up-community' && $post_slug != 'thank-you-for-signing-up-enterprise' && !is_404()){  ?>				
 				<div class="title-heading">	
-					<h2>Book A Demo
+					<h2>Book A Free Consulting
 						<span class="heading-border"></span>
 					</h2>
 				</div>
@@ -55,9 +55,9 @@
 				<div class="footer-contents d-flex justify-content-between align-items-center">
 					<!-- Footer logo begin -->
 					<div class="footer-logo">
-						<a href="<?php echo site_url(); ?>" title="Testingwhiz" alt="Testingwhiz">
-							<span class="visually-hidden">Testingwhiz</span>
-							<img src='<?php echo get_field("footer_logo", "option"); ?>' alt="Testingwhiz">
+						<a href="<?php echo site_url(); ?>" title="Cygnetdes" alt="Cygnetdes">
+							<span class="visually-hidden">Cygnetdes</span>
+							<img src='<?php echo get_field("footer_logo", "option"); ?>' alt="Cygnetdes">
 						</a>
 					</div>
 					<!-- Footer logo end -->
