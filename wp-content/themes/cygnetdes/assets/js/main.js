@@ -157,7 +157,7 @@ jQuery(document).ready(function(){
       jQuery('.testimonials h2 a').attr("href","#");
       jQuery('.testimonials h2 a').attr("href","#");
 
-      jQuery('.banner-content .inner-text ul li:first-child').addClass('active animate__animated animate__fadeIn');
+      jQuery('.banner-content.digital-transformation-banner .inner-text ul li:first-child').addClass('active animate__animated animate__fadeIn');
   });
 // jQuery(window).on('resize', function(){
 //   solution();
@@ -165,7 +165,7 @@ jQuery(document).ready(function(){
 setInterval(function()
 {
     // Remove .active class from the active li, select next li sibling.
-    var next = jQuery('.banner-content .inner-text ul > li.active').removeClass('active animate__animated animate__fadeIn').next('li');
+    var next = jQuery('.banner-content.digital-transformation-banner .inner-text ul > li.active').removeClass('active animate__animated animate__fadeIn').next('li');
 
     // Did we reach the last element? Of so: select first sibling
     if (!next.length) next = next.prevObject.siblings('li:first-child');

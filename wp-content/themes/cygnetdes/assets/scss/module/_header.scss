@@ -8,6 +8,7 @@ body{
 }
 .topBar {
     padding-bottom: 0 !important;
+    display: none;
     .navbar-nav {
         flex-direction: row;
         .btn {
@@ -90,6 +91,7 @@ body{
             margin-left: 10px;
             background-color: transparent !important;
             width: auto;
+            display: none;
             &:focus{
                 border: 0;
             }
@@ -295,7 +297,7 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    background: #0F3764;
+    background: #fff;
     .navbar {
         border-bottom: 1px solid rgba(255, 255, 255,0.29);
         -webkit-transition: all 0.3s;
@@ -312,6 +314,9 @@ header {
             background-color: #0c3761eb;
             border-bottom: 1px solid #ececec;
             z-index: 99;
+            @include bp(lg-max){
+                background-color: #ffffffeb;
+            }
         }
         .navbar-nav {
             .nav-link {
@@ -372,11 +377,11 @@ header {
                 @include bp(xl-max) {
                     width: 210px; 
                     }
-                @include bp(lg-max) {
-                width: 160px; 
-                }
+                // @include bp(lg-max) {
+                // width: 160px; 
+                // }
                 @include bp(xxs-max) {
-                width: 140px; 
+                width: 200px; 
                 }
             }
         }
@@ -388,6 +393,7 @@ header {
 
 .primary-navigation {
     margin-left: inherit;
+    display: none;
     .menu-wrapper {
         @include bp(md-max) {
             position: fixed !important;

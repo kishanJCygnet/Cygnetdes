@@ -12,6 +12,9 @@
         background: rgb(161 205 255 / 11%);
         padding-top: 60px;
         padding-bottom: 30px;
+        @include bp(md-max) {
+            padding-top: 100px;
+        }
     }
     a {
         text-decoration: none;
@@ -47,6 +50,10 @@
     }
     img {
         width:290px;
+        @include bp(md-max) {
+            width: 220px;
+            margin-bottom: 20px;
+        }
     }
     // &::after {
     //     content: "";
