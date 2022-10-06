@@ -90,8 +90,17 @@
                 }
                 }
                 .sub-text{
-                    font-size: 16px;
+                    font-size: 20px;
+                    line-height: 1.3;
+                    @include bp(md-max){
+                        font-size: 16px;
+                    }
                 }
+            }
+        }
+        &.digital-tran-ban{
+            .banner-inner-content{
+                padding-bottom: 215px;
             }
         }
         &.digital-transformation-banner{
@@ -131,7 +140,7 @@
         .banner-inner-content {
             height: 70vh;
             min-height: 300px;
-            background-color: #969;
+            background-color: #0f3764;
             background-blend-mode: multiply;
             h1{
                 text-align: center;
@@ -296,7 +305,7 @@
     //     left: -25px;
     // }
     .banner-inner-content {
-        height: 70vh;
+        height: 50vh;
         min-height: 300px;
         border-bottom-left-radius:100px ;
         @include bp(md-max){
@@ -337,7 +346,7 @@
 }
 .overlay-banner{
     .banner-inner-content{
-        background-color: #969;
+        background-color: #0c3761;
         background-blend-mode: multiply;
         .banner-caption{
             text-align: center;
@@ -346,15 +355,23 @@
 }
 .breadcrumb {
     justify-content: center;
+    font-size: 14px;
+    @include bp(md-max){
+        font-size: 14px;
+    }
     i{
         margin: 0 10px;
         @include bp(md-max){
-            font-size: 16px;
+            font-size: 14px;
         }
     }
     a{
-        color: #fff;
+        color: #80DBFF;
+        font-size: 14px;
         &:hover{
+            color: #80dbff98;
+        }
+        & ~ i{
             color: #80DBFF;
         }
         @include bp(md-max){
