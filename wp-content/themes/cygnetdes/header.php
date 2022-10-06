@@ -41,10 +41,22 @@
     <link rel="stylesheet" href="<?php echo THEME_PATH; ?>assets/dist/css/animate.css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 	<link rel="newest stylesheet" href="<?php echo THEME_PATH; ?>assets/dist/css/style.css">
-	<script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=624e7021b2841900196d492a&product=sop' id='share-this-share-buttons-mu-js' async='async'></script>
+	<!--<script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=624e7021b2841900196d492a&product=sop' id='share-this-share-buttons-mu-js' async='async'></script>-->
+	<script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=633e98796d9aae001a865407&product=sop' id='share-this-share-buttons-mu-js' async='async'></script>
+	<!-- Google Tag Manager -->
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-MXK8CWQ');</script>
+	<!-- End Google Tag Manager -->
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MXK8CWQ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 	<header>
         <div class="topBar navbar-expand-lg py-2">
             <div class="container d-flex">
@@ -153,7 +165,7 @@
                <div class="right-content d-flex align-items-center">
                <?php $post_slug = $post->post_name;
 					if($post_slug != 'community-version' && $post_slug != 'download-enterprise' && $post_slug != 'sign-up' && $post_slug != 'thank-you-for-contacting-us' && $post_slug != 'thank-you-for-signing-up' && $post_slug != 'thank-you-for-your-interest' && $post_slug != 'thank-you-for-webinar-registration' && $post_slug != 'thank-you-for-downloading-case-study' && $post_slug != 'thank-you-for-signing-up-community' && $post_slug != 'thank-you-for-signing-up-enterprise' && !is_404()){  ?>
-                    <a id="contact_us" href="#contactus" class="btn contact-us ms-2 "><span class="text">Book A Demo</span></a>
+                    <a id="contact_us" href="#contactus" class="btn contact-us ms-2 "><span class="text">Book Consulting</span></a>
                 <?php } ?>
 				<!-- <a id="contact_us" href="<?php echo site_url(); ?>/community-version" class="btn contact-us ms-2 community-version"><span class="text">Community Version</span></a> -->
 				<!-- <a href="#communityform" class="btn contact-us ms-2 d-none download-now"><span class="text">Download Now</span></a> -->

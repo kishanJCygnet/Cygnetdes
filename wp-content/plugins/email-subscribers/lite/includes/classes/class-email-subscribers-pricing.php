@@ -63,7 +63,7 @@ class Email_Subscribers_Pricing {
 				margin-right: auto;
 				margin-left: auto;
 				margin-top: 4em;
-				padding-bottom: 4em;
+				padding-bottom: 1.2em;
 			}
 			.ig_es_column {
 				padding: 2em;
@@ -278,12 +278,12 @@ class Email_Subscribers_Pricing {
 				background-color: #F7E9C8 !important;
 				color: #D39E22 !important;
 			}
-			table.ig_es_feature_table th.ig_es_starter_features {
+			table.ig_es_feature_table th.ig_es_pro_features{
 				background-color: #CCFCBF !important;
 				color: #14C38E !important;
 				width:16em;
 			}
-			table.ig_es_feature_table th.ig_es_pro_features {
+			table.ig_es_feature_table th.ig_es_starter_features {
 				background-color: #DCDDFC !important;
 				color: #6875F5 !important;
 			}
@@ -299,11 +299,11 @@ class Email_Subscribers_Pricing {
 				padding:1em 2em;
 			}
 			table.ig_es_feature_table td.ig_es_starter_feature_name {
-				background-color: #E3FCBF !important;
+				background-color: #F4F5FD !important;
 				padding:1em 3em;
 			}
 			table.ig_es_feature_table td.ig_es_pro_feature_name {
-				background-color: #F4F5FD !important;
+				background-color: #E3FCBF !important;
 				padding:1em 2em;
 			}
 			#ig_es_product_page_link {
@@ -330,6 +330,15 @@ class Email_Subscribers_Pricing {
 			#ig_es_comparison_table{
 				margin-top: 4em;
 			}
+			.ig_es_renew_headline{
+				font-size: 1em;
+				font-weight: 400;
+				color: #00848D !important;
+				text-align: center;
+				line-height: 1.5em;
+				margin: 0 auto 1em;
+				padding-bottom: 3em;
+			}
 
 		</style>
 
@@ -349,33 +358,33 @@ class Email_Subscribers_Pricing {
 					<div style="padding-top: 1em;font-size: 0.5em;"><?php echo esc_html__( '⏰ Limited time offer', 'email-subscribers' ); ?></div>
 				</div>
 				<div id="ig_es_price_column_container">
-					<div class="ig_es_column column_one_fourth pricing scaleup" style="border-color: #15576F;padding: 0;border-width: 0.2em;">
-						<div style="text-align: center;background-color: #15576F;color: #FFF;padding: 1em;font-weight: 900;text-transform: uppercase;"> <?php echo esc_html__( 'Best Seller', 'email-subscribers' ); ?> </div>
-						<span class="ig_es_plan"><h4 class="clr-a center"><?php echo esc_html__( 'Pro', 'email-subscribers' ); ?></h4></span>
-						<span class="ig_es_plan"><h4 class="clr-a center"><?php echo esc_html__( '1 site (Annual)', 'email-subscribers' ); ?></h4></span>
-						<span class="ig_es_price">
-							<p><del class="center"><?php echo esc_html__( '$129', 'email-subscribers' ); ?></del></p>
-							<h2><?php echo esc_html__( '$97', 'email-subscribers' ); ?></h2>
-						</span>
+						<div class="ig_es_column column_one_fourth pricing ig_es_lifetime_price">
+							<span class="ig_es_plan"><h4 class="clr-a center"><?php echo esc_html__( 'Starter', 'email-subscribers' ); ?></h4></span>
+							<span class="ig_es_plan"><h4 class="clr-a center"><?php echo esc_html__( '1 site (Annual)', 'email-subscribers' ); ?></h4></span>
+							<span class="ig_es_price">
+								<p><del class="center"><?php echo esc_html__( '$79', 'email-subscribers' ); ?></del></p>
+								<h2><?php echo esc_html__( '$60', 'email-subscribers' ); ?></h2>
+							</span>
 
-						<div class="center">
-							<a class="ig_es_button small green center" href="https://www.icegram.com/?buy-now=39944&qty=1&coupon=es-upgrade-25&with-cart=1&utm_source=ig_es&utm_medium=<?php echo esc_attr( $utm_medium ); ?>&utm_campaign=es-pro" target="_blank" rel="noopener"><?php esc_html_e( 'Buy Now', 'email-subscribers' ); ?><span style="width: 1em; height: 1em; background-image: url('https://www.storeapps.org/wp-content/themes/storeapps/assets/images/fidget.svg'); display: inline-block; margin-left: 0.5em" class="fidget spin"></span></a>
+							<div class="center">
+								<a class="ig_es_button small green center" href="https://www.icegram.com/?buy-now=407190&qty=1&coupon=es-upgrade-25&with-cart=1&utm_source=ig_es&utm_medium=<?php echo esc_attr( $utm_medium ); ?>&utm_campaign=starter" target="_blank" rel="noopener"><?php esc_html_e( 'Get 25% Off', 'email-subscribers' ); ?></a>
+							</div>
 						</div>
-					</div>
-					<div class="ig_es_column column_one_fourth pricing ig_es_lifetime_price">
-						<span class="ig_es_plan"><h4 class="clr-a center"><?php echo esc_html__( 'Starter', 'email-subscribers' ); ?></h4></span>
-						<span class="ig_es_plan"><h4 class="clr-a center"><?php echo esc_html__( '1 site (Annual)', 'email-subscribers' ); ?></h4></span>
-						<span class="ig_es_price">
-							<p><del class="center"><?php echo esc_html__( '$79', 'email-subscribers' ); ?></del></p>
-							<h2><?php echo esc_html__( '$60', 'email-subscribers' ); ?></h2>
-						</span>
+						<div class="ig_es_column column_one_fourth pricing scaleup" style="border-color: #15576F;padding: 0;border-width: 0.2em;">
+							<div style="text-align: center;background-color: #15576F;color: #FFF;padding: 1em;font-weight: 900;text-transform: uppercase;"> <?php echo esc_html__( 'Best Seller', 'email-subscribers' ); ?> </div>
+							<span class="ig_es_plan"><h4 class="clr-a center"><?php echo esc_html__( 'Pro', 'email-subscribers' ); ?></h4></span>
+							<span class="ig_es_plan"><h4 class="clr-a center"><?php echo esc_html__( '1 site (Annual)', 'email-subscribers' ); ?></h4></span>
+							<span class="ig_es_price">
+								<p><del class="center"><?php echo esc_html__( '$129', 'email-subscribers' ); ?></del></p>
+								<h2><?php echo esc_html__( '$97', 'email-subscribers' ); ?></h2>
+							</span>
 
-						<div class="center">
-							<a class="ig_es_button small green center" href="https://www.icegram.com/?buy-now=407190&qty=1&coupon=es-upgrade-25&with-cart=1&utm_source=ig_es&utm_medium=<?php echo esc_attr( $utm_medium ); ?>&utm_campaign=starter" target="_blank" rel="noopener"><?php esc_html_e( 'Buy Now', 'email-subscribers' ); ?></a>
+							<div class="center">
+								<a class="ig_es_button small green center" href="https://www.icegram.com/?buy-now=39944&qty=1&coupon=es-upgrade-25&with-cart=1&utm_source=ig_es&utm_medium=<?php echo esc_attr( $utm_medium ); ?>&utm_campaign=es-pro" target="_blank" rel="noopener"><?php esc_html_e( 'Get 25% Off', 'email-subscribers' ); ?><span style="width: 1em; height: 1em; background-image: url('https://www.storeapps.org/wp-content/themes/storeapps/assets/images/fidget.svg'); display: inline-block; margin-left: 0.5em" class="fidget spin"></span></a>
+							</div>
 						</div>
-					</div>
-
 				</div>
+				<div class="ig_es_renew_headline"><?php echo esc_html__( ' * Renew at same discounted price', 'email-subscribers' ); ?></div>
 			</div>
 			<div class="ig_es_row" id="ig-es-testimonial">
 				<div class="ig_es_column ig-es-testimonial-content">

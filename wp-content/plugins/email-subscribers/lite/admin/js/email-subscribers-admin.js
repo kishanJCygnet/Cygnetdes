@@ -1271,6 +1271,12 @@
 				ig_es_show_campaign_preview_in_popup();
 			});
 
+			$('#view_template_preview_button').on('click', function(){
+				let template_button = $('#view_template_preview_button');
+				$(template_button).parent().find('.es-send-success').hide();
+				$(template_button).parent().find('.es-send-error').hide();
+				ig_es_show_template_preview_in_popup();
+			});
 
 			$('#save_campaign_as_template_button').on('click', function(e){
 				e.preventDefault();
@@ -3389,6 +3395,45 @@
 
 			});
 			/* DND form builder code end */
+
+			jQuery('body')
+						.on('click', '#ig-es-delete-template-image', function (e) {
+							e.preventDefault();
+							jQuery('#ig-es-template-image-attachment-container').addClass('hidden');
+							jQuery('#ig-es-add-template-image').removeClass('hidden');
+						})
+						.on('click', '#ig-es-add-template-image', function (e) {
+							e.preventDefault();
+							jQuery(this).addClass('clicked');
+							if ( ! wp.media.frames.ig_es_attachments ) {
+								// Create the media frame.
+								wp.media.frames.ig_es_attachments = wp.media({
+									// Set the title of the modal.
+									title: es_admin_data.i18n_data.add_attachment_text,
+									button: {
+										text: es_admin_data.i18n_data.add_attachment_text,
+									},
+									multiple: false,
+									states: [
+										new wp.media.controller.Library({
+											filterable: 'png,jpg',
+											multiple: false
+										})
+									]
+								});
+
+								// When a user click on Add file button.
+								wp.media.frames.ig_es_attachments.on('select', function () {
+									let attachment = wp.media.frames.ig_es_attachments.state().get('selection').first().toJSON();
+									jQuery('#ig-es-template-image-attachment-container').removeClass('hidden');
+									jQuery('#ig_es_template_attachment_image').attr('src', attachment.url);
+									jQuery('#ig_es_template_attachment_id').val(attachment.id);
+									jQuery('#ig-es-template-image-attachment-container').removeClass('hidden');
+									jQuery('#ig-es-add-template-image').addClass('hidden');
+								});
+							}
+							wp.media.frames.ig_es_attachments.open();
+						});
 		});
 
 		function ig_es_uc_first(string){
@@ -3612,7 +3657,7 @@ function ig_es_show_broadcast_preview_in_popup() {
 function ig_es_show_campaign_preview_in_popup() {
 	ig_es_sync_wp_editor_content();
 
-	let content = jQuery('textarea[name="campaign_data[body]"]').val();
+	let content = jQuery('textarea[name="campaign_data[body]"],textarea[name="data[body]"]').val();
 	if (jQuery("#edit-es-campaign-body-wrap").hasClass("tmce-active")) {
 		content = tinyMCE.activeEditor.getContent();
 	}
@@ -3628,6 +3673,55 @@ function ig_es_show_campaign_preview_in_popup() {
 	let form_data = jQuery('#view_campaign_preview_button').closest('form').serialize();
 	// Add action to form data
 	form_data += form_data + '&action=ig_es_get_campaign_preview&security='  + ig_es_js_data.security;
+	jQuery.ajax({
+		method: 'POST',
+		url: ajaxurl,
+		data: form_data,
+		dataType: 'json',
+		success: function (response) {
+			if (response.success) {
+				if ( 'undefined' !== typeof response.data ) {
+					let response_data = response.data;
+					let template_html = response_data.preview_html;
+					jQuery('#browser-preview-tab').trigger('click');
+					ig_es_load_iframe_preview( '#campaign-preview-iframe-container', template_html );
+					// We are setting popup visiblity hidden so that we can calculate iframe width/height before it is shown to user.
+					jQuery('#campaign-preview-popup').css('visibility','hidden').show();
+					setTimeout(()=>{
+						jQuery('#campaign-preview-popup').css('visibility','visible');
+					},100);
+				}
+			} else {
+				alert( ig_es_js_data.i18n_data.ajax_error_message );
+			}
+		},
+		error: function (err) {
+			alert( ig_es_js_data.i18n_data.ajax_error_message );
+		}
+	}).done(function(){
+		jQuery(template_button).removeClass('loading');
+	});
+}
+
+function ig_es_show_template_preview_in_popup() {
+	ig_es_sync_wp_editor_content();
+
+	let content = jQuery('textarea[name="data[body]"]').val();
+	if (jQuery("#edit-es-campaign-body-wrap").hasClass("tmce-active")) {
+		content = tinyMCE.activeEditor.getContent();
+	}
+
+
+	if ( !content ) {
+		alert( ig_es_js_data.i18n_data.empty_template_message );
+		return;
+	}
+
+	let template_button = jQuery('#view_campaign_preview_button,#view_template_preview_button');
+	jQuery(template_button).addClass('loading');
+	let form_data = jQuery('#view_campaign_preview_button,#view_template_preview_button').closest('form').serialize();
+	// Add action to form data
+	form_data += form_data + '&action=ig_es_get_template_preview&security='  + ig_es_js_data.security;
 	jQuery.ajax({
 		method: 'POST',
 		url: ajaxurl,

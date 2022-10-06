@@ -240,13 +240,14 @@ class Email_Subscribers_Admin {
 
 		wp_localize_script( $this->email_subscribers, 'ig_es_js_data', $ig_es_js_data );
 
+		if ( ! wp_script_is( 'clipboard', 'registered' ) ) {
+			wp_register_script( 'clipboard', plugin_dir_url( __FILE__ ) . 'js/clipboard.js', array( 'jquery' ), '2.0.6', false );
+		}
+
+		wp_enqueue_script( 'clipboard' );
+
 		if ( 'es_workflows' === $get_page ) {
 
-			if ( ! wp_script_is( 'clipboard', 'registered' ) ) {
-				wp_register_script( 'clipboard', plugin_dir_url( __FILE__ ) . 'js/clipboard.js', array( 'jquery' ), '2.0.6', false );
-			}
-
-			wp_enqueue_script( 'clipboard' );
 
 			if ( ! function_exists( 'ig_es_wp_js_editor_admin_scripts' ) ) {
 				/**
@@ -345,6 +346,10 @@ class Email_Subscribers_Admin {
 
 		if ( in_array( 'gallery', $accessible_sub_menus ) ) {
 			add_submenu_page( 'es_dashboard', __( 'Gallery', 'email-subscribers' ), '<span id="ig-es-gallery-submenu">' . __( 'Gallery', 'email-subscribers' ) . '</span>', 'edit_posts', 'es_gallery', array( $this, 'load_gallery' ) );
+		}
+
+		if ( in_array( 'template', $accessible_sub_menus ) ) {
+			add_submenu_page( null, __( 'Template', 'email-subscribers' ), '<span id="ig-es-gallery-submenu">' . __( 'Templates', 'email-subscribers' ) . '</span>', 'edit_posts', 'es_template', array( $this, 'load_template' ) );
 		}
 
 		if ( in_array( 'workflows', $accessible_sub_menus ) ) {
@@ -527,13 +532,29 @@ class Email_Subscribers_Admin {
 	 */
 	public function load_campaign_admin_page() {
 		$campaign_admin = ES_Campaign_Admin::get_instance();
-		$campaign_admin->setup_campaign();
+		$campaign_admin->setup();
 		$campaign_admin->render();
 	}
 
+	/**
+	 * Load template gallery
+	 *
+	 * @return void
+	 */
 	public function load_gallery() {
 		$gallery = ES_Gallery::get_instance();
 		$gallery->render();
+	}
+
+	/**
+	 * Load single template
+	 *
+	 * @return void
+	 */
+	public function load_template() {
+		$template_admin = ES_Template_Admin::get_instance();
+		$template_admin->setup();
+		$template_admin->render();
 	}
 
 	/**

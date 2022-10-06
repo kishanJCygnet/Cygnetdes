@@ -6,7 +6,7 @@ Tags: email marketing, subscription, autoresponder, post notification, welcome e
 Requires at least: 3.9
 Tested up to: 6.0.2
 Requires PHP: 5.6
-Stable tag: 5.4.14
+Stable tag: 5.4.15
 License: GPLv3
 License URI: http://www.gnu.org/licenses
 
@@ -310,11 +310,15 @@ Refer [here](https://www.icegram.com/documentation/es-faq/).
 
 == Upgrade Notice ==
 
-= 5.4.14 =
+= 5.4.15 =
 
-* New : Filter subscribers using custom fields while sending emails[PRO]
+* Enhancement: Introduce gallery for template section
 
 == Changelog ==
+
+**5.4.15 (06.10.2022)**
+
+* Enhancement: Introduce gallery for template section
 
 **5.4.14 (28.09.2022)**
 

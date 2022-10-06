@@ -1769,6 +1769,7 @@ class ES_Common {
 				'custom_fields',
 				'drag_drop_editor',
 				'gallery',
+				'template',
 			);
 
 			return $sub_menus;

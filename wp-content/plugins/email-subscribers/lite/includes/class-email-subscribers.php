@@ -971,7 +971,9 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 
 				// Campaign Rules
 				'lite/admin/class-ig-es-campaign-rules.php',
+				'lite/admin/class-es-admin.php',
 				'lite/admin/class-es-campaign-admin.php',
+				'lite/admin/class-es-template-admin.php',
 				'lite/admin/class-es-gallery.php',
 
 				'lite/admin/class-es-form-admin.php',
@@ -1212,6 +1214,7 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 			$screens = array(
 				'es_template',
 				'edit-es_template',
+				'admin_page_es_template',
 				'toplevel_page_es_dashboard',
 				'admin_page_go_to_icegram',
 				"{$prefix}_page_es_subscribers",

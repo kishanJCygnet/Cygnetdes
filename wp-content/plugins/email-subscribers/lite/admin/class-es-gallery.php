@@ -86,6 +86,7 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 
 			$action = ig_es_get_request_data( 'action' );
 			
+			
 			if ( 'ig_es_import_gallery_item' === $action ) {
 				check_admin_referer( 'ig-es-admin-ajax-nonce' );
 				$gallery_type         = ig_es_get_request_data( 'gallery-type' );
@@ -99,6 +100,24 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 					} else {
 						$redirect_url = admin_url( 'admin.php?page=es_newsletters&action=edit&list=' . $imported_campaign_id );
 					}
+					wp_safe_redirect( $redirect_url );
+					exit();
+				}
+			} elseif ( 'ig_es_import_remote_gallery_template' === $action ) {
+				check_admin_referer( 'ig-es-admin-ajax-nonce' );
+				$template_id = ig_es_get_request_data( 'template-id' );
+				$imported_template_id = $this->import_remote_gallery_template( $template_id );
+				if ( ! empty( $imported_template_id ) ) {
+					$redirect_url = admin_url( 'admin.php?page=es_template&action=edit&id=' . $imported_template_id );
+					wp_safe_redirect( $redirect_url );
+					exit();
+				}
+			} elseif ( 'ig_es_duplicate_template' === $action ) {
+				check_admin_referer( 'ig-es-admin-ajax-nonce' );
+				$template_id = ig_es_get_request_data( 'template-id' );
+				$duplicate_template_id = $this->duplicate_template( $template_id );
+				if ( ! empty( $duplicate_template_id ) ) {
+					$redirect_url = admin_url( 'admin.php?page=es_template&action=edit&id=' . $duplicate_template_id );
 					wp_safe_redirect( $redirect_url );
 					exit();
 				}
@@ -256,6 +275,141 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 			return $campaign_id;
 		}
 
+		public function import_remote_gallery_template( $template_id ) {
+			$imported_template_id = 0;
+			$gallery_item  = $this->get_remote_gallery_item( $template_id );
+			if ( empty( $gallery_item ) ) {
+				return $imported_template_id;
+			}
+
+			$template_version = ! empty( $gallery_item->template_version ) ? $gallery_item->template_version : '';
+			
+			if ( '1.0.0' === $template_version ) {
+				$subject       = $gallery_item->title->rendered;
+				$content       = $gallery_item->content->rendered;
+				$editor_type   = ! empty( $gallery_item->es_editor_type ) ? $gallery_item->es_editor_type : IG_ES_CLASSIC_EDITOR;
+				$template_type   = ! empty( $gallery_item->es_template_type ) ? $gallery_item->es_template_type : IG_CAMPAIGN_TYPE_NEWSLETTER;
+				$campaign_meta = array(
+					'es_editor_type' => $editor_type,
+				);
+				if ( IG_ES_DRAG_AND_DROP_EDITOR === $editor_type ) {
+					$dnd_editor_data = maybe_unserialize( $gallery_item->es_dnd_editor_data );
+					if ( ! empty( $dnd_editor_data ) ) {
+						$campaign_meta['es_dnd_editor_data'] = $gallery_item->es_dnd_editor_data;
+					}
+				} else {
+					if ( false === strpos( $content, '<html' ) ) {
+						// In classic edior, we need to add p tag to content when not already added.
+						$content = wpautop( $content );
+					}
+
+					$custom_css = ! empty( $gallery_item->es_custom_css ) ? $gallery_item->es_custom_css : '';
+					if ( ! empty( $custom_css ) ) {
+						$campaign_meta['es_custom_css'] = $custom_css;
+					}
+				}
+
+				preg_match_all( '#<img\s+(?:[^>]*?\s+)?src=(\'|")?(https?[^\'"]+)(\'|")?#', $content, $image_urls );
+				$image_urls = ! empty( $image_urls[2] ) ? $image_urls[2] : array();
+				if ( ! empty( $image_urls ) ) {
+					foreach ( $image_urls as $image_url ) {
+						$is_ig_image_link = false !== strpos( $image_url , 'icegram.com' );
+						if ( $is_ig_image_link ) {
+							$new_image_url = ES_Common::download_image_from_url( $image_url );
+							if ( ! empty( $new_image_url ) ) {
+								$old_url       = ' src="' . $image_url . '"';
+								$new_url       = ' src="' . $new_image_url . '"';
+								$pos           = strpos( $content, $old_url );
+								if ( false !== $pos ) {
+									$content = preg_replace( '/' . preg_quote( $old_url, '/' ) . '/', $new_url, $content, 1 );
+								}
+							}
+						}
+					}
+				}
+
+				$template_data = array(
+					'post_title'   => $subject,
+					'post_content' => $content,
+					'post_type'    => 'es_template',
+					'post_status'  => 'draft',
+				);
+
+				$imported_template_id = wp_insert_post( $template_data );
+
+				$is_template_added = ! ( $imported_template_id instanceof WP_Error );
+		
+				if ( $is_template_added ) {
+
+					$editor_type = ! empty( $campaign_meta['es_editor_type'] ) ? $campaign_meta['es_editor_type'] : '';
+
+					$is_dnd_editor = IG_ES_DRAG_AND_DROP_EDITOR === $editor_type;
+
+					if ( $is_dnd_editor ) {
+						$dnd_editor_data = array();
+						if ( ! empty( $campaign_meta['es_dnd_editor_data'] ) ) {
+							$dnd_editor_data = $campaign_meta['es_dnd_editor_data'];
+							$dnd_editor_data = json_decode( $dnd_editor_data );
+							update_post_meta( $imported_template_id, 'es_dnd_editor_data', $dnd_editor_data );
+						}
+					} else {
+						$custom_css = ! empty( $campaign_meta['es_custom_css'] ) ? $campaign_meta['es_custom_css'] : '';
+						update_post_meta( $imported_template_id, 'es_custom_css', $custom_css );
+					}
+
+					update_post_meta( $imported_template_id, 'es_editor_type', $editor_type );
+					update_post_meta( $imported_template_id, 'es_template_type', $template_type );
+				}
+				
+			}
+
+			return $imported_template_id;
+		}
+
+		public function duplicate_template( $template_id ) {
+			// Get access to the database
+		global $wpdb;
+		// Get the post as an array
+		$duplicate = get_post( $template_id, 'ARRAY_A' );
+		// Modify some of the elements
+		$duplicate['post_title']  = $duplicate['post_title'] . ' ' . __( 'Copy', 'email-subscribers' );
+		$duplicate['post_status'] = 'publish';
+		// Set the post date
+		$timestamp = time();
+
+		$duplicate['post_date'] = gmdate( 'Y-m-d H:i:s', $timestamp );
+
+		// Remove some of the keys
+		unset( $duplicate['ID'] );
+		unset( $duplicate['guid'] );
+		unset( $duplicate['comment_count'] );
+
+		$current_user_id = get_current_user_id();
+			if ( ! empty( $current_user_id ) ) {
+				// Set post author to current logged in author.
+				$duplicate['post_author'] = $current_user_id;
+			}
+
+		// Insert the post into the database
+		$duplicate_id = wp_insert_post( $duplicate );
+
+		// Duplicate all taxonomies/terms
+		$taxonomies = get_object_taxonomies( $duplicate['post_type'] );
+
+			foreach ( $taxonomies as $taxonomy ) {
+				$terms = wp_get_post_terms( $template_id, $taxonomy, array( 'fields' => 'names' ) );
+				wp_set_object_terms( $duplicate_id, $terms, $taxonomy );
+			}
+
+		// Duplicate all custom fields
+		$custom_fields = get_post_custom( $template_id );
+			foreach ( $custom_fields as $key => $value ) {
+				add_post_meta( $duplicate_id, $key, maybe_unserialize( $value[0] ) );
+			}
+
+		return $duplicate_id;
+		}
+
 		/**
 		 * Get campaign templates
 		 */
@@ -265,6 +419,7 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 	
 			$response = array();
 			$gallery_items = array();
+			$blog_charset = get_option( 'blog_charset' );
 
 			$remote_gallery_items = $this->get_remote_gallery_items();
 			if ( ! empty( $remote_gallery_items ) ) {
@@ -274,6 +429,7 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 						$template_slug = $item->slug;
 						$item_id       = $item->id;
 						$item_title    = $item->title->rendered;
+						$item_title    = html_entity_decode( $item_title, ENT_QUOTES, $blog_charset );
 						$thumbnail_url = ! empty( $item->thumbnail->guid ) ? $item->thumbnail->guid : '';
 						$editor_type   = ! empty( $item->es_editor_type ) ? $item->es_editor_type : IG_ES_CLASSIC_EDITOR;
 						$campaign_type = ! empty( $item->es_template_type ) ? $item->es_template_type : IG_CAMPAIGN_TYPE_NEWSLETTER;
@@ -311,7 +467,7 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 					$editor_type = get_post_meta( $campaign_template->ID, 'es_editor_type', true );
 					$categories = array();
 					$gallery_item['ID'] = $campaign_template->ID;
-					$gallery_item['title'] = $campaign_template->post_title;
+					$gallery_item['title'] = html_entity_decode( $campaign_template->post_title, ENT_QUOTES, $blog_charset );
 					$gallery_item['type'] = get_post_meta( $campaign_template->ID, 'es_template_type', true );
 					$gallery_item['editor_type'] = !empty($editor_type) ? $editor_type : IG_ES_CLASSIC_EDITOR;
 					$gallery_type  = 'local';
