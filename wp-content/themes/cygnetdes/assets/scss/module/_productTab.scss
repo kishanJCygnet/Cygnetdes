@@ -121,58 +121,94 @@
 //         }
 //     }
 // }   
-// .Privacy-poilce-content br{
-//     display: none;
-// }
-// .Privacy-poilce-content p{
-//     font-size: 15px !important;
-//     line-height: 28px;
-//     font-weight: normal;
-//     margin-bottom: 15px;
-// }
-// .Privacy-poilce-content h2{
-//     color: #0c3761;
-//     font-size: 20px;
-//     margin-bottom: 15px;
-// }
-// .Privacy-poilce-content h3{
-//     font-size: 18px;
-// }
-// .Privacy-poilce-content h4{
-//     font-size: 16px;
-// }
-// .Privacy-poilce-content ul,
-// .Privacy-poilce-content ol{
-//     padding-left: 0;
-//     font-size: 16px;
-//     padding-left: 18px;
-//     margin-bottom: 20px;
-// }
-// .Privacy-poilce-content ul li,
-// .Privacy-poilce-content ol li{
-//     margin: 10px 0;
-//     line-height: 1.5;
-// }
-// .Privacy-poilce-content a{
-//     font-weight: 500;
-// }
-// .Privacy-poilce-content a:hover{
-//     color: #84B558;
-// }
-// sup{
-//     font-size: 11px;
-// }
+.Privacy-poilce-content br{
+    display: none;
+}
+.Privacy-poilce-content p{
+    font-size: 15px !important;
+    line-height: 28px;
+    font-weight: normal;
+    margin-bottom: 15px;
+}
+.Privacy-poilce-content h2{
+    color: #0c3761;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+.Privacy-poilce-content h3{
+    font-size: 18px;
+}
+.Privacy-poilce-content h4{
+    font-size: 16px;
+}
+.Privacy-poilce-content ul,
+.Privacy-poilce-content ol{
+    padding-left: 0;
+    font-size: 16px;
+    padding-left: 18px;
+    margin-bottom: 20px;
+}
+.Privacy-poilce-content ul li,
+.Privacy-poilce-content ol li{
+    margin: 10px 0;
+    line-height: 1.5;
+}
+.Privacy-poilce-content a{
+    font-weight: 500;
+}
+.Privacy-poilce-content a:hover{
+    color: #84B558;
+}
+sup{
+    font-size: 11px;
+}
 .solution-tab-content{
+    @include bp(sm-max){
+        flex-wrap: wrap;
+    }
     .nav-inner{
         min-width: 300px;
         @include bp(md-max){
             min-width: 230px;
         }
+        @include bp(sm-max){
+            min-width: 100%;
+             max-width: 100%;
+             overflow: auto;
+        }
+        .nav-innertab-content{
+            & > div{
+            @include bp(sm-max){
+                flex-wrap: nowrap;
+                flex-direction: row !important;
+            }
+        }
+        }
         .nav-link{
             background-color: #fff;
             padding: 25px 20px 25px 70px;
+            &:hover{
+                cursor: pointer;
+                background-color: #0c3761;
+                color: #fff;
+            }
             @include bp(md-max){
                 padding: 15px 15px 15px 40px;
+            }
+            @include bp(sm-max){
+                margin-right: 20px;
+                padding: 10px;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                min-width: 100px;
+                width: 100%;
+                font-size: 13px;
+                &:last-child{
+                    margin-right: 5px;
+                }
             }
             border-radius: 10px;
             box-shadow: 0 0 10px 0px #dadada;
@@ -188,9 +224,20 @@
                 @include bp(md-max){
                     left: 10px;
                 }
+                @include bp(sm-max){
+                    position: static;
+                    margin-bottom: 10px;
+                    display: inline-block;
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
                 svg{
-                    height: 20px;
+                    height: 25px;
                     width: 30px;
+                    fill: #3DB5E5 !important;
+                    path{
+                        fill: #3DB5E5 !important;
+                    }
                     @include bp(md-max){
                         width: 20px;
                     }
@@ -212,6 +259,10 @@
         @include bp(md-max){
             width: calc(100% - 180px);
             // min-width: calc(100% - 180px);
+        }
+        @include bp(sm-max){
+            width: calc(100% - 0px);
+            margin-left: 0;
         }
         .tab-pane{
             .content{
