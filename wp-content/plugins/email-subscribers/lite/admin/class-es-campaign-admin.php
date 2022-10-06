@@ -14,7 +14,7 @@ if ( ! class_exists( 'ES_Campaign_Admin' ) ) {
 	 * @package    Email_Subscribers
 	 * @subpackage Email_Subscribers/admin
 	 */
-	class ES_Campaign_Admin {
+	class ES_Campaign_Admin extends ES_Admin {
 
 		// class instance
 		public static $instance;
@@ -76,7 +76,7 @@ if ( ! class_exists( 'ES_Campaign_Admin' ) ) {
 			add_action( 'media_buttons', array( $this, 'add_tag_button' ) );
 		}
 
-		public function setup_campaign() {
+		public function setup() {
 			$campaign_id = $this->get_campaign_id_from_url();
 			if ( ! empty( $campaign_id ) ) {
 				$campaign = new ES_Campaign( $campaign_id );
@@ -90,6 +90,8 @@ if ( ! class_exists( 'ES_Campaign_Admin' ) ) {
 				$this->campaign_data['type']                = $this->get_campaign_type_from_url();
 				$this->campaign_data['meta']['editor_type'] = $this->get_editor_type_from_url();
 			}
+
+			error_log( __FILE__ . ' ' . __LINE__ . ' $this->campaign_data:' . print_r( $this->campaign_data, true ) );
 		}
 
 		public function get_campaign_id_from_url() {
@@ -378,9 +380,10 @@ if ( ! class_exists( 'ES_Campaign_Admin' ) ) {
 			$trim_character_count = 30;
 
 			if ( !( strlen($subject) <= $trim_character_count ) ) {
-				$subject = substr( $subject, 0, $trim_character_count );
-				$subject = substr( $subject, 0, strrpos( $subject, ' ' ) );
-				$subject = $subject . '...';
+				$subject 	   = substr( $subject, 0, $trim_character_count );
+				$string_length = empty( strrpos( $subject, ' ' ) ) ? $trim_character_count : strrpos( $subject, ' ' ) ;
+				$subject 	   = substr( $subject, 0, $string_length );				
+				$subject 	   = $subject . '...';
 			}
 			
 			?>
@@ -389,11 +392,11 @@ if ( ! class_exists( 'ES_Campaign_Admin' ) ) {
 				<div class="campaign-email-preview-container-left">
 
 						<div class="from leading-5">
-							<strong><?php echo esc_html__( 'From: ', 'email-subscribers' ); ?></strong><?php echo esc_attr( $test_email ); ?>
+							<strong><?php echo esc_html__( 'From: ', 'email-subscribers' ); ?></strong><?php echo esc_html( $test_email ); ?>
 						</div>
 
 						<div class="from leading-5">
-							<strong><?php echo esc_html__( 'Subject: ', 'email-subscribers' ); ?></strong><span id="sequence-subject-preview" class="workflow-subject-preview"></span><?php echo esc_attr( $subject ); ?>
+							<strong><?php echo esc_html__( 'Subject: ', 'email-subscribers' ); ?></strong><span id="sequence-subject-preview" class="workflow-subject-preview"></span><?php echo esc_html( $subject ); ?>
 						</div>
 
 				</div>

@@ -60,6 +60,7 @@ if ( ! class_exists( 'IG_ES_Premium_Services_UI' ) ) {
 				// Add UI for CSS inliner only if service is valid.
 				if ( ES()->validate_service_request( array( 'css_inliner' ) ) ) {
 					add_action( 'ig_es_after_campaign_left_pan_settings', array( &$this, 'add_custom_css_field' ) );
+					add_action( 'ig_es_after_template_left_pan_settings', array( &$this, 'add_custom_css_field' ) );
 					add_action( 'edit_form_after_editor', array( &$this, 'add_custom_css_block' ), 11, 2 );
 					add_action( 'save_post', array( &$this, 'update_template' ), 10, 2 );
 				}
@@ -89,10 +90,16 @@ if ( ! class_exists( 'IG_ES_Premium_Services_UI' ) ) {
 		 * @return void
 		 */
 		public function add_custom_css_field( $campaign_data ) {
-			$editor_type = ! empty( $campaign_data['meta']['editor_type'] ) ? $campaign_data['meta']['editor_type'] : IG_ES_DRAG_AND_DROP_EDITOR;
+			$is_campaign_page = doing_action( 'ig_es_after_campaign_left_pan_settings' );
+			if ( $is_campaign_page ) {
+				$editor_type_meta_key = 'editor_type';
+			} else {
+				$editor_type_meta_key = 'es_editor_type';
+			}
+			$editor_type = ! empty( $campaign_data['meta'][$editor_type_meta_key] ) ? $campaign_data['meta'][$editor_type_meta_key] : IG_ES_DRAG_AND_DROP_EDITOR;
 			if ( IG_ES_CLASSIC_EDITOR === $editor_type ) {
 				$custom_css            = ! empty( $campaign_data['meta']['es_custom_css'] ) ? $campaign_data['meta']['es_custom_css'] : '';
-				$custom_css_field_name = 'campaign_data[meta][es_custom_css]';
+				$custom_css_field_name = $is_campaign_page ? 'campaign_data[meta][es_custom_css]' : 'data[meta][es_custom_css]';
 				$is_trial_valid 	   = ES()->trial->is_trial_valid();
 				?>
 				<div class="w-full px-4 py-2">

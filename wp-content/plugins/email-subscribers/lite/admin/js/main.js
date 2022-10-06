@@ -26,6 +26,7 @@ const campaignGalleryItemsWrapper = document.querySelector('#ig-es-campaign-gall
 
 let campaignType = location.search.split('campaign-type=')[1];
 let campaignId   = location.search.split('campaign-id=')[1];
+let manageTemplates = location.search.split('manage-templates=')[1];
 
 if ( 'undefined' === typeof campaignType ) {
     campaignType = ig_es_main_js_data.post_notification_campaign_type;
@@ -35,11 +36,17 @@ if ( 'undefined' === typeof campaignId ) {
     campaignId = 0;
 }
 
+if ( 'undefined' === typeof manageTemplates ) {
+    manageTemplates = 'no';
+}
+
+
+
 m.mount(
     campaignGalleryItemsWrapper, 
     {
         view: () => {
-            return <GalleryItemsPage campaignId={campaignId} campaignType={campaignType}/>
+            return <GalleryItemsPage campaignId={campaignId} campaignType={campaignType} manageTemplates={manageTemplates}/>
         }
     }
 );

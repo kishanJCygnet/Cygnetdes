@@ -47,8 +47,7 @@ class ES_Drag_And_Drop_Editor {
 					}
 				}
 			} else {
-				$is_form_page = 'es_forms' === $current_page;
-				if ( $is_form_page ) {
+				if ( 'es_forms' === $current_page ) {
 					$action 	 = ig_es_get_request_data( 'action' );
 					$is_new_form = 'new' === $action;
 					if ( $is_new_form ) {
@@ -59,6 +58,18 @@ class ES_Drag_And_Drop_Editor {
 							$form_data          = ES()->forms_db->get( $form_id );
 							$settings_data      = maybe_unserialize( $form_data['settings'] );
 							$editor_type        = ! empty( $settings_data['editor_type'] ) ? $settings_data['editor_type'] : '';
+							$is_dnd_editor_page = IG_ES_DRAG_AND_DROP_EDITOR === $editor_type;
+						}
+					}
+				} elseif ( 'es_template' === $current_page ) {
+					$action 	 = ig_es_get_request_data( 'action' );
+					$is_new_template = 'new' === $action;
+					if ( $is_new_template ) {
+						$is_dnd_editor_page = true;
+					} else {
+						$template_id = ig_es_get_request_data( 'id' );
+						if ( ! empty( $template_id ) ) {
+							$editor_type        = get_post_meta( $template_id, 'es_editor_type', true );
 							$is_dnd_editor_page = IG_ES_DRAG_AND_DROP_EDITOR === $editor_type;
 						}
 					}
