@@ -129,7 +129,7 @@ class Plugin extends Plugin_Base {
 	 *
 	 * @return string
 	 */
-	public static function getFormattedNetworkImage( string $title ): string {
+	public static function getFormattedNetworkImage( $title ) {
 		return 'https://platform-cdn.sharethis.com/img/' . self::getPlatformName( $title ) . '.svg';
 	}
 
@@ -140,7 +140,7 @@ class Plugin extends Plugin_Base {
 	 *
 	 * @return string
 	 */
-	public static function getFormattedNetworkTitle( string $title ): string {
+	public static function getFormattedNetworkTitle( $title ) {
 		return sanitize_title(
 			str_replace(
 				array( ' Share Button', 'Google Bookmarks', 'Yahoo Mail' ),
@@ -158,7 +158,7 @@ class Plugin extends Plugin_Base {
 	 *
 	 * @return string Modified title string.
 	 */
-	public static function getPlatformName( string $title ): string {
+	public static function getPlatformName( $title ) {
 		return str_replace(
 			array( '-pin', 'facebook-messenger', 'sina-', '-ru', 'yahoo-mail', 'okru' ),
 			array( '', 'messenger', '', 'ru', 'yahoomail', 'odnoklassniki' ),
