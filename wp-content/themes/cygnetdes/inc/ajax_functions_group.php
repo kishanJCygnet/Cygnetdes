@@ -143,7 +143,8 @@ function get_casestudy_listing_data()
                 <?php endif; ?>
 
                 <?php if (get_the_title()) : ?>
-                  <h5 class="card-title"><a href="<?php echo the_field('pdf_link'); ?>" target="_blank"><?php echo wp_trim_words(get_the_title(), 10, '...'); ?></a></h5>
+                  <!--<h5 class="card-title"><a href="<?php echo the_field('pdf_link'); ?>" target="_blank"><?php echo wp_trim_words(get_the_title(), 10, '...'); ?></a></h5>-->
+                  <h5 class="card-title"><a href="<?php echo the_permalink(); ?>"><?php echo wp_trim_words(get_the_title(), 10, '...'); ?></a></h5>
                 <?php endif; ?>
 
                 <?php
@@ -153,11 +154,14 @@ function get_casestudy_listing_data()
                 <?php endif; ?>
               </div>
 
-              <?php if (get_field('pdf_link')) : ?>
+              <?php /*if (get_field('pdf_link')) : ?>
                 <div class="card-footer bg-transparent border-top-0">
                   <a href="<?php echo the_field('pdf_link'); ?>" class="read-more-link" title="Read Full Story" target="_blank">Read Full Story <img src="<?php echo THEME_PATH; ?>assets/images/Iconfeather-arrow-right.svg" alt="navigation right" /></a>
                 </div>
-              <?php endif; ?>
+              <?php endif; */ ?>
+				<div class="card-footer bg-transparent border-top-0">
+					<a href="<?php the_permalink(); ?>" class="read-more-link" title="Read Full Story">Read Full Story <img src="<?php echo THEME_PATH; ?>assets/images/Iconfeather-arrow-right.svg" alt="navigation right" /></a>
+			    </div>
             </div>
           </div>
 
