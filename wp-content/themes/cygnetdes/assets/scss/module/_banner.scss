@@ -8,6 +8,19 @@
             background-blend-mode: multiply;
         }
     }
+    &.video-banner{
+        .text-content {
+            &::after{
+                content: "";
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                top: 0;
+                background-color: rgb(12 55 97 / 81%);
+            }
+        }
+    }
 
     &.home-banner {
         position: relative;
@@ -71,15 +84,7 @@
         }
         .text-content {
             margin: auto;
-            &::after{
-                content: "";
-                position: absolute;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                top: 0;
-                background-color: rgb(12 55 97 / 81%);
-            }
+           
             .inner-text{
                 text-align: center;
                 z-index: 1;
