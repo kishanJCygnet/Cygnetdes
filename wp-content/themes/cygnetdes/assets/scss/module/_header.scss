@@ -104,6 +104,7 @@ body{
             background-color: transparent !important;
             width: auto;
             // display: none;
+            border: 0;
             &:focus{
                 border: 0;
             }
@@ -393,8 +394,8 @@ header {
                 // @include bp(lg-max) {
                 // width: 160px; 
                 // }
-                @include bp(xxs-max) {
-                width: 135px; 
+                @include bp(xs-max) {
+                width: 105px; 
                 }
             }
         }
@@ -454,6 +455,9 @@ header {
                         right: 0;
                         left: 0;
                         opacity: 1;
+                        @include bp(sm-max){
+                            display: none;
+                        }
                     }
                 }
                 &.active {
@@ -485,7 +489,7 @@ header {
                     @include bp(md-max) {
                         padding: 10px 3px;                        
                         font-size: 14px;
-                        color: #969; 
+                        color: #6e6e6e; 
                     }
                 }
                 &.current_page_item,
@@ -494,6 +498,9 @@ header {
                         right: 0;
                         left: 0;
                         opacity: 1;
+                        @include bp(sm-max){
+                            display: none;
+                        }
                         
                     }
                     a{
@@ -700,7 +707,7 @@ header {
                             font-weight: 500;
                             font-size: 13px;
                             @include bp(md-max) {
-                                color: #969;
+                                color: #0c3761;
                                 padding: 10px 15px;
                                 font-weight: 500;
                                 font-size: 14px;
@@ -779,7 +786,7 @@ header {
                                     content: "+";
                                     position: absolute;
                                     right: 10px;
-                                    color: #969;
+                                    color: #3cb4e7;
                                     font-size: 29px;
                                     top: 6px;
                                 }
@@ -853,7 +860,7 @@ header {
                     }
                   
                     @include bp(md-max) {
-                       top: 38px; 
+                       top: 68px; 
                     }
                     @include bp(sxxs-max) {
                         top: 0px;
@@ -894,7 +901,7 @@ header {
                     top: 82px;
                 }
                 @include bp(xxs-max) {
-                    top: 38px;
+                    top: 68px;
                 }
             }
         }
@@ -927,7 +934,7 @@ header {
         }
         .navbar-toggler-icon {
             background-color: #052d55;
-            height: 2px;
+            height: 2.5px;
             border-radius: 6px;
             position: relative;
             margin-top: -5px;

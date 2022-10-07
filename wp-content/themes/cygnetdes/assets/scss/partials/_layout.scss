@@ -52,7 +52,7 @@ section{
     padding: 60px 0; 
   } 
   @include bp(lg-max){
-    padding: 50px 0; 
+    padding: 30px 0; 
   } 
 }
 
@@ -969,3 +969,15 @@ video{
   }  
 }
 
+.mobile-menu{
+  display: none !important;
+  @include bp(md-max){
+    display: block !important;
+  }
+}
+.web-menu{
+  display:inline-block !important;
+  @include bp(md-max){
+    display: none !important;
+  }
+}

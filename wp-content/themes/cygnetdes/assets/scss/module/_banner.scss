@@ -2,6 +2,12 @@
 .banner-content {
     padding: 0;
     background-color: #0F3764;
+    &.overlay-bg{
+        .banner-inner-content{
+            background-color: #0F3764;
+            background-blend-mode: multiply;
+        }
+    }
 
     &.home-banner {
         position: relative;
@@ -87,6 +93,10 @@
                         font-size: 34px;
                         margin-bottom: 32px;
                     }
+                    @include bp(md-max){
+                        font-size: 28px;
+                        margin-bottom: 20px;
+                    }
                 }
                 }
                 .sub-text{
@@ -101,6 +111,9 @@
         &.digital-tran-ban{
             .banner-inner-content{
                 padding-bottom: 215px;
+                @include bp(sm-max){
+                    padding-bottom: 50px;
+                }
             }
         }
         &.digital-transformation-banner{
@@ -131,9 +144,9 @@
         background-attachment: fixed;
         z-index: 1;
         position: relative;   
-        @include bp(sm-max){
-         padding-top: 130px;       
-        }  
+        // @include bp(sm-max){
+        //  padding-top: 130px;       
+        // }  
        
     }
     &.inner-page-banner {
@@ -220,6 +233,7 @@
             position: static;
             background-color: #fff;
             padding: 15px;
+            padding-bottom: 0;
         }
         .count-section-main-inner{
             display: flex;
@@ -254,6 +268,9 @@
                     padding: 15px;
                     border-radius: 10px;
                     margin: 10px 0;
+                    &:last-child{
+                        margin-bottom: 0;
+                    }
                 }
                 @include bp(xs-max){
                     width: 100%;
@@ -307,10 +324,10 @@
     .banner-inner-content {
         height: 50vh;
         min-height: 300px;
-        border-bottom-left-radius:100px ;
-        @include bp(md-max){
-            border-bottom-left-radius:30px ;
-        }
+        // border-bottom-left-radius:100px ;
+        // @include bp(md-max){
+        //     border-bottom-left-radius:30px ;
+        // }
     }
     .text-content {
         padding-left: 0;
