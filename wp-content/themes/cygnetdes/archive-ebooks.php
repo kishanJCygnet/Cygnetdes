@@ -1,8 +1,8 @@
 <?php get_header(); ?>
 <!-- Banner Slider start -->
-<section class="banner-content">    
+<section class="banner-content half-banner">    
 	<div class="banner-inner-content w-100" <?php if (get_field('ebook_listing_banner_image', 'option')) : ?> style="background-image: url('<?php echo the_field('ebook_listing_banner_image', 'option'); ?>')" <?php endif; ?>>  
-		<div class="d-md-flex flex-wrap slide-content-main align-items-center w-100">
+		<div class="d-md-flex flex-wrap slide-content-main align-items-center justify-content-center w-100">
 			<div class="banner-caption">
 				<?php if (get_field('ebook_listing_banner_title', 'option')) : ?>
 					<h1 class="banner-title text-white">

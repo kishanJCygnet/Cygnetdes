@@ -12,7 +12,7 @@ if (have_posts()) :
             $featured_img_url = get_the_post_thumbnail_url(get_the_ID(), '1920w');
         ?>
 		<div class="case-study">
-			<section class="banner-content">    
+			<section class="banner-content half-banner overlay-bg">    
 				<div class="banner-inner-content w-100" <?php if ($featured_img_url) : ?> style="background-image: url('<?php echo $featured_img_url; ?>')" <?php endif; ?>>  
 					<div class="container">
 						<div class="d-md-flex flex-wrap slide-content-main align-items-center w-100">
