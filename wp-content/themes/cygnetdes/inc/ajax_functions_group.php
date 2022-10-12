@@ -34,7 +34,7 @@ function get_casestudy_listing_data()
     $solutionTermId = $_REQUEST['sol_term_id'];
     if ($solutionTermId) {
       $solution_query = array(
-        'taxonomy' => 'solutions',
+        'taxonomy' => 'solution',
         'field' => 'term_id',
         'terms' => $solutionTermId
       );
