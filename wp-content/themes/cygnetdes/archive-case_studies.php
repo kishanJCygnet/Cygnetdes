@@ -98,7 +98,7 @@
 			</div>-->
 
 			<!-- Filter block start -->
-			<!--<div class="filter-box mb-5">
+			<?php /*<div class="filter-box mb-5">
 				<h5 class="text-dark-blue mb-3">Filter By:</h5>
 				<form class="submit-all-filter">
 					<div class="row gy-3">
@@ -116,13 +116,13 @@
 							<select class="form-select select-solution filter-by-solution" name="filter-by-solution">
 								<option value=""></option>
 								<?php
-								$solutions = get_terms(['taxonomy' => 'solutions', 'hide_empty' => false]);
+								$solutions = get_terms(['taxonomy' => 'solution', 'hide_empty' => false]);
 								foreach ($solutions as $solution) { ?>
 									<option value="<?php echo $solution->term_id; ?>"><?php echo $solution->name; ?></option>
 								<?php } ?>
 							</select>
 						</div>
-						<div class="col-md-6 col-lg-4 col-xl-3">
+						<!--<div class="col-md-6 col-lg-4 col-xl-3">
 							<select class="form-select select-country filter-by-country" name="filter-by-country">
 								<option value=""></option>
 								<?php
@@ -131,7 +131,7 @@
 									<option value="<?php echo $country->term_id; ?>"><?php echo $country->name; ?></option>
 								<?php } ?>
 							</select>
-						</div>
+						</div>-->
 						<div class="col-md-6 col-lg-12 col-xl-3">
 							<div class="d-md-flex justify-content-start justify-content-lg-end justify-content-xl-start">
 								<input type="button" class="btn btn-primary me-2" title="Submit" value="Submit" id="filter_submit">
@@ -140,7 +140,7 @@
 						</div>
 					</div>
 				</form>
-			</div>-->
+			</div>  */  ?>
 			<!-- Filter block end -->
 			<!-- Case Studies start -->
 			<div class="casestudy-container webinars-container blog-container"></div>

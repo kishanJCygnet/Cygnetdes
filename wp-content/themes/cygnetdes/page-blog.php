@@ -94,7 +94,7 @@
 				</div>
 			</div>-->
 			<!-- Filter block start -->
-			<?php /* <div class="filter-box mb-5">
+			<?php /*<div class="filter-box mb-5">
 				<h5 class="text-dark-blue mb-3">Filter By:</h5>
 				<form class="submit-all-filter">
 					<div class="row gy-3">
@@ -102,7 +102,7 @@
 							<select class="form-select select-category filter-by-category" name="filter-by-category">
 								<option value=""></option>
 								<?php
-								$categories = get_terms(['taxonomy' => 'category', 'hide_empty' => false]);
+								$categories = get_terms(['taxonomy' => 'category', 'hide_empty' => true]);
 								foreach ($categories as $category) {?>
 									<option value="<?php echo $category->term_id;?>"><?php echo $category->name;?></option>
 								<?php }?>
@@ -116,7 +116,7 @@
 						</div>
 					</div>
 				</form>
-			</div>   */ ?>
+			</div>    */ ?>
 			<!-- Filter block end -->
 			<!-- Blog start -->
 			<div class="blog-container"></div>
