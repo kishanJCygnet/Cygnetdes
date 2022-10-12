@@ -8,6 +8,19 @@
             background-blend-mode: multiply;
         }
     }
+    &.video-banner{
+        .text-content {
+            &::after{
+                content: "";
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                top: 0;
+                background-color: rgb(12 55 97 / 81%);
+            }
+        }
+    }
 
     &.home-banner {
         position: relative;
@@ -71,8 +84,11 @@
         }
         .text-content {
             margin: auto;
+           
             .inner-text{
                 text-align: center;
+                z-index: 1;
+                    position: relative;
                 ul{
                     list-style-type: none;
                     color: #fff;
@@ -122,6 +138,7 @@
             }
             .text-content {
                 .inner-text{
+                    
                     ul{
                         li{
                             display: none;
@@ -161,7 +178,7 @@
         }
     }
     .text-content {
-        position: relative;
+        // position: relative;
         @include bp(md-max){
             text-align: center;
         }
