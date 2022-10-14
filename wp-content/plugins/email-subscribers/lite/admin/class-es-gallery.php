@@ -421,12 +421,43 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 			$gallery_items = array();
 			$blog_charset = get_option( 'blog_charset' );
 
+			$campaign_templates = ES_Common::get_templates();
+			
+			if ( !empty( $campaign_templates ) ) {
+				foreach ( $campaign_templates as $campaign_template) {
+					$template_slug = $campaign_template->post_name;
+					$editor_type = get_post_meta( $campaign_template->ID, 'es_editor_type', true );
+					$categories = array();
+					$gallery_item['ID'] = $campaign_template->ID;
+					$gallery_item['title'] = html_entity_decode( $campaign_template->post_title, ENT_QUOTES, $blog_charset );
+					$gallery_item['type'] = get_post_meta( $campaign_template->ID, 'es_template_type', true );
+					$gallery_item['editor_type'] = !empty($editor_type) ? $editor_type : IG_ES_CLASSIC_EDITOR;
+					$gallery_type  = 'local';
+					$categories[] = !empty($gallery_item['type']) ?  $gallery_item['type'] : IG_CAMPAIGN_TYPE_NEWSLETTER;
+					$categories[] = !empty($editor_type) ? $editor_type : IG_ES_CLASSIC_EDITOR;
+					$gallery_item['categories'] = $categories;
+					$thumbnail_url = ( ! empty( $campaign_template->ID ) ) ? get_the_post_thumbnail_url(
+						$campaign_template->ID,
+						array(
+							'200',
+							'200',
+						) ): '';
+					$gallery_item['thumbnail'] = ( !empty ($thumbnail_url) ) ? $thumbnail_url : '';
+					$gallery_item['gallery_type'] = $gallery_type;
+					$gallery_items[$template_slug] = $gallery_item;
+				}
+			}
+
 			$remote_gallery_items = $this->get_remote_gallery_items();
 			if ( ! empty( $remote_gallery_items ) ) {
 				foreach ( $remote_gallery_items as $item ) {
 					$template_version = $item->template_version;
 					if ( '1.0.0' === $template_version ) {
 						$template_slug = $item->slug;
+						// Don't add remote template if local template with same slug already exists. This is to avoid duplicates.
+						if ( isset( $gallery_items[ $template_slug ] ) ) {
+							continue;
+						}
 						$item_id       = $item->id;
 						$item_title    = $item->title->rendered;
 						$item_title    = html_entity_decode( $item_title, ENT_QUOTES, $blog_charset );
@@ -456,33 +487,6 @@ if ( ! class_exists( 'ES_Gallery' ) ) {
 							'es_plan'      => $es_plan,
 						);
 					}
-				}
-			}
-
-			$campaign_templates = ES_Common::get_templates();
-			
-			if ( !empty( $campaign_templates ) ) {
-				foreach ( $campaign_templates as $campaign_template) {
-					$template_slug = $campaign_template->post_name;
-					$editor_type = get_post_meta( $campaign_template->ID, 'es_editor_type', true );
-					$categories = array();
-					$gallery_item['ID'] = $campaign_template->ID;
-					$gallery_item['title'] = html_entity_decode( $campaign_template->post_title, ENT_QUOTES, $blog_charset );
-					$gallery_item['type'] = get_post_meta( $campaign_template->ID, 'es_template_type', true );
-					$gallery_item['editor_type'] = !empty($editor_type) ? $editor_type : IG_ES_CLASSIC_EDITOR;
-					$gallery_type  = 'local';
-					$categories[] = !empty($gallery_item['type']) ?  $gallery_item['type'] : IG_CAMPAIGN_TYPE_NEWSLETTER;
-					$categories[] = !empty($editor_type) ? $editor_type : IG_ES_CLASSIC_EDITOR;
-					$gallery_item['categories'] = $categories;
-					$thumbnail_url = ( ! empty( $campaign_template->ID ) ) ? get_the_post_thumbnail_url(
-						$campaign_template->ID,
-						array(
-							'200',
-							'200',
-						) ): '';
-					$gallery_item['thumbnail'] = ( !empty ($thumbnail_url) ) ? $thumbnail_url : '';
-					$gallery_item['gallery_type'] = $gallery_type;
-					$gallery_items[$template_slug] = $gallery_item;
 				}
 			}
 			

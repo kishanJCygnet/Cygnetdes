@@ -1749,6 +1749,7 @@
 						let $meta_box_footer = $('.rules-metabox-footer');
 						let $rule_template_container = $('#rule-template-container');
 						let $rules_container = $('#ig-es-rules-container');
+						let $main_rule_container= $('.ig-es-rule-container');
 
 						//Add new rule group.
 						$(document).on('click', '.ig-es-add-rule-group', function () {
@@ -1824,11 +1825,14 @@
 							if (rule_name && rule_name.length > 1) {
 								let rule = all_rules[rule_name];
 								let compare_types = rule?.compare_types;
+
 								if (compare_types && Object.keys(compare_types).length > 0) {
-									for (const compare_name in compare_types) {
-										var option = "<option value='" + compare_name + "'>" + compare_types[compare_name] + "</option>";
-										$compare_field.append(option);
-									}
+									let compare_field_options = [];
+									$.each(compare_types, function( key, value ) {
+										compare_field_options.push('<option value="'+ key +'">'+ value +'</option>');
+									});
+									$compare_field.html(compare_field_options.join(''));
+
 									let rule_compare = rule_details?.compare;
 									if (rule_compare) {
 										$compare_field.val(rule_compare);
@@ -1925,6 +1929,7 @@
 						 */
 						const add_rule_value_field = function ($rule_group_container, rule, rule_group_id, rule_id, rule_details = {}) {
 							let rule_value = rule_details?.value;
+							
 							switch (rule.type) {
 								case "select":
 									let $select_value_field = $rule_template_container.find('.rule-value-select-field').clone();
@@ -1994,6 +1999,20 @@
 									$rule_group_container.find('.ig-es-rule-field-value').html($object_value_field)
 									$('body').trigger('wc-enhanced-select-init');
 									break;
+
+								case "number":
+									let $number_value_field = $main_rule_container.find('.rule-value-number-field').clone();
+									$number_value_field.removeAttr('disabled');
+									$number_value_field.attr('name', 'ig_es_workflow_data[rules][' + rule_group_id + '][' + rule_id + '][value]');
+									if (rule_value) {
+										$number_value_field.val(rule_value);
+									}
+									if (rule.placeholder) {
+										$number_value_field.data('placeholder', rule.placeholder)
+									}
+									$rule_group_container.find('.ig-es-rule-field-value').html($number_value_field);
+									break;
+
 								default:
 									let $default_value_field = $rule_template_container.find('.rule-value-text-field').clone();
 									$default_value_field.attr('name', 'ig_es_workflow_data[rules][' + rule_group_id + '][' + rule_id + '][value]');
@@ -3434,6 +3453,11 @@
 							}
 							wp.media.frames.ig_es_attachments.open();
 						});
+			$('#es_template_type').on('change',function(){
+				let template_type = $(this).val();
+				$('#edit-campaign-form-container').attr('data-campaign-type', template_type);
+				ig_es_add_dnd_rte_tags(template_type);
+			});
 		});
 
 		function ig_es_uc_first(string){
@@ -3816,6 +3840,65 @@ function ig_es_is_valid_email( email ) {
 }
 
 window.ig_es_is_valid_json = ig_es_is_valid_json;
+
+function ig_es_add_dnd_rte_tags ( campaign_type ) {
+
+	let option_html = '';
+
+	if ( campaign_type !== 'newsletter' ) {
+		var campaignTagsData = ig_es_campaign_editor_data.campaignTags;
+		
+		for( let campaignType in campaignTagsData ) {
+			let campaignTags = campaignTagsData[campaignType];
+			if (  Array.isArray(campaignTags) ) {
+				option_html += '<optgroup label="Post">';
+				if ( campaign_type === 'post_digest' ) {
+					option_html += `<option value="{{post.digest}}Any keyword related to post{{/post.digest}}">Post digest</option>`;
+				}
+
+				campaignTags.forEach( campaignTag =>{
+					option_html += `<option value="{{${campaignTag.keyword}}}">${campaignTag.label}</option>`
+				});
+				option_html += '</optgroup>';
+			}
+		}
+	}
+
+
+	var subscriberTags = ig_es_campaign_editor_data.subscriberTags;
+	if ( Array.isArray( subscriberTags ) ) {
+		option_html += '<optgroup label="Subscriber">';
+		subscriberTags.forEach( subscriberTag =>{
+			option_html += `<option value="{{${subscriberTag.keyword}}}">${subscriberTag.label}</option>`
+		});
+		option_html += '</optgroup>';
+	}
+
+	var siteTags = ig_es_campaign_editor_data.siteTags;
+	if ( Array.isArray( siteTags ) ) {
+		option_html += '<optgroup label="Site">';
+		siteTags.forEach( siteTag =>{
+			option_html += `<option value="{{${siteTag.keyword}}}">${siteTag.label}</option>`
+		});
+		option_html += '</optgroup>';
+	}
+
+	// Remove to avoid duplicates.
+	window.esVisualEditor.RichTextEditor.remove('es-rte-tags');
+	window.esVisualEditor.RichTextEditor.add('es-rte-tags', {
+		icon: `<select class="gjs-field">
+		<option value="">Select keyword</option>
+		${option_html}
+		</select>`,
+		// Bind the 'result' on 'change' listener
+		event: 'change',
+		result: (rte, action) => { rte.insertHTML(action.btn.firstChild.value);},
+		// Reset the select on change
+		update: (rte, action) => { action.btn.firstChild.value = "";}
+	});
+}
+
+window.ig_es_add_dnd_rte_tags = ig_es_add_dnd_rte_tags;
 
 jQuery.fn.extend({
 	ig_es_select2: function() {

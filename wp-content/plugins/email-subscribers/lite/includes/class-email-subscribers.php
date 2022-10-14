@@ -941,6 +941,7 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 				'lite/includes/workflows/rules/abstracts/class-es-rule-searchable-select-abstract.php',
 				'lite/includes/workflows/rules/abstracts/class-es-rule-preloaded-select-abstract.php',
 				'lite/includes/workflows/rules/abstracts/class-es-rule-product-select-abstract.php',
+				'lite/includes/workflows/rules/abstracts/class-es-rule-number-abstract.php',
 
 				// Workflow Rules
 				'lite/includes/workflows/class-es-workflow-rules.php',
@@ -1049,7 +1050,7 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 			$this->loader->add_action( 'ig_es_add_contact', $plugin_public, 'add_contact', 10, 2 );
 			$this->loader->add_action( 'ig_es_confirm_unsubscription', $plugin_public, 'confirm_unsubscription', 10, 2 );
 
-			$this->loader->add_filter( 'es_template_type', $plugin_public, 'add_template_type' );
+			$this->loader->add_filter( 'es_template_type', $plugin_public, 'add_template_type', 9 );
 		}
 
 		/**

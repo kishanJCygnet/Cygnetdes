@@ -70,6 +70,8 @@ if ( is_callable( array( $selected_trigger, 'get_name' ) ) ) {
 	<select class="ig-es-field rule-value-object-field" data-placeholder="" data-action=""></select>
 	<select class="ig-es-field rule-value-select-field ig-es-field--type-select"></select>
 
+	
+
 	<div class="ig-es-rule-group px-4 py-1.5">
 	</div>
 
@@ -86,6 +88,7 @@ if ( is_callable( array( $selected_trigger, 'get_name' ) ) ) {
 			</div>
 			<div class="ig-es-rule-field-value ig-es-rule__field-container pr-3">
 				<input type="text" disabled class="ig-es-field rule-value-field border-gray-400">
+				<input type="number" disabled class="ig-es-field rule-value-number-field border-gray-400">
 			</div>
 		</div>
 

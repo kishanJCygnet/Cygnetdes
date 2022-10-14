@@ -77,6 +77,21 @@ var ShareButtons = ( function( $, wp ) {
 		} );
 	  }
 
+		// Disable tool submit.
+		const disableButtons = document.querySelectorAll( '.disable-tool' );
+
+		if ( disableButtons ) {
+			disableButtons.forEach( disableButton => {
+				disableButton.addEventListener( 'click', ( e ) => {
+					e.stopPropagation();
+					e.preventDefault();
+
+					self.updateButtons( disableButton.dataset.button, 'Off' );
+					self.loadPreview( 'turnoff', disableButton.dataset.button );
+				} );
+			} );
+		}
+
 	  // Tabs.
 	  const buttonTabs = document.querySelectorAll( '.sharethis-wrap .tabs-wrap .button-tab' );
 	  const firstTable = document.querySelector( 'table.form-table' );
@@ -959,7 +974,7 @@ var ShareButtons = ( function( $, wp ) {
 		  config['show_total'] = true;
 		  config['labels'] = 'cta';
 		  config['min_count'] = 10;
-		  config['networks'] = ['facebook', 'twitter', 'pinterest', 'email', 'sms', 'sharethis'];
+		  config['networks'] = undefined !== this.data.buttonConfig[ buttonCode ] && undefined === this.data.buttonConfig[ buttonCode ]['networks'] ? ['facebook', 'twitter', 'pinterest', 'email', 'sms', 'sharethis'] : this.data.buttonConfig[ buttonCode ]['networks'];
 
 		  $.each( config['networks'], function( index, value ) {
 			$( '.' + buttonCode + '-network-list .share-button[data-network="' + value + '"]' ).attr( 'data-selected', 'true' );
@@ -1032,7 +1047,7 @@ var ShareButtons = ( function( $, wp ) {
 			}
 
 			theData = JSON.stringify( theData );
-			console.log(theData );
+
 			// Send new button status value.
 			$.ajax( {
 			  url: 'https://platform-api.sharethis.com/v1.0/property/product',
@@ -1041,7 +1056,7 @@ var ShareButtons = ( function( $, wp ) {
 			  contentType: 'application/json; charset=utf-8',
 			  data: theData,
 			  success: function () {
-				if ( 'turnon' === type ) {
+				if ( 'turnon' === type || 'turnoff' === type ) {
 				  location.reload();
 				}
 			  }

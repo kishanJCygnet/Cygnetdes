@@ -315,4 +315,7 @@ require 'ssb.php';
 			</div>
 		</div>
 	</div>
+	<?php if ( 'Enabled' === $enabled[ $button ] ) : ?>
+		<button class="disable-tool" data-button="<?php echo esc_attr( $button ); ?>">Disable Tool</button>
+	<?php endif; ?>
 </div>

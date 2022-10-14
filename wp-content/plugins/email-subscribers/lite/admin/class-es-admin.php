@@ -320,12 +320,12 @@ if ( ! class_exists( 'ES_Admin' ) ) {
 			$template_id      = ! empty( $template_data['ID'] ) ? $template_data['ID'] : 0;
 			$template_subject = ! empty( $template_data['post_title'] ) ? $template_data['post_title'] : '';
 			$template_status  = ! empty( $template_data['post_status'] ) ? $template_data['post_status'] : 'draft';
-			$template_type    = ! empty( $template_data['meta']['es_template_type'] ) ? $template_data['meta']['es_template_type'] : '';
+			$template_type    = ! empty( $template_data['meta']['es_template_type'] ) ? $template_data['meta']['es_template_type'] : IG_CAMPAIGN_TYPE_NEWSLETTER;
 			$editor_type      = ! empty( $template_data['meta']['es_editor_type'] ) ? $template_data['meta']['es_editor_type'] : '';
 
 			?>
 
-			<div id="edit-campaign-form-container" data-editor-type="<?php echo esc_attr( $editor_type ); ?>" class="<?php echo esc_attr( $editor_type ); ?> font-sans pt-1.5 wrap">
+			<div id="edit-campaign-form-container" data-editor-type="<?php echo esc_attr( $editor_type ); ?>" data-campaign-type="<?php echo esc_attr( $template_type ); ?>" class="<?php echo esc_attr( $editor_type ); ?> font-sans pt-1.5 wrap">
 				<?php
 				if ( ! empty( $message_data ) ) {
 					$message = $message_data['message'];
@@ -473,6 +473,8 @@ if ( ! class_exists( 'ES_Admin' ) ) {
 																	jQuery('#ig-es-dnd-add-merge-tag-button').click(function () {
 																		jQuery('#ig-es-dnd-merge-tags-wrapper #ig-es-dnd-tags-dropdown').toggle();
 																	});
+
+																	ig_es_add_dnd_rte_tags( '<?php echo esc_js( $template_type ); ?>' );
 															});
 														});
 													</script>
@@ -919,13 +921,13 @@ if ( ! class_exists( 'ES_Admin' ) ) {
 				// Verify nonce.
 				if ( wp_verify_nonce( $template_nonce, 'ig-es-template-nonce' ) ) {
 		
-					$template_data    = ig_es_get_request_data( 'data', array(), false );
-					$template_id      = ! empty( $template_data['id'] ) ? $template_data['id'] : 0;
-					$template_type    = ! empty( $template_data['es_template_type'] ) ? $template_data['es_template_type'] : IG_CAMPAIGN_TYPE_NEWSLETTER;
-					$template_body    = ! empty( $template_data['body'] ) ? $template_data['body'] : '';
-					$template_subject = ! empty( $template_data['subject'] ) ? $template_data['subject'] : '';
+					$template_data          = ig_es_get_request_data( 'data', array(), false );
+					$template_id            = ! empty( $template_data['id'] ) ? $template_data['id'] : 0;
+					$template_type          = ! empty( $template_data['es_template_type'] ) ? $template_data['es_template_type'] : IG_CAMPAIGN_TYPE_NEWSLETTER;
+					$template_body          = ! empty( $template_data['body'] ) ? $template_data['body'] : '';
+					$template_subject       = ! empty( $template_data['subject'] ) ? $template_data['subject'] : '';
 					$template_attachment_id = ! empty( $template_data['template_attachment_id'] ) ? $template_data['template_attachment_id'] : '';
-					$template_status  = $template_action === 'save' ? 'publish' : 'draft';
+					$template_status        = 'save' === $template_action ? 'publish' : 'draft';
 		
 					if ( ! empty( $template_subject) ) {
 		
@@ -939,11 +941,11 @@ if ( ! class_exists( 'ES_Admin' ) ) {
 						$action = '';
 						if ( empty( $template_id ) ) {
 							$template_id = wp_insert_post( $data );
-							$action = 'added';
+							$action      = 'added';
 						} else {
 							$data['ID']  = $template_id;
 							$template_id = wp_update_post( $data );
-							$action = 'updated';
+							$action      = 'updated';
 						}
 		
 						$is_template_added = ! ( $template_id instanceof WP_Error );

@@ -38,6 +38,7 @@ if ( ! class_exists( 'Es_Rule_Select' ) ) {
 			}
 		}
 
+
 		/**
 		 * Validate a select rule.
 		 *

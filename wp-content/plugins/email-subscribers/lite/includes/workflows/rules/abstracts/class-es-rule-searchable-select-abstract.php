@@ -54,6 +54,7 @@ if ( ! class_exists( 'Es_Rule_Searchable_Select_Abstract' ) ) {
 			}
 		}
 
+
 		/**
 		 * Override this method to alter how saved values are displayed.
 		 *
