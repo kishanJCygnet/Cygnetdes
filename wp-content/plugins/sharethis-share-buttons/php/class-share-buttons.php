@@ -689,6 +689,10 @@ class Share_Buttons {
 				$purposes = array_column( $vendor_data['purposes'], 'name', 'id' );
 			}
 
+			$enabled = array(
+				'gdpr' => 'true' === get_option( 'sharethis_gdpr' ) ? 'Enabled' : 'Disabled',
+			);
+
 			// Template vars.
 			$colors = array(
 				'#e31010',

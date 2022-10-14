@@ -266,6 +266,17 @@ if ( ! class_exists( 'Es_Workflow_Rule' ) ) {
 		}
 
 		/**
+		 * Get numeric compare types.
+		 */
+		public function get_numeric_select_compare_types() {
+			return [
+				'exactly_equal_to' 	    => __( 'exactly equal to', 'email-subscribers' ),
+				'less_than_or_equal_to' => __( 'less than or equal to', 'email-subscribers' ),
+				'more_than_or_equal_to' => __( 'more than or equal to', 'email-subscribers' ),
+			];
+		} 
+
+		/**
 		 * Get includes or not includes compare types.
 		 *
 		 * @return array

@@ -90,8 +90,6 @@ if ( ! class_exists( 'ES_Campaign_Admin' ) ) {
 				$this->campaign_data['type']                = $this->get_campaign_type_from_url();
 				$this->campaign_data['meta']['editor_type'] = $this->get_editor_type_from_url();
 			}
-
-			error_log( __FILE__ . ' ' . __LINE__ . ' $this->campaign_data:' . print_r( $this->campaign_data, true ) );
 		}
 
 		public function get_campaign_id_from_url() {
@@ -310,6 +308,128 @@ if ( ! class_exists( 'ES_Campaign_Admin' ) ) {
 			return apply_filters( 'ig_es_site_tags', $site_tags );
 		}
 
+		public function get_dnd_campaign_tags() {
+
+			$post_notification_tags = array(
+				array(
+					'keyword'  => 'post.title',
+					'label' => __( 'Post title', 'email-subscribers' ),
+					'icon' => '<svg style=" fill:#000000;" width="36" height="36" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><rect fill="none" height="256" width="256"/><path d="M208,48H48a8,8,0,0,0-8,8V88a8,8,0,0,0,16,0V64h64V192H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16H136V64h64V88a8,8,0,0,0,16,0V56A8,8,0,0,0,208,48Z"/></svg>',
+					'description' => __( 'Show a post title', 'email-subscribers' ),
+				),
+				array( 
+					'keyword'  => 'post.image',
+					'label' => __( 'Post image', 'email-subscribers' ),
+					'icon' => '<svg width="36" height="36" viewBox="0 0 172 172" style=" fill:#000000;"><g transform="translate(0.516,0.516) scale(0.994,0.994)"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-size="none" style="mix-blend-mode: normal"><g fill="#000000" stroke="#cccccc" stroke-linejoin="round"><path d="M172,17.2v137.6h-172v-137.6zM6.88,94.89563l31.4975,-31.4975l14.80813,22.22562l16.74312,-3.35937l14.05563,14.05562h20.3175l24.08,17.2h36.73812v-89.44h-158.24zM144.48,60.2c0,8.50594 -6.97406,15.48 -15.48,15.48c-8.50594,0 -15.48,-6.97406 -15.48,-15.48c0,-8.50594 6.97406,-15.48 15.48,-15.48c8.50594,0 15.48,6.97406 15.48,15.48zM120.4,60.2c0,4.78375 3.81625,8.6 8.6,8.6c4.78375,0 8.6,-3.81625 8.6,-8.6c0,-4.78375 -3.81625,-8.6 -8.6,-8.6c-4.78375,0 -8.6,3.81625 -8.6,8.6zM6.88,104.62438v43.29562h158.24v-27.52h-38.94187l-24.08,-17.2h-20.9625l-13.46438,-13.46437l-17.65687,3.52062l-12.71188,-19.05437z"></path></g><path d="M0,172v-172h172v172z" fill="none" stroke="none" stroke-linejoin="miter"></path><g fill="#000000" stroke="none" stroke-linejoin="miter"><path d="M0,17.2v137.6h172v-137.6zM6.88,24.08h158.24v89.44h-36.73812l-24.08,-17.2h-20.3175l-14.05563,-14.05562l-16.74312,3.35937l-14.80813,-22.22562l-31.4975,31.4975zM129,44.72c-8.50594,0 -15.48,6.97406 -15.48,15.48c0,8.50594 6.97406,15.48 15.48,15.48c8.50594,0 15.48,-6.97406 15.48,-15.48c0,-8.50594 -6.97406,-15.48 -15.48,-15.48zM129,51.6c4.78375,0 8.6,3.81625 8.6,8.6c0,4.78375 -3.81625,8.6 -8.6,8.6c-4.78375,0 -8.6,-3.81625 -8.6,-8.6c0,-4.78375 3.81625,-8.6 8.6,-8.6zM37.3025,74.20188l12.71188,19.05437l17.65687,-3.52062l13.46438,13.46437h20.9625l24.08,17.2h38.94187v27.52h-158.24v-43.29562z"></path></g><path d="" fill="none" stroke="none" stroke-linejoin="miter"></path></g></g></svg>
+				  ',
+				),
+				array(
+					'keyword'  => 'post.date',
+					'label' => __( 'Post date', 'email-subscribers' ),
+					'icon' => '<svg style=" fill:#000000;" enable-background="new 0 0 48 48" width="36" height="36" id="Layer_1" version="1.1" viewBox="0 0 48 48" width="48px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path clip-rule="evenodd" d="M43,43H5c-2.209,0-4-1.791-4-4V9c0-2.209,1.791-4,4-4h38c2.209,0,4,1.791,4,4v30  C47,41.209,45.209,43,43,43z M45,9c0-1.104-0.896-2-2-2H5C3.896,7,3,7.896,3,9v6h42V9z M45,17H3v22c0,1.104,0.896,2,2,2h38  c1.104,0,2-0.896,2-2V17z M41,31h-2c-0.552,0-1-0.447-1-1v-2c0-0.552,0.448-1,1-1h2c0.553,0,1,0.448,1,1v2  C42,30.553,41.553,31,41,31z M41,24h-2c-0.552,0-1-0.447-1-1v-2c0-0.553,0.448-1,1-1h2c0.553,0,1,0.447,1,1v2  C42,23.553,41.553,24,41,24z M33,31h-2c-0.552,0-1-0.447-1-1v-2c0-0.552,0.448-1,1-1h2c0.553,0,1,0.448,1,1v2  C34,30.553,33.553,31,33,31z M33,24h-2c-0.552,0-1-0.447-1-1v-2c0-0.553,0.448-1,1-1h2c0.553,0,1,0.447,1,1v2  C34,23.553,33.553,24,33,24z M25,31h-2c-0.553,0-1-0.447-1-1v-2c0-0.552,0.447-1,1-1h2c0.553,0,1,0.448,1,1v2  C26,30.553,25.553,31,25,31z M25,24h-2c-0.553,0-1-0.447-1-1v-2c0-0.553,0.447-1,1-1h2c0.553,0,1,0.447,1,1v2  C26,23.553,25.553,24,25,24z M17,38h-2c-0.553,0-1-0.447-1-1v-2c0-0.553,0.447-1,1-1h2c0.553,0,1,0.447,1,1v2  C18,37.553,17.553,38,17,38z M17,31h-2c-0.553,0-1-0.447-1-1v-2c0-0.552,0.447-1,1-1h2c0.553,0,1,0.448,1,1v2  C18,30.553,17.553,31,17,31z M17,24h-2c-0.553,0-1-0.447-1-1v-2c0-0.553,0.447-1,1-1h2c0.553,0,1,0.447,1,1v2  C18,23.553,17.553,24,17,24z M9,38H7c-0.553,0-1-0.447-1-1v-2c0-0.553,0.447-1,1-1h2c0.553,0,1,0.447,1,1v2C10,37.553,9.553,38,9,38  z M9,31H7c-0.553,0-1-0.447-1-1v-2c0-0.552,0.447-1,1-1h2c0.553,0,1,0.448,1,1v2C10,30.553,9.553,31,9,31z M23,34h2  c0.553,0,1,0.447,1,1v2c0,0.553-0.447,1-1,1h-2c-0.553,0-1-0.447-1-1v-2C22,34.447,22.447,34,23,34z" fill-rule="evenodd"/></svg>',
+				),
+				array( 
+					'keyword'  => 'post.excerpt',
+					'label' => __( 'Post excerpt', 'email-subscribers' ),
+					'icon' => '<svg width="36" height="36" viewBox="0 0 172 172" style=" fill:#000000;"><g transform="translate(0.516,0.516) scale(0.994,0.994)"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-size="none" style="mix-blend-mode: normal"><g stroke="#cccccc" stroke-width="1" stroke-linejoin="round"><path d="M13.76,17.2h144.48M13.76,51.6h144.48M13.76,86h144.48M13.76,120.4h144.48M13.76,154.8h82.56"></path></g><path d="M0,172v-172h172v172z" stroke="none" stroke-width="1" stroke-linejoin="miter"></path><g stroke="#000000" stroke-width="6.88" stroke-linejoin="round"><path d="M13.76,17.2h144.48M13.76,51.6h144.48M13.76,86h144.48M13.76,86h144.48M13.76,120.4h144.48M13.76,120.4h144.48M13.76,154.8h82.56"></path></g><path d="" stroke="none" stroke-width="1" stroke-linejoin="miter"></path></g></g></svg>',
+				),
+				array( 
+					'keyword'  => 'post.description',
+					'label' => __( 'Post description', 'email-subscribers' ),
+					'icon' => '<svg width="36" height="36" viewBox="0 0 172 172" style=" fill:#000000;"><g transform="translate(0.516,0.516) scale(0.994,0.994)"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-size="none" style="mix-blend-mode: normal"><g stroke="#cccccc" stroke-width="1" stroke-linejoin="round"><path d="M13.76,17.2h144.48M13.76,51.6h144.48M13.76,86h144.48M13.76,120.4h144.48M13.76,154.8h82.56"></path></g><path d="M0,172v-172h172v172z" stroke="none" stroke-width="1" stroke-linejoin="miter"></path><g stroke="#000000" stroke-width="6.88" stroke-linejoin="round"><path d="M13.76,17.2h144.48M13.76,51.6h144.48M13.76,86h144.48M13.76,86h144.48M13.76,120.4h144.48M13.76,120.4h144.48M13.76,154.8h82.56"></path></g><path d="" stroke="none" stroke-width="1" stroke-linejoin="miter"></path></g></g></svg>',
+				),
+				array( 
+					'keyword'  => 'post.author',
+					'label' => __( 'Post author', 'email-subscribers' ),
+					'icon' => '<svg style=" fill:#000000;" width="36" height="36" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><title/><g id="about"><path d="M16,16A7,7,0,1,0,9,9,7,7,0,0,0,16,16ZM16,4a5,5,0,1,1-5,5A5,5,0,0,1,16,4Z"/><path d="M17,18H15A11,11,0,0,0,4,29a1,1,0,0,0,1,1H27a1,1,0,0,0,1-1A11,11,0,0,0,17,18ZM6.06,28A9,9,0,0,1,15,20h2a9,9,0,0,1,8.94,8Z"/></g></svg>',
+				),
+				array( 
+					'keyword'  => 'post.link',
+					'label' => __( 'Post link', 'email-subscribers' ),
+					'icon' => '<svg style=" fill:#000000;" width="36" height="36" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><rect fill="none" height="256" width="256"/><path d="M122.3,71.4l19.8-19.8a44.1,44.1,0,0,1,62.3,62.3l-28.3,28.2a43.9,43.9,0,0,1-62.2,0" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"/><path d="M133.7,184.6l-19.8,19.8a44.1,44.1,0,0,1-62.3-62.3l28.3-28.2a43.9,43.9,0,0,1,62.2,0" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"/></svg>',
+				),
+				array( 
+					'keyword'  => 'post.link_with_title',
+					'label' => __( 'Post link with title', 'email-subscribers' ),
+					'icon' => '<svg style=" fill:#000000;" width="36" height="36" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><rect fill="none" height="256" width="256"/><path d="M122.3,71.4l19.8-19.8a44.1,44.1,0,0,1,62.3,62.3l-28.3,28.2a43.9,43.9,0,0,1-62.2,0" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"/><path d="M133.7,184.6l-19.8,19.8a44.1,44.1,0,0,1-62.3-62.3l28.3-28.2a43.9,43.9,0,0,1,62.2,0" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"/></svg>',
+				),
+				array( 
+					'keyword'  => 'post.link_only',
+					'label' => __( 'Post link only', 'email-subscribers' ),
+					'icon' => '<svg style=" fill:#000000;" width="36" height="36" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><rect fill="none" height="256" width="256"/><path d="M122.3,71.4l19.8-19.8a44.1,44.1,0,0,1,62.3,62.3l-28.3,28.2a43.9,43.9,0,0,1-62.2,0" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"/><path d="M133.7,184.6l-19.8,19.8a44.1,44.1,0,0,1-62.3-62.3l28.3-28.2a43.9,43.9,0,0,1,62.2,0" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"/></svg>',
+				),
+				array( 
+					'keyword'  => 'post.full',
+					'label' => __( 'Post full', 'email-subscribers' ),
+					'icon' => '<svg width="36" height="36" viewBox="0 0 172 172" style=" fill:#000000;"><g transform="translate(0.516,0.516) scale(0.994,0.994)"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-size="none" style="mix-blend-mode: normal"><g stroke="#cccccc" stroke-width="1" stroke-linejoin="round"><path d="M13.76,17.2h144.48M13.76,51.6h144.48M13.76,86h144.48M13.76,120.4h144.48M13.76,154.8h82.56"></path></g><path d="M0,172v-172h172v172z" stroke="none" stroke-width="1" stroke-linejoin="miter"></path><g stroke="#000000" stroke-width="6.88" stroke-linejoin="round"><path d="M13.76,17.2h144.48M13.76,51.6h144.48M13.76,86h144.48M13.76,86h144.48M13.76,120.4h144.48M13.76,120.4h144.48M13.76,154.8h82.56"></path></g><path d="" stroke="none" stroke-width="1" stroke-linejoin="miter"></path></g></g></svg>',
+				),
+				array( 
+					'keyword'  => 'post.cats',
+					'label' => __( 'Post categories', 'email-subscribers' ),
+					'icon' => '<svg style=" fill:#000000;" width="36" height="36" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M10 3H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM9 9H5V5h4v4zm11-6h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zm-1 6h-4V5h4v4zm-9 4H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1zm-1 6H5v-4h4v4zm8-6c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4zm0 6c-1.103 0-2-.897-2-2s.897-2 2-2 2 .897 2 2-.897 2-2 2z"/></svg>',
+				),
+				array( 
+					'keyword'  => 'post.more_tag',
+					'label' => __( 'Post more tag', 'email-subscribers' ),
+					'icon' => '<svg style=" fill:#000000;" width="36" height="36" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M4 9v1.5h16V9H4zm12 5.5h4V13h-4v1.5zm-6 0h4V13h-4v1.5zm-6 0h4V13H4v1.5z"></path></svg>',
+				),
+				array( 
+					'keyword'  => 'post.image_url',
+					'label' => __( 'Post image URL', 'email-subscribers' ),
+					'icon' => '<svg style=" fill:#000000;" width="36" height="36" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><rect fill="none" height="256" width="256"/><path d="M122.3,71.4l19.8-19.8a44.1,44.1,0,0,1,62.3,62.3l-28.3,28.2a43.9,43.9,0,0,1-62.2,0" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"/><path d="M133.7,184.6l-19.8,19.8a44.1,44.1,0,0,1-62.3-62.3l28.3-28.2a43.9,43.9,0,0,1,62.2,0" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"/></svg>',
+					'description' => __( 'Show a post image URL', 'email-subscribers' ),
+				),
+			);
+
+			$campaign_tags = array(
+				'post_notification' => $post_notification_tags,
+			);
+
+			return apply_filters( 'ig_es_dnd_campaign_tags', $campaign_tags );
+		}
+
+		public function get_dnd_subscriber_tags() {
+			$subscriber_tags = array(
+				array(
+					'keyword' => 'subscriber.name',
+					'label'   => __( 'Name', 'email-subscribers' ),
+				),
+				array(
+					'keyword' => 'subscriber.fist_name',
+					'label'   => __( 'First name', 'email-subscribers' ),
+				),
+				array(
+					'keyword' => 'subscriber.last_name',
+					'label'   => __( 'Last name', 'email-subscribers' ),
+				),
+				array(
+					'keyword' => 'subscriber.email',
+					'label'   => __( 'Email', 'email-subscribers' ),
+				),
+			);
+
+			return apply_filters( 'ig_es_dnd_subscriber_tags', $subscriber_tags );
+		}
+
+		public function get_dnd_site_tags() {
+			$site_tags = array(
+				array(
+					'keyword' => 'site.name',
+					'label'   => __( 'Name', 'email-subscribers' ),
+				),
+				array(
+					'keyword' => 'site.url',
+					'label'   => __( 'URL', 'email-subscribers' ),
+				),
+				array(
+					'keyword' => 'site.total_contacts',
+					'label'   => __( 'Total contacts', 'email-subscribers' ),
+				),
+			);
+
+			return apply_filters( 'ig_es_dnd_site_tags', $site_tags );
+		}
+
 		public function show_merge_tags( $campaign_type ) {
 			$subscriber_tags = $this->get_subscriber_tags();
 			if ( ! empty( $subscriber_tags ) ) {
@@ -451,7 +571,7 @@ if ( ! class_exists( 'ES_Campaign_Admin' ) ) {
 			
 			?>
 
-			<div id="edit-campaign-form-container" data-editor-type="<?php echo esc_attr( $editor_type ); ?>" class="<?php echo esc_attr( $editor_type ); ?> font-sans pt-1.5 wrap">
+			<div id="edit-campaign-form-container" data-editor-type="<?php echo esc_attr( $editor_type ); ?>" data-campaign-type="<?php echo esc_attr( $campaign_type ); ?>" class="<?php echo esc_attr( $editor_type ); ?> font-sans pt-1.5 wrap">
 				<?php
 				if ( ! empty( $message_data ) ) {
 					$message = $message_data['message'];
@@ -610,7 +730,7 @@ if ( ! class_exists( 'ES_Campaign_Admin' ) ) {
 													</div>
 													<textarea id="campaign-dnd-editor-data" name="campaign_data[meta][dnd_editor_data]" style="display:none;">
 														<?php
-															$dnd_editor_data = ! empty( $campaign_data['meta']['dnd_editor_data'] ) ? $campaign_data['meta']['dnd_editor_data'] : $this->get_campaign_default_content();
+															$dnd_editor_data     = ! empty( $campaign_data['meta']['dnd_editor_data'] ) ? $campaign_data['meta']['dnd_editor_data'] : $this->get_campaign_default_content();
 															echo esc_html( $dnd_editor_data );
 														?>
 													</textarea>
@@ -642,6 +762,8 @@ if ( ! class_exists( 'ES_Campaign_Admin' ) ) {
 																	jQuery('#ig-es-dnd-add-merge-tag-button').click(function () {
 																		jQuery('#ig-es-dnd-merge-tags-wrapper #ig-es-dnd-tags-dropdown').toggle();
 																	});
+
+																	ig_es_add_dnd_rte_tags( '<?php echo esc_js( $campaign_type ); ?>' );
 															});
 														});
 													</script>
@@ -694,6 +816,11 @@ if ( ! class_exists( 'ES_Campaign_Admin' ) ) {
 															$("#ig-es-dnd-merge-tags-wrapper #ig-es-dnd-tags-dropdown").hide();
 														}
 													});
+
+													let campaign_type = '<?php echo esc_attr( $campaign_type ); ?>';
+													if ( 'newsletter' === campaign_type ) {
+														window.esVisualEditor.RichTextEditor.remove('es-tags');
+													}
 												});
 											</script>
 											<?php do_action( 'ig_es_after_campaign_left_pan_settings', $campaign_data ); ?>

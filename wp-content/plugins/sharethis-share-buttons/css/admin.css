@@ -212,7 +212,8 @@ div[title="getpocket"] svg
 	text-align: right;
 }
 
-.sharethis-wrap .enable-tool {
+.sharethis-wrap .enable-tool,
+.sharethis-wrap .disable-tool {
 	background: #13682B;
 	border-radius: .25rem;
 	border: none;
@@ -223,6 +224,13 @@ div[title="getpocket"] svg
 	margin-bottom: 3rem;
 	outline: none;
 	padding: .5rem 1.25rem;
+}
+
+.sharethis-wrap .disable-tool {
+	bottom: 60px;
+	left: 50%;
+	position: absolute;
+	transform: translateX(-50%);
 }
 
 .sharethis-wrap form .submit.engage {

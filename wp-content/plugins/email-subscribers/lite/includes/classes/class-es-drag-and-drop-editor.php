@@ -112,6 +112,20 @@ class ES_Drag_And_Drop_Editor {
 			$form_editor_data = apply_filters( 'ig_es_form_editor_data', $form_editor_data );
 
 			wp_localize_script( 'es_editor_js', 'ig_es_form_editor_data', $form_editor_data );
+		} else {
+			$campaign_admin  = ES_Campaign_Admin::get_instance();
+			$campaign_tags   = $campaign_admin->get_dnd_campaign_tags();
+			$subscriber_tags = $campaign_admin->get_dnd_subscriber_tags();
+			$site_tags       = $campaign_admin->get_dnd_site_tags();
+
+			$campaign_editor_data = array(
+				'campaignTags'    => $campaign_tags,
+				'subscriberTags'  => $subscriber_tags,
+				'siteTags'        => $site_tags,
+				'isPro'		      => ES()->is_pro(),
+			);
+
+			wp_localize_script( 'es_editor_js', 'ig_es_campaign_editor_data', $campaign_editor_data );
 		}
 
 		wp_enqueue_script( 'es_editor_js' );
