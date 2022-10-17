@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '158031b3d77ce2254570438c2c557a6177361047',
+        'reference' => 'e91a4e74758673f08028d0813471d2e7aa9eaefb',
         'name' => 'ernilambar/ns-featured-posts',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '158031b3d77ce2254570438c2c557a6177361047',
+            'reference' => 'e91a4e74758673f08028d0813471d2e7aa9eaefb',
             'dev_requirement' => false,
         ),
         'ernilambar/optioner' => array(

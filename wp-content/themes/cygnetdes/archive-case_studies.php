@@ -96,7 +96,6 @@
 					<span class="heading-border"></span>
 				</h2>
 			</div>-->
-
 			<!-- Filter block start -->
 			<?php /*<div class="filter-box mb-5">
 				<h5 class="text-dark-blue mb-3">Filter By:</h5>
@@ -140,7 +139,7 @@
 						</div>
 					</div>
 				</form>
-			</div>  */  ?>
+			</div>  */ ?>
 			<!-- Filter block end -->
 			<!-- Case Studies start -->
 			<div class="casestudy-container webinars-container blog-container"></div>

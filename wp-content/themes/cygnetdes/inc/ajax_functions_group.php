@@ -385,7 +385,9 @@ function get_casestudy_listing_data()
     <?php endif;
 		$s = $s + 0.2;
       endwhile; 
-    endif; ?>
+	  else : ?>
+	  <p class="text-center">No Record Found</p>
+    <?php endif; ?>
   </div>
 
   <div class="pagination justify-content-center">

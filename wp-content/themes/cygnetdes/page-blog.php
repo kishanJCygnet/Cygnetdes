@@ -116,7 +116,7 @@
 						</div>
 					</div>
 				</form>
-			</div>    */ ?>
+			</div>  */ ?>
 			<!-- Filter block end -->
 			<!-- Blog start -->
 			<div class="blog-container"></div>
