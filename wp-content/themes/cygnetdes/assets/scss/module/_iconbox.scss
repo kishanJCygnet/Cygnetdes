@@ -993,6 +993,7 @@
         }
         @include bp(md-max){
             width: calc(100% - 0px);
+            min-width: calc(100% - 0px);
             padding-left: 0;
             margin-left: 0;
         }
@@ -1062,6 +1063,55 @@
             .icon{
                 margin-bottom: 10px;
             }
+        }
+    }
+}
+.Industry-challenges{
+    .title-heading{
+        h2{
+            color: #3cb3e7;
+        }
+    }
+    .icon-box-list{
+        & > div{
+            margin-bottom: 40px;
+        }
+    }
+    .icon-box{
+        background-color: transparent;
+        box-shadow: 0 0 0px 0 #e5e4e4;
+        border-bottom: 1px solid #3cb3e7;
+        border-radius: 0;
+        padding: 0;
+        margin: 20px 30px 30px;
+        @include bp(sm-max){
+            margin: 20px 0px 30px;
+        }
+        &:first-child{
+            margin-top: 0;      
+        }
+        &:nth-child(2){
+            margin-top: 0;
+        }
+        .icon{
+            margin-bottom: 20px;
+            svg{
+                fill:#0c3761;
+                path{
+                    fill: #0c3761;
+                }
+            }
+        }
+        .icon-box-title-content{
+            h3{
+                color:#0c3761;
+            }
+        }
+        &:hover{
+            box-shadow: none;
+        }
+        &:after{
+            display: none;
         }
     }
 }
