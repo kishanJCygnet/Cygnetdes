@@ -407,35 +407,52 @@
 							<?php while (have_rows('zig_zag_content')) : the_row();	?>
 									<div class="zick-zack-inner-content">
 										<div class="in-content">
-										<div class="col-img">
-											<?php if(get_sub_field('image_with_gradient')) { ?>
-												<div class="img-content wow fadeInUp" data-wow-delay="0.3s" style="background-image:url('<?php echo the_sub_field('image'); ?>'),linear-gradient(0deg, rgba(12,55,97,1) 0%, rgba(188,217,165,1) 100%)">
-													<!-- <img src="" alt="<?php echo the_sub_field('title'); ?>"> -->
-												</div>
-											<?php } else { ?>
-												<div class="img-content wow fadeInUp" data-wow-delay="0.6s" style="background-image:url('<?php echo the_sub_field('image'); ?>')">
-													<!-- <img src="" alt="<?php echo the_sub_field('title'); ?>"> -->
-												</div>
-											<?php } ?>
-											<?php if (get_sub_field('button_label') && get_sub_field('button_url')){ ?>
-												<div class="zig-zag-button">
-													<a href="<?php echo the_sub_field('button_url'); ?>" class="btn"><span class="text"><?php echo the_sub_field('button_label'); ?></span><span class="effect"></span></a>
-												</div>
-											<?php } ?>
-										</div>
-										<div class="col-text">
-											<div class="text-content">
-												<div>
-													<?php if (get_sub_field('title')){ ?>
-														<h3 class="wow fadeInUp" data-wow-delay="0.3s"><?php echo the_sub_field('title'); ?></h3>
-													<?php } ?>
-													<?php if (get_sub_field('description')){ ?>
-														<p class="wow fadeInUp" data-wow-delay="0.6s"><?php echo the_sub_field('description'); ?></p>
-													<?php } ?>
+											<div class="col-img">
+												<?php if(get_sub_field('image_with_gradient')) { ?>
+													<div class="img-content wow fadeInUp" data-wow-delay="0.3s" style="background-image:url('<?php echo the_sub_field('image'); ?>'),linear-gradient(0deg, rgba(12,55,97,1) 0%, rgba(188,217,165,1) 100%)">
+														<!-- <img src="" alt="<?php echo the_sub_field('title'); ?>"> -->
+													</div>
+												<?php } else { ?>
+													<div class="img-content wow fadeInUp" data-wow-delay="0.6s" style="background-image:url('<?php echo the_sub_field('image'); ?>')">
+														<!-- <img src="" alt="<?php echo the_sub_field('title'); ?>"> -->
+													</div>
+												<?php } ?>
+												<?php if (get_sub_field('button_label') && get_sub_field('button_url')){ ?>
+													<div class="zig-zag-button">
+														<a href="<?php echo the_sub_field('button_url'); ?>" class="btn"><span class="text"><?php echo the_sub_field('button_label'); ?></span><span class="effect"></span></a>
+													</div>
+												<?php } ?>
+											</div>
+											<div class="col-text">
+												<div class="text-content">
+													<div>
+														<?php if (get_sub_field('icon_image')){ ?>
+															<div class="icon">
+																<?php $extension = pathinfo(get_sub_field('icon_image'), PATHINFO_EXTENSION);
+																	if($extension == 'svg'){
+																		$icon_image = get_sub_field('icon_image');
+																		$stream_opts = [
+																			"ssl" => [
+																				"verify_peer"=>false,
+																				"verify_peer_name"=>false,
+																			]
+																		];														 
+																		echo file_get_contents($icon_image, false, stream_context_create($stream_opts));
+																	} else { ?>
+																		<img src="<?php echo the_sub_field('icon_image'); ?>" alt="<?php echo the_sub_field('title'); ?>">
+																<?php } ?>
+															</div>
+														<?php } ?>
+														<?php if (get_sub_field('title')){ ?>
+															<h3 class="wow fadeInUp" data-wow-delay="0.3s"><?php echo the_sub_field('title'); ?></h3>
+														<?php } ?>
+														<?php if (get_sub_field('description')){ ?>
+															<p class="wow fadeInUp" data-wow-delay="0.6s"><?php echo the_sub_field('description'); ?></p>
+														<?php } ?>
+													</div>
 												</div>
 											</div>
 										</div>
-											</div>
 									</div>
 							<?php endwhile; ?>
 						</div>
@@ -989,9 +1006,26 @@
 									<div class="tab-content" id="v-pills-tabContent">
 										<?php while (have_rows('features_components')) : the_row(); ?>
 											<div class="tab-pane fade <?php if($con_cnt == 1){ ?> show active <?php } ?> " id="v-pills-home-<?php echo $con_cnt; ?>" role="tabpanel" aria-labelledby="v-pills-home-tab-<?php echo $con_cnt; ?>">
-												<?php if (get_sub_field('features_components_content')){ ?>
-													<?php echo the_sub_field('features_components_content'); ?>
-												<?php } ?>
+												<div class="content">
+													<?php if (get_sub_field('features_components_title')){ ?>
+														<h2><?php echo the_sub_field('features_components_title'); ?></h2>
+													<?php } ?>
+													<div class="fcc-inner-content">
+														<?php if (get_sub_field('features_components_image')){ ?>
+															<div class="img-content">
+																<img src="<?php echo the_sub_field('features_components_image'); ?>" alt="<?php echo the_sub_field('features_components_title'); ?>" />
+															</div>
+														<?php } ?>
+														<?php if (get_sub_field('features_components_content')){ ?>
+															<div class="desc-content">
+																<?php echo the_sub_field('features_components_content'); ?>
+															</div>
+														<?php } ?>
+													</div>
+													<?php /*if (get_sub_field('features_components_content')){ ?>
+														<?php echo the_sub_field('features_components_content'); ?>
+													<?php }*/ ?>
+												</div>
 											</div> 
 										<?php $con_cnt++; 
 										endwhile; ?>
