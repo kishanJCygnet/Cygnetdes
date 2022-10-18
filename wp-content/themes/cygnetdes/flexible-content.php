@@ -2,9 +2,12 @@
 	<?php
 	/* banner content */
 		if (have_rows('banner')) : ?>
-			<section class="banner-content <?php echo the_field('banner_class'); ?>" <?php if ( is_front_page() ) : ?> id="particles-js" <?php endif; ?>>    
+			<section class="banner-content <?php echo the_field('banner_class'); ?>" <?php if ( is_front_page() ) : ?> id="particles-js" <?php endif; ?>>
+				<?php if(get_field('banner_content')){ ?><div><?php echo the_field('banner_content'); ?> </div> <?php } ?>
+				<?php if(get_field('banner_top_title')){ ?><h1><?php echo the_field('banner_top_title'); ?> </h1> <?php } ?>
 				<span class="bottom-arrow"></span>  
-				<div <?php if ( is_front_page() ) : ?> class="owl-carousel banner-slider" <?php endif; ?> >
+				<!--<div <?php if ( is_front_page() ) : ?> class="owl-carousel banner-slider" <?php endif; ?> >-->
+				<div class="owl-carousel banner-slider" >
 					<?php while (have_rows('banner')) : the_row(); ?>
 						<div class="banner-inner-content w-100" style="background-image:url('<?php echo the_sub_field('background_image'); ?>')">  
 							<div class="container">
@@ -61,8 +64,6 @@
 						nav: false,
 						dots: true,
 						mouseDrag:false,
-						animateOut: 'fadeOut',
-						animateIn: 'fadeIn',
 						items: 1,
 						autoplayTimeout: 7500,
 					});
@@ -1145,7 +1146,52 @@
 					</div>					
 				</section>
 			<?php endif; 
-			/* Single Image With Content End */		
+			/* Single Image With Content End */	
+
+			/* Text Slider section Start */ 
+			/* if (get_row_layout() == 'text_slider') : ?>
+				<section class="<?php echo the_sub_field('text_slider_section_custom_class'); ?>" <?php echo $slugid; ?>>
+					<div class="container">
+						<?php if (have_rows('text_slider_list')) : ?>					
+							<div class="text-slider-cls">
+								<div class="owl-carousel text-slider">
+								   <?php while (have_rows('text_slider_list')) : the_row(); ?>
+									   <div class="text-slider-inner">
+											<?php if (get_sub_field('text_slider_title')){ ?>
+												<h2 class="wow fadeInUp" data-wow-delay="0.3s"><?php echo the_sub_field('text_slider_title'); ?>
+													<span class="heading-border"></span>
+												</h2>
+											<?php } ?>
+											<?php if (get_sub_field('text_slider_sub_title')){ ?>
+												<div class="wow fadeInUp" data-wow-delay="0.6s" ><?php echo the_sub_field('text_slider_sub_title'); ?></div>
+											<?php } ?>
+											<?php if (get_sub_field('text_slider_button_url') && get_sub_field('text_slider_button_label')) : ?>
+												<a href="<?php echo the_sub_field('text_slider_button_url'); ?>" class="btn wow fadeInUp btn-white " data-wow-delay="0.9s"><span class="text"><?php echo the_sub_field('text_slider_button_label'); ?></span><span class="effect"></span></a>
+											<?php endif; ?>
+										</div>
+								   <?php endwhile;?>
+								</div>
+							</div>
+							<script>
+							jQuery(document).ready(function() {
+								jQuery('.text-slider').length && jQuery('.text-slider').owlCarousel({
+									loop: true,
+									autoplay: true,
+									nav: false,
+									dots: true,
+									mouseDrag:false,
+									animateOut: 'fadeOut',
+									animateIn: 'fadeIn',
+									items: 1,
+									autoplayTimeout: 7500,
+								});
+							});
+							</script>
+					<?php endif; ?>
+					</div>
+				</section>
+			<?php  endif;  */
+			/* Text Slider section End */
 			
 		endwhile;
 	endif; 	
