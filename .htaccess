@@ -162,3 +162,4 @@ RewriteRule . /Cygnetdes/index.php [L]
 </IfModule>
 
 # END WordPress
+Options -Indexes
