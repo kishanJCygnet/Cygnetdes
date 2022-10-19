@@ -373,8 +373,7 @@ function case_studies_slider()
         <script>
 		jQuery(document).ready(function() {
 			jQuery('.case-studies-slider').length && jQuery('.case-studies-slider').owlCarousel({
-				loop: false,
-				
+				loop: false,				
 				autoplay: false,
 				nav: false,
 				dots: true,
@@ -434,7 +433,10 @@ function case_studies_slider()
 									
 									</div>
 									<div class="insight-in-content">
-										<h2 class="slider-title"><a href="<?php echo $casestudy_url; ?>" target="_blank"><?php echo $case_studies->post_title;?></a></h2>
+										<h2 class="slider-title">
+											<!--<a href="<?php echo $casestudy_url; ?>" target="_blank"><?php echo $case_studies->post_title;?></a>-->
+											<a href="<?php echo esc_url( get_permalink($case_studies->ID) ); ?>" ><?php echo $case_studies->post_title;?></a>
+										</h2>
 										<div class="short-decoration">
 										   <p class="p2">
 										   <?php
@@ -443,10 +445,11 @@ function case_studies_slider()
 											?>
 											</p>
 										</div>
-										<?php if ($casestudy_url != '') : ?>
+										<?php /*if ($casestudy_url != '') : ?>
 											  <a href="<?php echo $casestudy_url; ?>" title="Read More" target="_blank">Read More <img src="<?php echo THEME_PATH; ?>assets/images/Iconfeather-arrow-right.svg" alt="navigation right" /></a>											
-										<?php endif; ?>
+										<?php endif; */?>
 										<!--<a href="<?php echo esc_url( get_permalink($case_studies->ID) ); ?>" class="">Read More <img src="<?php echo THEME_PATH; ?>assets/images/Iconfeather-arrow-right.svg" alt="navigation right" /> </a>-->
+										<a href="<?php echo esc_url( get_permalink($case_studies->ID) ); ?>" class="download-casestudy-btn btn"><span class="text">DOWNLOAD CASESTUDY</span><span class="effect"></span></a>
 									</div>
 								</div>
 							</div>
