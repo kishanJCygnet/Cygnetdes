@@ -994,3 +994,19 @@ video{
 .grecaptcha-badge{
   z-index: 3;
 }
+.submit-button{
+  margin-top: 20px;
+}
+.submit-button .custom-cf7-spinner{
+  display: inline-block;
+  position: relative;
+}
+.submit-button input{
+  margin-top: 0 !important;
+}
+.submit-button  .wpcf7-spinner{
+  left: calc(50% - 12px);
+  top: calc(50% - 12px);
+  right: auto;
+  margin: 0;
+}

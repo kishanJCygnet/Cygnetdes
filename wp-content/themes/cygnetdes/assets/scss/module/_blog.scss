@@ -95,7 +95,7 @@
     font-weight: 500;
     line-height: 40px;
     color: #0D3862;
-    font-family: 'Roboto';
+    font-family: $roboto;
     margin-bottom: 15px;
     @include bp(md-max){
         text-align: center;
@@ -152,9 +152,10 @@
     margin-bottom: 15px;
 }
 .blog-contents ul li{
-    line-height: 2.3;
-    @include bp(sm-max){
-        line-height: 1.8;
+    line-height: 1.8;
+    margin-bottom: 8px;
+    font-family: $roboto;
+    @include bp(sm-max){ 
         font-size: 14px;
     }
 }

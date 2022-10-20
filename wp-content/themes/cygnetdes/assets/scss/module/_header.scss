@@ -256,7 +256,7 @@ body{
     }
 }
 div.asl_r.vertical {
-    background-color: #969 !important;
+    background-color: #3cb4e7 !important;
 }
 div.asl_m .probox .proclose svg {
     background: #0c3761 !important;
@@ -1006,14 +1006,15 @@ header {
         display: none;
         box-shadow: 0 50px 100px -20px rgb(50 50 93 / 25%), 0 30px 60px -30px rgb(0 0 0 / 30%);
         li{
+            border-bottom: 1px solid rgb(238, 238, 238);
             a{
                 color: #0c3761;
                 font-weight: 500;
                 font-size: 14px;
-                padding: 5px 0;
+                padding: 10px 0;
                 &:hover{
                     font-weight: 500;
-                    color: #969;
+                    color: #3cb4e7;
                 }
             }
         }
