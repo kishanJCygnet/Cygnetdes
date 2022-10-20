@@ -220,37 +220,41 @@ function testimonial_slider()
                                 echo the_field('testimonial_content', 'option');
                             } ?>
                         <?php endif; */ ?>
-						<?php if (get_field('testimonial_title', 'option')) : ?>
+						<?php /*if (get_field('testimonial_title', 'option')) : ?>
 							<div class="title-heading">
                                 <h2 class="wow fadeInUp" data-wow-offset="50"><?php echo the_field('testimonial_title', 'option'); ?> <span class="heading-border"></span></h2>
 							</div>
-						<?php endif; ?>                    
+						<?php endif; */ ?> 
+						<?php if (get_sub_field('testimonials_title')) : ?>
+							<div class="title-heading">
+                                <h2 class="wow fadeInUp" data-wow-offset="50"><?php echo the_sub_field('testimonials_title'); ?> <span class="heading-border"></span></h2>
+							</div>
+						<?php endif; ?>
 
                 <div class="testimonial">
-                    <ul class="testimonial-slider">
+                    <ul class="owl-carousel testimonial-slider">
                        <?php foreach ($testimonials as $testimonial) :?>
-                            <li class="testimonial-content">
-                                <div class="client-details text-dark-blue wow fadeIn" >
-                                    <div class="img">
-                                        <?php if (get_field('image', $testimonial->ID)) { ?>
-                                                <img src="<?php echo the_field('image', $testimonial->ID); ?>" >
-                                        <?php } ?>                                 
-                                    </div>   
-                                </div>
-                                <div class="short-decoration">
-                                    <h3 class="p1 wow fadeInUp" data-wow-delay="0.3s" ><?php echo $testimonial->post_title;?></h3>
-                                    <div class="p2 wow fadeInUp"  data-wow-delay="0.6s"><?php if (get_field('designation', $testimonial->ID)) {
-                                            echo the_field('designation', $testimonial->ID);
-                                        }?></div>
+                            <li class="testimonial-content">                                
+                                <div class="short-decoration">                                    
                                     <p class="p2 wow fadeInUp"  data-wow-delay="0.9s">
                                    <?php                                  
                                    $testimonialContent = $testimonial->post_content;
                                     echo wp_trim_words( $testimonial->post_content, 250 );
                                    ?>
                                    </p>
-
-                                </div>                                   
-                                    </li>
+                                </div> 
+								<div class="client-details text-dark-blue wow fadeIn" >
+                                    <div class="img">
+                                        <?php if (get_field('image', $testimonial->ID)) { ?>
+                                                <img src="<?php echo the_field('image', $testimonial->ID); ?>" >
+                                        <?php } ?>                                 
+                                    </div>   
+									<h3 class="p1 wow fadeInUp" data-wow-delay="0.3s" ><?php echo $testimonial->post_title;?></h3>
+                                    <div class="p2 wow fadeInUp"  data-wow-delay="0.6s"><?php if (get_field('designation', $testimonial->ID)) {
+                                            echo the_field('designation', $testimonial->ID);
+                                        }?></div>
+                                </div>
+                            </li>
                        <?php endforeach;?>
                     </ul>
                     <div class="nav-arrow">
@@ -260,17 +264,15 @@ function testimonial_slider()
                 </div>
             </div>
         </section>
-		<!-- <script>
+		<script>
 		jQuery(document).ready(function() {
 			jQuery('.testimonial-slider').length && jQuery('.testimonial-slider').owlCarousel({
 				loop: false,
 				autoplay: false,
 				nav: true,
-				dots: false,
+				dots: true,
 				mouseDrag:false,
-                animateOut: 'fadeOut',
-                animateIn: 'fadeIn',
-				items: 1,
+                items: 1,
 				navText: [
 					'<span><img src="<?php echo THEME_PATH; ?>assets/images/right-arrow.png" alt="" /></span>',
                     '<span><img src="<?php echo THEME_PATH; ?>assets/images/right-arrow.png" alt="" /></span>'
@@ -278,7 +280,7 @@ function testimonial_slider()
 				
 			})
 		})
-		</script> -->
+		</script>
    <?php
         $testimonialVar = ob_get_clean();
         return $testimonialVar;
@@ -373,8 +375,7 @@ function case_studies_slider()
         <script>
 		jQuery(document).ready(function() {
 			jQuery('.case-studies-slider').length && jQuery('.case-studies-slider').owlCarousel({
-				loop: false,
-				
+				loop: false,				
 				autoplay: false,
 				nav: false,
 				dots: true,
@@ -434,7 +435,10 @@ function case_studies_slider()
 									
 									</div>
 									<div class="insight-in-content">
-										<h2 class="slider-title"><a href="<?php echo $casestudy_url; ?>" target="_blank"><?php echo $case_studies->post_title;?></a></h2>
+										<h2 class="slider-title">
+											<!--<a href="<?php echo $casestudy_url; ?>" target="_blank"><?php echo $case_studies->post_title;?></a>-->
+											<a href="<?php echo esc_url( get_permalink($case_studies->ID) ); ?>" ><?php echo $case_studies->post_title;?></a>
+										</h2>
 										<div class="short-decoration">
 										   <p class="p2">
 										   <?php
@@ -443,10 +447,11 @@ function case_studies_slider()
 											?>
 											</p>
 										</div>
-										<?php if ($casestudy_url != '') : ?>
+										<?php /*if ($casestudy_url != '') : ?>
 											  <a href="<?php echo $casestudy_url; ?>" title="Read More" target="_blank">Read More <img src="<?php echo THEME_PATH; ?>assets/images/Iconfeather-arrow-right.svg" alt="navigation right" /></a>											
-										<?php endif; ?>
+										<?php endif; */?>
 										<!--<a href="<?php echo esc_url( get_permalink($case_studies->ID) ); ?>" class="">Read More <img src="<?php echo THEME_PATH; ?>assets/images/Iconfeather-arrow-right.svg" alt="navigation right" /> </a>-->
+										<a href="<?php echo esc_url( get_permalink($case_studies->ID) ); ?>" class="download-casestudy-btn btn"><span class="text">DOWNLOAD CASESTUDY</span><span class="effect"></span></a>
 									</div>
 								</div>
 							</div>
