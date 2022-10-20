@@ -154,8 +154,8 @@ jQuery(document).ready(function(){
             jQuery('.search-icon .overlay').show();
           }
       });
-      jQuery('.testimonials h2 a').attr("href","#");
-      jQuery('.testimonials h2 a').attr("href","#");
+      // jQuery('.testimonials h2 a').attr("href","#");
+      // jQuery('.testimonials h2 a').attr("href","#");
 
       jQuery('.banner-content.digital-transformation-banner .inner-text ul li:first-child').addClass('active animate__animated animate__fadeIn');
   });
@@ -203,33 +203,33 @@ else if(scroll >= 1200) {
   }, 10000);
 }
 });
-jQuery('.testimonial-slider > li:first-child').addClass('active');
-setInterval(function()
-{
-    // Remove .active class from the active li, select next li sibling.
-    var next = jQuery('.testimonial-slider > li.active').removeClass('active').next('li');
-    // Did we reach the last element? Of so: select first sibling
-    if (!next.length) next = next.prevObject.siblings('li:first-child');
-    // Add .active class to the li next in line.
-    next.addClass('active');    
-}, 40000);
+// jQuery('.testimonial-slider > li:first-child').addClass('active');
+// setInterval(function()
+// {
+//     // Remove .active class from the active li, select next li sibling.
+//     var next = jQuery('.testimonial-slider > li.active').removeClass('active').next('li');
+//     // Did we reach the last element? Of so: select first sibling
+//     if (!next.length) next = next.prevObject.siblings('li:first-child');
+//     // Add .active class to the li next in line.
+//     next.addClass('active');    
+// }, 40000);
 
-jQuery('.testimonial .nav-arrow .arrow-prev').click(function(){
-  // Remove .active class from the active li, select next li sibling.
-  var prev = jQuery('.testimonial-slider > li.active').removeClass('active').prev('li');
-  // Did we reach the last element? Of so: select first sibling
-  if (!prev.length) prev = prev.prevObject.siblings('li:last-child');
-  // Add .active class to the li next in line.
-  prev.addClass('active');  
-});
-jQuery('.testimonial .nav-arrow .arrow-next').click(function(){
-    // Remove .active class from the active li, select next li sibling.
-    var next = jQuery('.testimonial-slider > li.active').removeClass('active').next('li');
-    // Did we reach the last element? Of so: select first sibling
-    if (!next.length) next = next.prevObject.siblings('li:first-child');
-    // Add .active class to the li next in line.
-    next.addClass('active');  
-});
+// jQuery('.testimonial .nav-arrow .arrow-prev').click(function(){
+//   // Remove .active class from the active li, select next li sibling.
+//   var prev = jQuery('.testimonial-slider > li.active').removeClass('active').prev('li');
+//   // Did we reach the last element? Of so: select first sibling
+//   if (!prev.length) prev = prev.prevObject.siblings('li:last-child');
+//   // Add .active class to the li next in line.
+//   prev.addClass('active');  
+// });
+// jQuery('.testimonial .nav-arrow .arrow-next').click(function(){
+//     // Remove .active class from the active li, select next li sibling.
+//     var next = jQuery('.testimonial-slider > li.active').removeClass('active').next('li');
+//     // Did we reach the last element? Of so: select first sibling
+//     if (!next.length) next = next.prevObject.siblings('li:first-child');
+//     // Add .active class to the li next in line.
+//     next.addClass('active');  
+// });
 
     jQuery('.ac-back').click(function(e) {
           e.preventDefault();
@@ -259,31 +259,6 @@ jQuery('.testimonial .nav-arrow .arrow-next').click(function(){
 
    jQuery('.circle-anim1').append('<span class="circle-animation"><span class="span1"></span><span class="span2"></span><span class="span3"></span><span class="span4"></span></span>');
    jQuery('.circle-anim2').append('<span class="circle-animation canim-2"><span class="span1"></span><span class="span2"></span><span class="span3"></span><span class="span4"></span></span>');
-
-   var videos = document.getElementsByTagName("video");
-
-function checkScroll() {
-    var fraction = 0.8; // Play when 80% of the player is visible.
-    for(var i = 0; i < videos.length; i++) {
-        var video = videos[i];
-        var x = video.offsetLeft, y = video.offsetTop, w = video.offsetWidth, h = video.offsetHeight, r = x + w, //right
-            b = y + h, //bottom
-            visibleX, visibleY, visible;
-            visibleX = Math.max(0, Math.min(w, window.pageXOffset + window.innerWidth - x, r - window.pageXOffset));
-            visibleY = Math.max(0, Math.min(h, window.pageYOffset + window.innerHeight - y, b - window.pageYOffset));
-            visible = visibleX * visibleY / (w * h);
-            if (visible > fraction) {
-           
-              video.play();
-
-            } else {
-                video.pause();
-            }
-    }
-}
-
-window.addEventListener('scroll', checkScroll, false);
-window.addEventListener('resize', checkScroll, false);
 
 // if (typeof videos.loop == 'boolean') { // loop supported
 //   videos.loop = true;

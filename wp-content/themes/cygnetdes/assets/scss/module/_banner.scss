@@ -20,10 +20,62 @@
                 background-color: rgb(12 55 97 / 81%);
             }
         }
+        &.overlay-hide{
+            .text-content {
+                &::after{
+                    display: none;
+                }
+            }
+         
+        }
+        &.home-banner-content{
+            // padding-top: 100px;
+            #myVideo{               
+                height: calc(100% - 100px);
+            }
+            background-color: #084d94;
+            h1{
+                margin-bottom: 10px;
+                margin-top: 34px;
+                display: inline-block;
+                width: 100%;
+                text-align: center;
+            }
+            .count-section-main {
+                position: relative;
+                z-index: 1;
+                bottom: 0;
+                background-color: #fff;
+                .count-section-main-inner{
+                    padding: 50px 0;
+                    .count-inner{
+                        border-right: 1px solid rgb(171 171 171 / 46%);
+                        .count-label{
+                            color: #0F3764;
+                            font-weight: 500;
+                        }
+                        .count-value{
+                             h2{
+                                line-height: 1.8;
+                                font-size: 16px;
+                                color: #505353;
+                             }
+                        } 
+                    } 
+                }
+            }
+        }
+        
     }
 
     &.home-banner {
         position: relative;
+        h1{
+            z-index: 99;
+            position: relative;
+            color: #fff;
+            text-align: center;
+        }
         .banner-inner-content {
         // background-image: url('../../images/BG.jpg') !important;
         overflow: hidden;
