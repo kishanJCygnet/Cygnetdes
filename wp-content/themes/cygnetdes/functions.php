@@ -242,6 +242,11 @@ function testimonial_slider()
                                     echo wp_trim_words( $testimonial->post_content, 250 );
                                    ?>
                                    </p>
+								   <?php if(get_field('video_url', $testimonial->ID)){ ?>
+										<div class="client_video">			
+											<a href="#" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#videoModal" data-tagVideo="<?php echo the_field('video_url', $testimonial->ID); ?>" ></a>
+										</div>
+									<?php } ?>
                                 </div> 
 								<div class="client-details text-dark-blue wow fadeIn" >
                                     <div class="img">
@@ -252,7 +257,7 @@ function testimonial_slider()
 									<h3 class="p1 wow fadeInUp" data-wow-delay="0.3s" ><?php echo $testimonial->post_title;?></h3>
                                     <div class="p2 wow fadeInUp"  data-wow-delay="0.6s"><?php if (get_field('designation', $testimonial->ID)) {
                                             echo the_field('designation', $testimonial->ID);
-                                        }?></div>
+                                        }?></div>									
                                 </div>
                             </li>
                        <?php endforeach;?>
@@ -280,6 +285,36 @@ function testimonial_slider()
 				
 			})
 		})
+		</script>
+		
+		<div class="modal fade" id="videoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-lg">
+			<div class="modal-content">
+			  <div class="modal-body text-end">
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<div class="ratio ratio-16x9">								  
+				  <iframe src="" allow="autoplay;" allowfullscreen></iframe>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+		<script>
+		  jQuery(document).ready(function() {
+			autoPlayYouTubeModal();
+		  });
+		  function autoPlayYouTubeModal() {
+			  var triggerOpen = jQuery("body").find('[data-tagVideo]');
+			  triggerOpen.click(function() {
+				var theModal = jQuery(this).data("bs-target"),
+				  videoSRC = jQuery(this).attr("data-tagVideo"),
+				  videoSRCauto = videoSRC + "?autoplay=1";
+				  jQuery(theModal + ' iframe').attr('src', videoSRCauto);
+				  jQuery(theModal + ' button.btn-close').click(function() {
+				  jQuery(theModal + ' iframe').attr('src', videoSRC);
+				});
+			  });
+			}
 		</script>
    <?php
         $testimonialVar = ob_get_clean();
