@@ -136,10 +136,12 @@
         -moz-box-shadow: -1px 10px 7px -7px rgba(217,214,217,0.69);
         box-shadow: -1px 10px 7px -7px rgba(217,214,217,0.69);
         border-radius: 20px;
+        // height: 100%;
     }
  .insights-card {
     overflow: hidden;
     border-radius: 20px;
+    // height: 100%;
     .insight-in-content{
         .slider-title{
             line-height: normal;
@@ -180,21 +182,21 @@
     &.light-bg{
     background-color: #fff !important;
     }
-    &:after{
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        top:0;
-        height: 300px;
-        background-image: url('../../images/caseStdy-bg.png');
-    }
+    // &:after{
+    //     content: '';
+    //     position: absolute;
+    //     left: 0;
+    //     right: 0;
+    //     top:0;
+    //     height: 300px;
+    //     background-image: url('../../images/caseStdy-bg.png');
+    // }
     .title-heading{
         text-align: left;
         position: relative;
         z-index: 1;
-        h2{
-            color: #fff;
-        }
+        // h2{
+        //     color: #fff;
+        // }
     }
 }

@@ -1075,6 +1075,9 @@
     .icon-box-list{
         & > div{
             margin-bottom: 40px;
+            @include bp(sm-max){
+                margin-bottom: 10px;
+            }
         }
     }
     .icon-box{
@@ -1085,7 +1088,10 @@
         padding: 0;
         margin: 20px 30px 30px;
         @include bp(sm-max){
-            margin: 20px 0px 30px;
+            margin: 20px 0px 10px;
+        }
+        @include bp(md-max){
+            text-align: center;
         }
         &:first-child{
             margin-top: 0;      
@@ -1115,3 +1121,101 @@
         }
     }
 }
+.emerging-technology{
+   background-image: url('../../images/technology-bg.jpg'); 
+   background-size: cover;
+   background-repeat: no-repeat;
+   .title-heading{
+    h2{
+        color: #fff;
+        @include bp(md-max){
+            br{
+                display: none;
+            }
+        }
+    }
+   }
+   .icon-box{
+    .icon{
+         svg{ fill: #fff;  path{
+            fill: #fff;
+         }}
+
+    } 
+    .icon-box-title-content{
+        h3{
+            color: #fff;
+        }
+    }
+   }
+   .icon-box-list{
+    .description{
+        color: #fff;
+    }
+   }
+   .btn{
+    color: #fff;
+   }
+}
+.coe-difference{
+    .icon-box-list{
+      margin-top: 100px;
+      .icon-box{
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        position: relative;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        background-color: #2b88b7;
+        margin: auto;
+        padding: 0;
+        align-items: center;
+        .icon-box-title-content{
+            position: absolute;
+            bottom: -100px;
+            left: 73px;
+            width: 200px;
+          h3{
+            font-weight: normal;
+            color: #0c3761;
+            font-size: 16px;
+          }
+        }
+        &:after{
+            content: "";
+            position: absolute;
+            bottom: -76px;
+            left: 74px;
+            border: 0;
+            width: 3px;
+            border-left: 1.5px dashed #000 !important;
+            height: 78px;
+        }
+        .icon{
+            min-height: 100px;
+            min-width: 100px;
+            background-color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+      }
+      &>div{
+        &:nth-child(even){
+            .icon-box{
+                &::after{
+                bottom: 150px;
+                }
+                .icon-box-title-content{
+                    bottom: 200px;
+                    left: -108px;
+                }
+            }
+        }
+      }
+    }
+  }
+  

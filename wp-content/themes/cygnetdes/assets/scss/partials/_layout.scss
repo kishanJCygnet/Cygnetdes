@@ -1010,3 +1010,212 @@ video{
   right: auto;
   margin: 0;
 }
+// upcomming event
+.upcoming-events{
+  .ev-content{
+     width: 870px;
+     margin: auto;
+     display: flex;
+     background-color: #F3FBFF;
+     border-top-left-radius: 20px;
+     border-top-right-radius: 20px;
+     align-items: center;
+     .img{
+      width: 298px;
+     }
+     .ev-details{
+      width: calc(100% - 298px);
+      padding: 40px;
+      h2{
+        font-weight: normal;
+        font-size: 40px;
+        margin-bottom: 37px;
+        span{
+          font-weight: 500;
+          color: #19c5e3;
+        }
+      }
+      h3{
+        font-size: 32px;
+        color: #505353;
+        font-weight: 500;
+        margin-bottom: 24px;
+      }
+      .date{
+        font-size: 18px;
+        color: #505353;
+        margin-bottom: 30px;
+      }
+     }
+  }
+  @include bp(sm-max){
+    display: none;
+  }
+}
+.des-info{
+  .two-colum-content{
+    @include bp(sm-max){
+      flex-direction: column-reverse;
+    }
+    .col-right{
+      @include bp(sm-max){
+      margin-bottom: 20px;
+      }
+    }
+    .col-left{
+      @include bp(sm-max){
+       text-align: center;
+        }
+    }
+  }  
+}
+.upcoming-sticky-event{
+  .use-content{
+    position: fixed;
+    top: 200px;
+    right: 0;
+    z-index: 100;
+    background-color: #fff;   
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    width: 111px;
+    height: 101px;
+    box-shadow: 0px 0px 4px 0px #797979;
+    &:hover{
+      width: 800px;
+      height: 240px;
+      max-height: 350px;
+      .icon{     
+        text-align: left;
+        padding: 10px 20px;
+        i{
+          font-size: 18px;
+        }
+      }
+      .use-list{
+        overflow: visible;
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+    br{
+      display: none;
+    }
+    .icon{      
+      padding: 10px 10px;
+      text-align: center;
+      i{
+        font-size: 32px;
+      }
+      span{
+        text-align: center;
+        display: inline-block;
+        line-height: 1.2;
+        margin-top: 5px;
+      }
+    }
+    .use-list{
+      padding: 10px 20px;
+      border-top: 1px solid #cdc8c8;
+      visibility: hidden;
+      overflow: hidden;
+      opacity: 0;
+      .use-item{
+        display: flex;
+        .text{
+          margin-left: 15px;
+        h2{
+          font-size: 20px;
+          color: #0F3764;
+        }
+        .desc{
+          font-size: 12px;
+          margin-bottom: 10px;
+        }
+        .date{
+          font-size: 15px;
+          color: #0F3764;
+          display: inline-block;
+          margin-bottom: 10px;
+        }
+        .btn{
+          font-size: 12px;
+        }
+      }
+      }
+      .img{
+        display: inline-block;      
+       
+        overflow: hidden;
+        border-radius: 10px;
+        img{
+          width: 146px;
+          height: 168px;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+}
+
+.procure-e-Stamp-content{
+    .top-content{
+        display: flex;
+        justify-content: space-around;
+        margin-top: 80px;
+        .item{
+          background-color: #0c3761;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 250px;
+          width: 250px;
+          position: relative;
+          .icon{
+            text-align: center;
+            color:#fff;
+            z-index: 1;
+            img{
+              margin-bottom: 15px;
+              width: 80px;
+          }
+          .text{
+            padding: 0 45px;
+            position: absolute;
+            bottom: 0;
+        }
+        }
+        &:after{
+          content: '';
+          position: absolute;
+          background-image: url(images/circle-join-shape.png);
+          left: 198px;
+          right: -138px;
+          bottom: 36px;
+          top: 36px;
+          background-size: contain;
+          background-repeat: no-repeat;
+      }
+      &:before{
+          content: '';
+          position: absolute;
+          right: -45px;
+          top: 118px;
+          background-image: url(./images/arrow-right.svg);
+          background-repeat: no-repeat;
+          width: 24px;
+          height: 20px;
+          background-size: cover;
+          z-index: 1;    
+      }
+      &:not(:first-child){
+        margin-left: -25px;
+    }
+    &:last-child:after,
+    &:last-child:before{
+        display: none;
+    }
+      }
+    }
+  }
