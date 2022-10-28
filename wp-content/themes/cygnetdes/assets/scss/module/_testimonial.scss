@@ -40,7 +40,7 @@
             position: relative;
         }
         @include bp(xs-max) {
-            width: 80%;
+            width: 100%;
         }
         .owl-item{
             padding: 15px;
@@ -106,7 +106,7 @@
         }
         @include bp(sm-max) {
             position: static;
-            display: none;
+            padding: 20px;
         }
         .client-details {
             .img{               
@@ -123,9 +123,13 @@
                 .img{
                     width: 90px !important;
                     height: 90px !important;
+                    min-width: 90px !important;
+                    min-height: 90px !important;
                     margin: auto;
                     img{
-                        width: 88px !important;
+                       min-width: 88px !important;
+                        min-height: 88px !important;
+                       width: 88px !important;
                         height: 88px !important;
                     }
                 }
@@ -140,6 +144,7 @@
                 visibility: visible;
                 z-index: 1;
                 position: relative;
+               
             }       
             .client-details {
                 opacity: 1;
@@ -164,8 +169,12 @@
             .p2 {
                 font-size: 16px !important;
             }
-            .img{margin-bottom: 20px;
-
+            .img{
+                margin-bottom: 20px;
+                @include bp(md-max) {
+                    margin-bottom: 10px;
+                    margin-top: 15px;
+                    }
 
                 // border: 2px solid #9acdcd;
                 // border-radius: 50%;
@@ -209,7 +218,7 @@
                 margin-top: 30px;
             }
             @include bp(sm-max) {
-                padding: 30px 15px;
+                padding: 10px 0px 0;
             }
             .p1 {
                 font-weight: 600;
@@ -235,12 +244,16 @@
                 background-repeat: no-repeat;
                 left: 0px;
                 transform: rotate(0deg);
-                @include bp(md-max) {                  
-                    right: 10px;
-                }      
                 @include bp(lg-max) {                  
                     bottom: -55px;
-                }              
+                }  
+                @include bp(md-max) {                  
+                    right: 10px;
+                    top: -33px;
+                    width: 35px;
+                    height: 30px;
+                }      
+                           
             }
         }
     }
