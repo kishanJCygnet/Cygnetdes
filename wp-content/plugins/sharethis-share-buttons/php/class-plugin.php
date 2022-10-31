@@ -65,7 +65,7 @@ class Plugin extends Plugin_Base {
 		if ( is_array( $propertyid ) && array() !== $propertyid ) {
 			wp_register_script(
 				"{$this->assets_prefix}-mu",
-				"//platform-api.sharethis.com/js/sharethis.js#property={$propertyid[0]}&product={$first_prod}-buttons",
+				"//platform-api.sharethis.com/js/sharethis.js#property={$propertyid[0]}&product={$first_prod}-buttons&source=sharethis-share-buttons-wordpress",
 				array(),
 				SHARETHIS_SHARE_BUTTONS_VERSION,
 				false
