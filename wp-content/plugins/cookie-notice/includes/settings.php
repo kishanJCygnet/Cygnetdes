@@ -1134,9 +1134,9 @@ class Cookie_Notice_Settings {
 
 			// purge cache on save
 			if ( $is_network )
-				delete_site_transient( 'cookie_notice_compliance_cache' );
+				delete_site_transient( 'cookie_notice_app_cache' );
 			else
-				delete_transient( 'cookie_notice_compliance_cache' );
+				delete_transient( 'cookie_notice_app_cache' );
 		} elseif ( isset( $_POST['reset_cookie_notice_options'] ) ) {
 			$input = $cn->defaults['general'];
 
@@ -1148,13 +1148,13 @@ class Cookie_Notice_Settings {
 				update_site_option( 'cookie_notice_status', '' );
 
 				// purge cache on save
-				delete_site_transient( 'cookie_notice_compliance_cache' );
+				delete_site_transient( 'cookie_notice_app_cache' );
 			} else {
 				// set app status
 				update_option( 'cookie_notice_status', '' );
 
 				// purge cache on save
-				delete_transient( 'cookie_notice_compliance_cache' );
+				delete_transient( 'cookie_notice_app_cache' );
 			}
 		}
 
@@ -1328,11 +1328,18 @@ class Cookie_Notice_Settings {
 
 		if ( ! current_user_can( apply_filters( 'cn_manage_cookie_notice_cap', 'manage_options' ) ) )
 			echo false;
+		
+		// get main instance
+		$cn = Cookie_Notice();
 
-		if ( Cookie_Notice()->is_network_admin() )
-			delete_site_transient( 'cookie_notice_compliance_cache' );
+		// delete cache
+		if ( $cn->is_network_admin() )
+			delete_site_transient( 'cookie_notice_app_cache' );
 		else
-			delete_transient( 'cookie_notice_compliance_cache' );
+			delete_transient( 'cookie_notice_app_cache' );
+		
+		// request for new config data too
+		$cn->welcome_api->get_app_config( true );
 
 		echo true;
 		exit;
