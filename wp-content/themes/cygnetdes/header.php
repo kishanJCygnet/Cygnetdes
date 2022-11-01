@@ -143,10 +143,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 					<?php endif;*/ ?>
 				</a>
                
-               
+               <?php if($post->ID != 34046) { ?>
                 <div class="collapse navbar-collapse" id="navbarScroll">
 					<?php if ( has_nav_menu( 'primary' ) ) : ?>
-						<nav id="site-navigation" class="primary-navigation" aria-label="<?php esc_attr_e( 'Primary menu', 'testingwhiz' ); ?>">
+						<nav id="site-navigation" class="primary-navigation" aria-label="<?php esc_attr_e( 'Primary menu', 'cygnetdes' ); ?>">
 							<?php
 							wp_nav_menu(
 								array(
@@ -160,7 +160,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 							?>
 						</nav><!-- #site-navigation -->
 					<?php endif; ?>
-                </div>			
+                </div>	
+			   <?php } else { ?>
+				<!-- New top menu -->
+				<div class="collapse navbar-collapse main-menu" id="navbarScroll">
+					<?php //if ( has_nav_menu( 'primary' ) ) : ?>
+						<nav id="site-navigation" class="primary-navigation">
+							<?php
+							wp_nav_menu( array( 
+								'theme_location' => 'main_menu', 
+								'menu_class'      => 'menu-wrapper',
+								'container_class' => 'primary-menu-container',
+								'items_wrap'      => '<ul id="primary-menu-list" class="%2$s">%3$s</ul>',
+								'fallback_cb'     => false, 
+								) 
+							); 
+							?>
+						</nav><!-- #site-navigation -->
+					<?php //endif; ?>
+                </div>
+			   <?php } ?>
+				<!-- End New top menu -->
                
                <div class="right-content d-flex align-items-center">
                <?php $post_slug = $post->post_name;
