@@ -2,10 +2,10 @@
 /*
 Plugin Name: Cookie Notice & Compliance for GDPR / CCPA
 Description: Cookie Notice allows you to you elegantly inform users that your site uses cookies and helps you comply with GDPR, CCPA and other data privacy laws.
-Version: 2.4.1
+Version: 2.4.2
 Author: Hu-manity.co
 Author URI: https://hu-manity.co/
-Plugin URI: https://hu-manity.co/
+Plugin URI: https://cookie-compliance.co/
 License: MIT License
 License URI: https://opensource.org/licenses/MIT
 Text Domain: cookie-notice
@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) )
  * Cookie Notice class.
  *
  * @class Cookie_Notice
- * @version	2.4.1
+ * @version	2.4.2
  */
 class Cookie_Notice {
 
@@ -43,7 +43,6 @@ class Cookie_Notice {
 	private $transactional_api_url = 'https://transactional-api.hu-manity.co';
 	private $app_widget_url = '//cdn.hu-manity.co/hu-banner.min.js';
 	private $deactivaion_url = '';
-	private $plugin_basename = '';
 	private $network_admin = false;
 	private $plugin_network_active = false;
 	private static $_instance;
@@ -106,7 +105,7 @@ class Cookie_Notice {
 			'update_delay_date'		=> 0,
 			'update_threshold_date'	=> 0
 		],
-		'version'	=> '2.4.1'
+		'version'	=> '2.4.2'
 	];
 
 	/**
@@ -219,6 +218,8 @@ class Cookie_Notice {
 	 */
 	private function define_constants() {
 		define( 'COOKIE_NOTICE_URL', plugins_url( '', __FILE__ ) );
+		define( 'COOKIE_NOTICE_PATH', plugin_dir_path( __FILE__ ) );
+		define( 'COOKIE_NOTICE_BASENAME', plugin_basename( __FILE__ ) );
 	}
 
 	/**
@@ -339,14 +340,11 @@ class Cookie_Notice {
 		if ( ! function_exists( 'is_plugin_active_for_network' ) )
 			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 
-		// get plugin "dir/file" path
-		$this->plugin_basename = plugin_basename( __FILE__ );
-
 		// bypass is_network_admin() to handle AJAX requests properly.
 		$this->network_admin = is_multisite() && ( is_network_admin() || ( wp_doing_ajax() && isset( $_POST['cn_network'] ) && $_POST['cn_network'] === '1' ) );
 
 		// check whether the plugin is active for the entire network.
-		$this->plugin_network_active = is_plugin_active_for_network( $this->plugin_basename );
+		$this->plugin_network_active = is_plugin_active_for_network( COOKIE_NOTICE_BASENAME );
 	}
 
 	/**
@@ -355,17 +353,14 @@ class Cookie_Notice {
 	 * @return void
 	 */
 	private function includes() {
-		// get plugin path
-		$path = plugin_dir_path( __FILE__ );
-
-		include_once( $path . 'includes/bot-detect.php' );
-		include_once( $path . 'includes/dashboard.php' );
-		include_once( $path . 'includes/frontend.php' );
-		include_once( $path . 'includes/functions.php' );
-		include_once( $path . 'includes/settings.php' );
-		include_once( $path . 'includes/welcome.php' );
-		include_once( $path . 'includes/welcome-api.php' );
-		include_once( $path . 'includes/welcome-frontend.php' );
+		include_once( COOKIE_NOTICE_PATH . 'includes/bot-detect.php' );
+		include_once( COOKIE_NOTICE_PATH . 'includes/dashboard.php' );
+		include_once( COOKIE_NOTICE_PATH . 'includes/frontend.php' );
+		include_once( COOKIE_NOTICE_PATH . 'includes/functions.php' );
+		include_once( COOKIE_NOTICE_PATH . 'includes/settings.php' );
+		include_once( COOKIE_NOTICE_PATH . 'includes/welcome.php' );
+		include_once( COOKIE_NOTICE_PATH . 'includes/welcome-api.php' );
+		include_once( COOKIE_NOTICE_PATH . 'includes/welcome-frontend.php' );
 	}
 
 	/**
@@ -374,7 +369,7 @@ class Cookie_Notice {
 	 * @return void
 	 */
 	public function load_textdomain() {
-		load_plugin_textdomain( 'cookie-notice', false, dirname( $this->plugin_basename ) . '/languages/' );
+		load_plugin_textdomain( 'cookie-notice', false, dirname( COOKIE_NOTICE_BASENAME ) . '/languages/' );
 	}
 
 	/**
@@ -445,6 +440,7 @@ class Cookie_Notice {
 				delete_site_option( 'cookie_notice_options' );
 				delete_site_option( 'cookie_notice_status' );
 				delete_site_option( 'cookie_notice_app_analytics' );
+				delete_site_option( 'cookie_notice_app_blocking' );
 				delete_site_option( 'cookie_notice_version' );
 			}
 
@@ -483,10 +479,11 @@ class Cookie_Notice {
 			delete_option( 'cookie_notice_options' );
 			delete_option( 'cookie_notice_status' );
 			delete_option( 'cookie_notice_app_analytics' );
+			delete_option( 'cookie_notice_app_blocking' );
 			delete_option( 'cookie_notice_version' );
 
 			// delete transient
-			delete_transient( 'cookie_notice_compliance_cache' );
+			delete_transient( 'cookie_notice_app_cache' );
 		}
 
 		// remove wp super cache cookie
@@ -888,7 +885,7 @@ class Cookie_Notice {
 	 *
 	 * @return boolean
 	 */
-	public function cookies_set() {
+	public static function cookies_set() {
 		if ( Cookie_Notice()->get_status() === 'active' )
 			$result = isset( $_COOKIE['hu-consent'] );
 		else
@@ -988,7 +985,7 @@ class Cookie_Notice {
 		if ( ! current_user_can( apply_filters( 'cn_manage_cookie_notice_cap', 'manage_options' ) ) )
 			return $links;
 
-		if ( $file === $this->plugin_basename ) {
+		if ( $file === COOKIE_NOTICE_BASENAME ) {
 			if ( ! empty( $links['deactivate'] ) ) {
 				// link already contains class attribute?
 				if ( preg_match( '/<a.*?class=(\'|")(.*?)(\'|").*?>/is', $links['deactivate'], $result ) === 1 )
