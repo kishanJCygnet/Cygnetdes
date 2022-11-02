@@ -67,8 +67,9 @@ if (have_posts()) :
 										</article>	
 										<aside class="sidebar">
 											<div class="sidebar-title text-center">
-												<h2 class="fw-normal fs-4">Need Help?</h2> 
-												<h4 class="fs-5">Get in touch</h4>
+												<h2 class="fw-normal fs-4">Get in touch</h2>
+												<!--<h2 class="fw-normal fs-4">Need Help?</h2> 
+												<h4 class="fs-5">Get in touch</h4>-->
 											</div>
 											<div class="sidebar-block-body">
 												<?php echo do_shortcode('[contact-form-7 id="30976" title="Blog detail page contact form"]'); ?>
