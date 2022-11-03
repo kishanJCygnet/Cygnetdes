@@ -561,7 +561,7 @@ class Options extends CommonOptions\Options {
 		$validLicenseKey = aioseo()->internalOptions->internal->validLicenseKey;
 		if ( $validLicenseKey ) {
 			// Save the key to our settings.
-			$this->general->licenseKey = $validLicenseKey;
+			aioseo()->options->general->licenseKey = $validLicenseKey;
 			$this->save( true );
 
 			// Reset the key coming in from lite.

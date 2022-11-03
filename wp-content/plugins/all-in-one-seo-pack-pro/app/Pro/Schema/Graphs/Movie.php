@@ -45,9 +45,9 @@ class Movie extends CommonGraphs\Graph {
 				'reviewBody'   => $graphData->properties->review->content,
 				'reviewRating' => [
 					'@type'       => 'Rating',
-					'ratingValue' => (int) $graphData->properties->rating->value,
-					'worstRating' => (int) $graphData->properties->rating->minimum,
-					'bestRating'  => (int) $graphData->properties->rating->maximum
+					'ratingValue' => (float) $graphData->properties->rating->value,
+					'worstRating' => (float) $graphData->properties->rating->minimum,
+					'bestRating'  => (float) $graphData->properties->rating->maximum
 				],
 				'author'       => [
 					'@type' => 'Person',
@@ -57,9 +57,9 @@ class Movie extends CommonGraphs\Graph {
 
 			$data['aggregateRating'] = [
 				'@type'       => 'AggregateRating',
-				'ratingValue' => (int) $graphData->properties->rating->value,
-				'worstRating' => (int) $graphData->properties->rating->minimum,
-				'bestRating'  => (int) $graphData->properties->rating->maximum,
+				'ratingValue' => (float) $graphData->properties->rating->value,
+				'worstRating' => (float) $graphData->properties->rating->minimum,
+				'bestRating'  => (float) $graphData->properties->rating->maximum,
 				'reviewCount' => 1
 			];
 		}

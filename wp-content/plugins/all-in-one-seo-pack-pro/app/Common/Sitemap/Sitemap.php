@@ -15,6 +15,114 @@ use AIOSEO\Plugin\Common\Models;
  */
 class Sitemap {
 	/**
+	 * Content class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Content
+	 */
+	public $content = null;
+
+	/**
+	 * Root class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Root
+	 */
+	public $root = null;
+
+	/**
+	 * Query class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Query
+	 */
+	public $query = null;
+
+	/**
+	 * File class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var File
+	 */
+	public $file = null;
+
+	/**
+	 * Image class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Image\Image
+	 */
+	public $image = null;
+
+	/**
+	 * Ping class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Ping
+	 */
+	public $ping = null;
+
+	/**
+	 * Priority class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Priority
+	 */
+	public $priority = null;
+
+	/**
+	 * Output class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Output
+	 */
+	public $output = null;
+
+	/**
+	 * Helpers class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Helpers
+	 */
+	public $helpers = null;
+
+	/**
+	 * RequestParser class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var RequestParser
+	 */
+	public $requestParser = null;
+
+	/**
+	 * Xsl class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Xsl
+	 */
+	public $xsl = null;
+
+	/**
+	 * The sitemap type (e.g. "general", "news", "video", "rss", etc.).
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var string
+	 */
+	public $type = '';
+
+	/**
 	 * Class constructor.
 	 *
 	 * @since 4.0.0
@@ -31,7 +139,8 @@ class Sitemap {
 		$this->helpers       = new Helpers();
 		$this->requestParser = new RequestParser();
 		$this->xsl           = new Xsl();
-		$this->localization  = new Localization();
+
+		new Localization();
 
 		$this->disableWpSitemap();
 	}
@@ -80,7 +189,7 @@ class Sitemap {
 	 * @return void
 	 */
 	private function maybeAddHtaccessRewriteRules() {
-		if ( ! aioseo()->helpers->isApache() ) {
+		if ( ! aioseo()->helpers->isApache() || wp_doing_ajax() || wp_doing_cron() ) {
 			return;
 		}
 
@@ -92,7 +201,9 @@ class Sitemap {
 
 		$contents = aioseo()->helpers->decodeHtmlEntities( aioseo()->htaccess->getContents() );
 		if ( get_option( 'permalink_structure' ) ) {
-			if ( preg_match( '/All in One SEO Sitemap Rewrite Rules/i', $contents ) ) {
+			if ( preg_match( '/All in One SEO Sitemap Rewrite Rules/i', $contents ) && ! aioseo()->core->cache->get( 'aioseo_sitemap_htaccess_rewrite_rules_remove' ) ) {
+				aioseo()->core->cache->update( 'aioseo_sitemap_htaccess_rewrite_rules_remove', time(), HOUR_IN_SECONDS );
+
 				$contents = preg_replace( "/$escapedRewriteRules/i", '', $contents );
 				aioseo()->htaccess->saveContents( $contents );
 			}
@@ -100,9 +211,11 @@ class Sitemap {
 			return;
 		}
 
-		if ( preg_match( '/All in One SEO Sitemap Rewrite Rules/i', $contents ) ) {
+		if ( preg_match( '/All in One SEO Sitemap Rewrite Rules/i', $contents ) || aioseo()->core->cache->get( 'aioseo_sitemap_htaccess_rewrite_rules_add' ) ) {
 			return;
 		}
+
+		aioseo()->core->cache->update( 'aioseo_sitemap_htaccess_rewrite_rules_add', time(), HOUR_IN_SECONDS );
 
 		$contents .= $rewriteRules;
 

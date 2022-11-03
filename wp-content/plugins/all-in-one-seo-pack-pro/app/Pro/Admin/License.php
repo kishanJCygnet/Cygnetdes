@@ -775,10 +775,10 @@ class License {
 	 *
 	 * @since 4.2.5
 	 *
-	 * @param  string  $type       The type of request, either activate or deactivate.
-	 * @param  string  $licenseKey The license key we are using for this request.
-	 * @param  array   $domains    An array of domains to activate or deactivate.
-	 * @return Object              The JSON response as an object.
+	 * @param  string      $type       The type of request, either activate or deactivate.
+	 * @param  string      $licenseKey The license key we are using for this request.
+	 * @param  array       $domains    An array of domains to activate or deactivate.
+	 * @return Object|null             The JSON response as an object.
 	 */
 	public function sendLicenseRequest( $type, $licenseKey, $domains ) {
 		$payload = [

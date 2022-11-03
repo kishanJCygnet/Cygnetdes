@@ -8,7 +8,7 @@ $parenthandle = 'twentytwentyone-style'; // This is 'twentyfifteen-style' for th
         $theme->parent()->get('Version')
     );
 	
-    wp_enqueue_style( 'testingwhiz-style', get_stylesheet_uri());
+    wp_enqueue_style( 'cygnetdes-style', get_stylesheet_uri());
 }
 
 //Custom walker class file include for Wp navigation menu.
@@ -31,20 +31,20 @@ if (function_exists('acf_add_options_page')) {
 }
 
 /**
-  Function name : testingwhiz_setup
+  Function name : cygnetdes_setup
   Sets up theme defaults and registers support for various WordPress features.
   Note that this function is hooked into the after_setup_theme hook, which
   runs before the init hook. The init hook is too late for some features, such
   as indicating support for post thumbnail .
  */
-function testingwhiz_setup()
+function cygnetdes_setup()
 {
-    //Load testingwhiz-deparments theme
-    load_theme_textdomain('testingwhiz');
+    //Load cygnetdes-deparments theme
+    load_theme_textdomain('cygnetdes');
     //Enable support for Post Thumbnails on posts and pages.
     add_theme_support('post-thumbnails');
     //Add the size of featured image on posts and pages.
-    //add_image_size('testingwhiz_setup-featured-image', 2000, 1200, true);
+    //add_image_size('cygnetdes_setup-featured-image', 2000, 1200, true);
     //Switch default core markup for search form, comment form, and comments to output valid HTML5.
     add_theme_support('html5', array(
         'comment-form',
@@ -67,9 +67,9 @@ function testingwhiz_setup()
     // This theme uses wp_nav_menu() in two locations.
     register_nav_menus(
         array(
-            'header_menu' => __('Header Menu', 'testingwhiz'),
-            'footer_menu' => __('Footer Menu', 'testingwhiz'),
-            'user_manual' => __('User Manual', 'testingwhiz')
+            'header_menu' => __('Header Menu', 'cygnetdes'),
+            'footer_menu' => __('Footer Menu', 'cygnetdes'),
+            'main_menu' => __('Main Menu', 'cygnetdes')
         )
     );
     //Add different image sizes
@@ -78,7 +78,7 @@ function testingwhiz_setup()
     add_image_size('1250w', 1250);
     add_image_size('1920w', 1900);*/
 }
-add_action('after_setup_theme', 'testingwhiz_setup');
+add_action('after_setup_theme', 'cygnetdes_setup');
 
 
 /* Added code 22-3-2022 */

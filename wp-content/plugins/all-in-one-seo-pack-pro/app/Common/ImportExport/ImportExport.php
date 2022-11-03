@@ -15,13 +15,40 @@ use AIOSEO\Plugin\Common\Models;
  */
 class ImportExport {
 	/**
-	 * Set up an array of plugins for importing.
+	 * List of plugins for importing.
 	 *
 	 * @since 4.0.0
 	 *
 	 * @var array
 	 */
 	private $plugins = [];
+
+	/**
+	 * YoastSeo class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var YoastSeo\YoastSeo
+	 */
+	public $yoastSeo = null;
+
+	/**
+	 * RankMath class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var RankMath\RankMath
+	 */
+	public $rankMath = null;
+
+	/**
+	 * SeoPress class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var SeoPress\SeoPress
+	 */
+	public $seoPress = null;
 
 	/**
 	 * Class constructor.
@@ -321,8 +348,8 @@ class ImportExport {
 	 */
 	private function cancelScans() {
 		// Figure out how to check if these addons are enabled and then get the action names that way.
-		aioseo()->helpers->unscheduleAction( 'aioseo_video_sitemap_scan' );
-		aioseo()->helpers->unscheduleAction( 'aioseo_image_sitemap_scan' );
+		aioseo()->actionScheduler->unschedule( 'aioseo_video_sitemap_scan' );
+		aioseo()->actionScheduler->unschedule( 'aioseo_image_sitemap_scan' );
 	}
 
 	/**

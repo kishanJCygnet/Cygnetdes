@@ -62,7 +62,7 @@ class Event extends CommonGraphs\Graph {
 			$data['offers'] = [
 				'@type'         => 'Offer',
 				'url'           => ! empty( $graphData->properties->offer->url ) ? $graphData->properties->offer->url : '',
-				'price'         => ! empty( $graphData->properties->offer->price ) ? $graphData->properties->offer->price : 0,
+				'price'         => ! empty( $graphData->properties->offer->price ) ? (float) $graphData->properties->offer->price : 0,
 				'priceCurrency' => ! empty( $graphData->properties->offer->currency ) ? $graphData->properties->offer->currency : '',
 				'validFrom'     => ! empty( $graphData->properties->offer->validFrom )
 					? aioseo()->helpers->dateToIso8601( $graphData->properties->offer->validFrom )

@@ -5,7 +5,7 @@
  * Description: SEO for WordPress. Features like XML Sitemaps, SEO for custom post types, SEO for blogs, business sites, ecommerce sites, and much more. More than 80 million downloads since 2007.
  * Author:      All in One SEO Team
  * Author URI:  https://aioseo.com/
- * Version:     4.2.6.1
+ * Version:     4.2.7
  * Text Domain: all-in-one-seo-pack
  * Domain Path: /languages
  *
@@ -89,6 +89,8 @@ if ( version_compare( PHP_VERSION, '7.0', '<' ) ) {
 }
 
 // Define the class and the function.
+// The AIOSEOAbstract class is required here because it can't be autoloaded.
+require_once( dirname( __FILE__ ) . '/app/AIOSEOAbstract.php' );
 require_once( dirname( __FILE__ ) . '/app/AIOSEO.php' );
 
 aioseo();

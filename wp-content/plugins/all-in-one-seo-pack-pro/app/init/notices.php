@@ -110,9 +110,11 @@ if ( ! function_exists( 'aioseo_php_notice_deprecated' ) ) {
 					wp_kses(
 						sprintf(
 							// Translators: 1 - Opening HTML bold tag, 2 - Closing HTML bold tag, 3 - The plugin name ("All in One SEO"), 4 - Opening HTML link tag, 5 - Closing HTML link tag.
-							__( '%1$sNote:%2$s Support for PHP 5.4 will be discontinued in 2021. After this, if no further action is taken, %3$s functionality will be disabled. %4$sRead more for additional information.%5$s', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+							__( '%1$sNote:%2$s Support for PHP %3$s will be discontinued in %4$s. After this, if no further action is taken, %5$s functionality will be disabled. %6$sRead more for additional information.%7$s', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
 							'<strong>',
 							'</strong>',
+							PHP_VERSION,
+							date( 'Y' ),
 							'AIOSEO',
 							'<a href="https://aioseo.com/docs/supported-php-version/?utm_source=WordPress&utm_medium=' . $medium . '&utm_campaign=outdated-php-notice" target="_blank" rel="noopener noreferrer">', // phpcs:ignore Generic.Files.LineLength.MaxExceeded
 							'</a>'
@@ -224,7 +226,8 @@ if ( ! function_exists( 'aioseo_lite_notice' ) ) {
 			</div>',
 			esc_html__( 'Heads up!', 'all-in-one-seo-pack' ),
 			// Translators: 1 - The plugin name ("All in One SEO"), 2 - Same as previous, 3 - Same as previous.
-			sprintf( esc_html__( 'Your site already has %1$s Pro activated. If you want to switch to %2$s Lite, please first go to Plugins > Installed Plugins and deactivate %1$s. Then, you can activate %3$s Lite.', 'all-in-one-seo-pack' ), AIOSEO_PLUGIN_SHORT_NAME, AIOSEO_PLUGIN_SHORT_NAME, AIOSEO_PLUGIN_SHORT_NAME ) ); //phpcs:ignore
+			sprintf( esc_html__( 'Your site already has %1$s activated. If you want to switch to %2$s, please first go to Plugins > Installed Plugins and deactivate %1$s. Then, you can activate %2$s.', 'all-in-one-seo-pack' ), 'AIOSEO Pro', 'AIOSEO Lite' ) // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+		);
 
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );

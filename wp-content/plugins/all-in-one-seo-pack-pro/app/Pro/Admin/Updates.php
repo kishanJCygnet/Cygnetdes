@@ -112,7 +112,7 @@ class Updates {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  object $value The WordPress update object.
+	 * @param  mixed  $value The WordPress update object.
 	 * @return object        Amended WordPress update object on success, default if object is empty.
 	 */
 	public function updatePluginsFilter( $value ) {
@@ -228,7 +228,8 @@ class Updates {
 				'php_version' => PHP_VERSION,
 				'wp_version'  => get_bloginfo( 'version' )
 			] );
-			if ( ! $response || empty( $response ) || ! empty( $response->error ) ) {
+
+			if ( empty( $response ) || ! empty( $response->error ) ) {
 				$this->info = false;
 
 				return $defaultApi;

@@ -43,20 +43,27 @@ class WooCommerceProduct extends Product {
 		$this->graphData = $graphData;
 
 		$data = [
-			'@type'       => 'Product',
-			'@id'         => ! empty( $graphData->id ) ? aioseo()->schema->context['url'] . $graphData->id : aioseo()->schema->context['url'] . '#wooCommerceProduct',
-			'name'        => method_exists( $this->product, 'get_name' ) ? $this->product->get_name() : get_the_title(),
-			'description' => $this->getShortDescription(),
-			'url'         => aioseo()->schema->context['url'],
-			'brand'       => $this->getBrand(),
-			'sku'         => method_exists( $this->product, 'get_sku' ) ? $this->product->get_sku() : '',
-			'gtin'        => $this->getGtin(),
-			'mpn'         => ! empty( $graphData->properties->identifiers->mpn ) ? $graphData->properties->identifiers->mpn : '',
-			'image'       => $this->getImage(),
+			'@type'        => 'Product',
+			'@id'          => ! empty( $graphData->id ) ? aioseo()->schema->context['url'] . $graphData->id : aioseo()->schema->context['url'] . '#wooCommerceProduct',
+			'name'         => method_exists( $this->product, 'get_name' ) ? $this->product->get_name() : get_the_title(),
+			'description'  => $this->getShortDescription(),
+			'url'          => aioseo()->schema->context['url'],
+			'brand'        => $this->getBrand(),
+			'sku'          => method_exists( $this->product, 'get_sku' ) ? $this->product->get_sku() : '',
+			'gtin'         => $this->getGtin(),
+			'mpn'          => ! empty( $graphData->properties->identifiers->mpn ) ? $graphData->properties->identifiers->mpn : '',
+			'isbn'         => ! empty( $graphData->properties->identifiers->isbn ) ? $graphData->properties->identifiers->isbn : '',
+			'material'     => ! empty( $graphData->properties->attributes->material ) ? $graphData->properties->attributes->material : '',
+			'color'        => ! empty( $graphData->properties->attributes->color ) ? $graphData->properties->attributes->color : '',
+			'pattern'      => ! empty( $graphData->properties->attributes->pattern ) ? $graphData->properties->attributes->pattern : '',
+			'size'         => ! empty( $graphData->properties->attributes->size ) ? $graphData->properties->attributes->size : '',
+			'energyRating' => ! empty( $graphData->properties->attributes->energyRating ) ? $graphData->properties->attributes->energyRating : '',
+			'image'        => $this->getImage()
 		];
 
 		$dataFunctions = [
 			'offers'          => 'getOffers',
+			'audience'        => 'getAudience',
 			'aggregateRating' => 'getWooCommerceAggregateRating',
 			'review'          => 'getWooCommerceReview'
 		];
@@ -168,6 +175,7 @@ class WooCommerceProduct extends Product {
 			'priceCurrency'   => 'getPriceCurrency',
 			'priceValidUntil' => 'getPriceValidUntil',
 			'availability'    => 'getAvailability',
+			'shippingDetails' => 'getShippingDetails',
 			'category'        => 'getCategory'
 		];
 
@@ -296,6 +304,148 @@ class WooCommerceProduct extends Product {
 	}
 
 	/**
+	 * Returns the shipping details.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @return array The shipping details.
+	 */
+	public function getShippingDetails() {
+		if ( $this->product->is_virtual() || apply_filters( 'aioseo_schema_woocommerce_shipping_disable', false ) ) {
+			return [];
+		}
+
+		global $woocommerce;
+
+		// To prevent fatal errors, we can only run this on the frontend.
+		if (
+			is_admin() ||
+			wp_doing_ajax() ||
+			wp_doing_cron() ||
+			! is_object( $woocommerce->cart ) ||
+			! is_object( $woocommerce->customer )
+		) {
+			return [];
+		}
+
+		$originalCart     = clone $woocommerce->cart;
+		$originalCustomer = clone $woocommerce->customer;
+
+		// First, clear the cart so that we can simulate the order.
+		$woocommerce->cart->empty_cart();
+		$woocommerce->cart->add_to_cart( $this->product->get_id() );
+
+		// Load the zones.
+		$dataStore = \WC_Data_Store::load( 'shipping-zone' );
+		$rawZones  = $dataStore->get_zones();
+
+		$zones   = [];
+		$zones[] = new \WC_Shipping_Zone( 0 ); // The first zone needs to be instantiated manually.
+		foreach ( $rawZones as $rawZone ) {
+			$zones[] = new \WC_Shipping_Zone( $rawZone );
+		}
+
+		$shippingDetails = [];
+		foreach ( $zones as $zone ) {
+			$locations = $zone->get_zone_locations();
+
+			// In a moment we'll loop over all the locations in the zone.
+			// We'll use one address "$addressData" (as detailed as possible) to calculate the most detailed shipping rate.
+			// We'll use a second variable "$locationData" to keep track of all the countries, states, postal codes, etc. that are included in the current zone.
+			$addressData = [
+				'country'  => '',
+				'state'    => '',
+				'postcode' => '',
+				'city'     => ''
+			];
+
+			$locationData = [
+				'country'  => [],
+				'state'    => [],
+				'postcode' => [],
+				'city'     => [],
+				'rate'     => []
+			];
+
+			foreach ( $locations as $location ) {
+				$addressData[ $location->type ] = $location->code;
+
+				// If the location is a state, group it under the relevant country code.
+				if ( 'state' === $location->type ) {
+					$countryCode = substr( $location->code, 0, 2 );
+					$stateCode   = substr( $location->code, 3 );
+
+					if ( ! isset( $locationData['state'][ $countryCode ] ) ) {
+						$locationData['state'][ $countryCode ] = [];
+					}
+
+					$locationData['state'][ $countryCode ][] = $stateCode;
+				} else {
+					$locationData[ $location->type ][] = $location->code;
+				}
+			}
+
+			// Set the address and get all shipping methods that are eligible for the "order".
+			WC()->customer->set_shipping_location( $addressData['country'], $addressData['state'], $addressData['postcode'] );
+			WC()->shipping->calculate_shipping( WC()->cart->get_shipping_packages() );
+			$shippingMethods = WC()->shipping->packages;
+
+			foreach ( $shippingMethods[0]['rates'] as $shippingMethod ) {
+				// Ignore the free pickup method since this isn't relevant for Google.
+				if ( 'local_pickup' === $shippingMethod->get_method_id() ) {
+					continue 2;
+				}
+
+				$locationData['rate'] = number_format( $shippingMethod->cost, 2, '.', '' );
+			}
+
+			// Once we've got all shipping methods and their rates, loop over the countries/states that are included in the zone.
+			foreach ( $locationData['country'] as $countryCode ) {
+				$shippingDetail = [
+					'@type'               => 'OfferShippingDetails',
+					'shippingRate'        => [
+						'@type'    => 'MonetaryAmount',
+						'value'    => $locationData['rate'],
+						'currency' => $this->getPriceCurrency()
+					],
+					'shippingDestination' => [
+						'@type'          => 'DefinedRegion',
+						'addressCountry' => $countryCode
+					]
+				];
+
+				if ( ! empty( $locationData['postcode'] ) ) {
+					$shippingDetail['shippingDestination']['postalCode'] = $locationData['postcode'];
+				}
+
+				$shippingDetails[] = $shippingDetail;
+			}
+
+			foreach ( $locationData['state'] as $countryCode => $stateCodes ) {
+				$shippingDetails[] = [
+					'@type'               => 'OfferShippingDetails',
+					'shippingRate'        => [
+						'@type'    => 'MonetaryAmount',
+						'value'    => $locationData['rate'],
+						'currency' => $this->getPriceCurrency()
+					],
+					'shippingDestination' => [
+						'@type'          => 'DefinedRegion',
+						'addressCountry' => $countryCode,
+						'addressRegion'  => $stateCodes
+					]
+				];
+			}
+		}
+
+		// Restore the original class instances before returning the data.
+		$woocommerce->cart     = $originalCart;
+		$woocommerce->customer = $originalCustomer;
+
+		return $shippingDetails;
+	}
+
+	/**
 	 * Returns the product category.
 	 *
 	 * @since 4.0.13
@@ -333,7 +483,7 @@ class WooCommerceProduct extends Product {
 			'@id'         => aioseo()->schema->context['url'] . '#aggregrateRating',
 			'worstRating' => 1,
 			'bestRating'  => 5,
-			'ratingValue' => $this->product->get_average_rating(),
+			'ratingValue' => (float) $this->product->get_average_rating(),
 			'reviewCount' => $this->product->get_review_count()
 		];
 	}
@@ -363,7 +513,7 @@ class WooCommerceProduct extends Product {
 				'@type'         => 'Review',
 				'reviewRating'  => [
 					'@type'       => 'Rating',
-					'ratingValue' => get_comment_meta( $comment->comment_ID, 'rating', true ),
+					'ratingValue' => (float) get_comment_meta( $comment->comment_ID, 'rating', true ),
 					'worstRating' => 1,
 					'bestRating'  => 5
 				],

@@ -52,7 +52,7 @@ class Service extends CommonGraphs\Graph {
 		if ( isset( $graphData->properties->price ) && isset( $graphData->properties->currency ) ) {
 			$data['offers'] = [
 				'@type'         => 'Offer',
-				'price'         => $graphData->properties->price ? $graphData->properties->price : 0,
+				'price'         => $graphData->properties->price ? (float) $graphData->properties->price : 0,
 				'priceCurrency' => $graphData->properties->currency
 			];
 		}

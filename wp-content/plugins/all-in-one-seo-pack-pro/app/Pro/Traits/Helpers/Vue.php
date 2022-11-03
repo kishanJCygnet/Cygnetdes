@@ -131,11 +131,6 @@ trait Vue {
 				}
 			}
 
-			global $post;
-			$isNewPost = ! empty( $post ) && ! $post->post_title && ! $post->post_name && 'auto-draft' === $post->post_status;
-
-			// Get the initial schema output for the validator.
-			// We need to clone the data to prevent the Schema class from replacing the main types with the subtypes.
 			$clonedSchema = json_decode( wp_json_encode( $data['currentPost']['schema'] ) );
 			$data['schema']['output'] = aioseo()->schema->getValidatorOutput(
 				$postId,
@@ -143,11 +138,6 @@ trait Vue {
 				$clonedSchema->blockGraphs,
 				$clonedSchema->default
 			);
-
-			// We must reset the title for new posts because they will be given a "Auto Draft" one due to the schema class determining the schema output for the validator.
-			if ( $isNewPost ) {
-				$post->post_title = '';
-			}
 		}
 
 		$wpPost = $this->getPost();

@@ -153,7 +153,7 @@ class Schema {
 		$postId       = $request['postId'];
 		$graphs       = $request['graphs'];
 		$customGraphs = $request['customGraphs'];
-		$default      = $request['default'];
+		$default      = (object) $request['default'];
 		if ( empty( $postId ) ) {
 			return new \WP_REST_Response( [
 				'success' => false,

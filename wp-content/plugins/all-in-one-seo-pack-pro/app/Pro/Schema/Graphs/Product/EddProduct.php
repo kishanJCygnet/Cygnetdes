@@ -81,9 +81,11 @@ class EddProduct extends Product {
 			'sku'             => ! empty( $graphData->properties->identifiers->sku ) ? $graphData->properties->identifiers->sku : '',
 			'gtin'            => ! empty( $graphData->properties->identifiers->gtin ) ? $graphData->properties->identifiers->gtin : '',
 			'mpn'             => ! empty( $graphData->properties->identifiers->mpn ) ? $graphData->properties->identifiers->mpn : '',
+			'isbn'            => ! empty( $graphData->properties->identifiers->isbn ) ? $graphData->properties->identifiers->isbn : '',
 			'image'           => ! empty( $graphData->properties->image ) ? $graphData->properties->image : $this->getFeaturedImage(),
 			'aggregateRating' => aioseo()->helpers->isEddReviewsActive() ? $this->getEddAggregateRating() : $this->getAggregateRating(),
-			'review'          => aioseo()->helpers->isEddReviewsActive() ? $this->getEddReview() : $this->getReview()
+			'review'          => aioseo()->helpers->isEddReviewsActive() ? $this->getEddReview() : $this->getReview(),
+			'audience'        => $this->getAudience()
 		];
 
 		if ( ! empty( $graphData->properties->brand ) ) {
@@ -148,7 +150,7 @@ class EddProduct extends Product {
 		foreach ( $prices as $priceObject ) {
 			$offer                = $defaultOffer;
 			$offer['itemOffered'] = $this->download->post_title . ' - ' . $priceObject['name'];
-			$offer['price']       = $priceObject['amount'];
+			$offer['price']       = (float) $priceObject['amount'];
 
 			$dataFunctions = [
 				'priceCurrency' => 'getPriceCurrency',
@@ -215,7 +217,7 @@ class EddProduct extends Product {
 			'@id'         => aioseo()->schema->context['url'] . '#aggregrateRating',
 			'worstRating' => 1,
 			'bestRating'  => 5,
-			'ratingValue' => get_post_meta( $this->download->get_id(), 'edd_reviews_average_rating', true ),
+			'ratingValue' => (float) get_post_meta( $this->download->get_id(), 'edd_reviews_average_rating', true ),
 			'reviewCount' => get_comments_number( $this->download->get_id() )
 		];
 	}
@@ -251,7 +253,7 @@ class EddProduct extends Product {
 				'@type'         => 'Review',
 				'reviewRating'  => [
 					'@type'       => 'Rating',
-					'ratingValue' => get_comment_meta( $comment->comment_ID, 'edd_rating', true ),
+					'ratingValue' => (float) get_comment_meta( $comment->comment_ID, 'edd_rating', true ),
 					'worstRating' => 1,
 					'bestRating'  => 5
 				],

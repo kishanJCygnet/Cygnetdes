@@ -60,18 +60,18 @@ class Schema extends CommonSchema\Schema {
 	 *
 	 * @param  array  $graphs       The graphs from the schema validator.
 	 * @param  array  $customGraphs The graphs from the schema validator.
-	 * @param  array  $default      The default graph data.
+	 * @param  object $default      The default graph data.
 	 * @param  bool   $isValidator  Whether the current call is for the validator.
 	 * @return string               The JSON schema output.
 	 */
-	protected function generateSchema( $graphs = [], $customGraphs = [], $default = [], $isValidator = false ) {
+	protected function generateSchema( $graphs = [], $customGraphs = [], $default = null, $isValidator = false ) {
 		// Now, filter the graphs.
 		$this->graphs = apply_filters(
 			'aioseo_schema_graphs',
 			array_unique( array_filter( array_values( $this->graphs ) ) )
 		);
 
-		if ( ! $this->graphs ) {
+		if ( empty( $this->graphs ) ) {
 			return '';
 		}
 
@@ -91,15 +91,25 @@ class Schema extends CommonSchema\Schema {
 			$postGraphs = $metaData->schema->graphs;
 		}
 
+		if ( ! empty( $metaData->schema->default ) ) {
+			$default = $metaData->schema->default;
+		}
+
 		foreach ( $postGraphs as $graphData ) {
-			if ( is_array( $graphData ) ) {
-				$graphData = json_decode( wp_json_encode( $graphData ) );
-			}
+			$graphData = (object) $graphData;
 
 			if ( in_array( $graphData->graphName, $this->webPageGraphs, true ) ) {
 				$webPageGraphFound = true;
 				break;
 			}
+		}
+
+		if (
+			! empty( $default->isEnabled ) &&
+			! empty( $default->graphName ) &&
+			in_array( $default->graphName, [ 'FAQPage', 'WebPage' ], true )
+		) {
+			$webPageGraphFound = true;
 		}
 
 		if ( ! $webPageGraphFound ) {
@@ -129,17 +139,7 @@ class Schema extends CommonSchema\Schema {
 			}
 		}
 
-		$schema['@graph'] = apply_filters( 'aioseo_schema_output', $schema['@graph'] );
-		$schema['@graph'] = $this->helpers->cleanAndParseData( $schema['@graph'] );
-
-		// Sort the graphs alphabetically.
-		usort( $schema['@graph'], function ( $a, $b ) {
-			return strcmp( $a['@type'], $b['@type'] );
-		} );
-
-		return isset( $_GET['aioseo-dev'] ) || $isValidator
-			? wp_json_encode( $schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
-			: wp_json_encode( $schema );
+		return aioseo()->schema->helpers->getOutput( $schema, $isValidator );
 	}
 
 	/**
@@ -203,9 +203,7 @@ class Schema extends CommonSchema\Schema {
 		$graphs            = ! empty( $graphs ) ? $graphs : $metaData->schema->graphs;
 		$userDefinedGraphs = [];
 		foreach ( $graphs as $graphData ) {
-			if ( is_array( $graphData ) ) {
-				$graphData = json_decode( wp_json_encode( $graphData ) );
-			}
+			$graphData = (object) $graphData;
 
 			if (
 				empty( $graphData->id ) ||
@@ -242,9 +240,7 @@ class Schema extends CommonSchema\Schema {
 
 		$customGraphs = ! empty( $customGraphs ) ? $customGraphs : $metaData->schema->customGraphs;
 		foreach ( $customGraphs as $customGraphData ) {
-			if ( is_array( $customGraphData ) ) {
-				$customGraphData = json_decode( wp_json_encode( $customGraphData ) );
-			}
+			$customGraphData = (object) $customGraphData;
 
 			if ( empty( $customGraphData->schema ) ) {
 				continue;
@@ -266,8 +262,25 @@ class Schema extends CommonSchema\Schema {
 		if ( ! empty( $default->isEnabled ) && ! empty( $default->graphName ) ) {
 			$graphData = ! empty( $default->data->{$default->graphName} ) ? $default->data->{$default->graphName} : [];
 			$namespace = $this->getGraphNamespace( $default->graphName );
-			if ( $namespace ) {
-				$userDefinedGraphs[] = ( new $namespace )->get( $graphData );
+
+			switch ( $default->graphName ) {
+				case 'FAQPage':
+					if ( null === $this->faqPageInstance ) {
+						$this->faqPageInstance = new Graphs\FAQPage;
+					}
+
+					// FAQ pages need to be collected first and added later because they should be nested under a parent graph.
+					// We'll also store the data since we need it for the name/description properties.
+					$graphData              = $default->data->FAQPage;
+					$this->faqPageGraphData = $graphData;
+					$this->faqPages         = array_merge( $this->faqPages, $this->faqPageInstance->get( $graphData ) );
+					break;
+				default:
+					$namespace = $this->getGraphNamespace( $default->graphName );
+					if ( $namespace ) {
+						$userDefinedGraphs[] = ( new $namespace )->get( $graphData );
+					}
+					break;
 			}
 		}
 
@@ -428,17 +441,38 @@ class Schema extends CommonSchema\Schema {
 		}
 
 		global $wp_query, $post;
-		$post                        = $postObject;
-		$wp_query->post              = $postObject;
-		$wp_query->posts             = [ $postObject ];
-		$wp_query->post_count        = 1;
-		$wp_query->queried_object    = $postObject;
-		$wp_query->queried_object_id = $postId;
-		$wp_query->is_single         = true;
-		$wp_query->is_singular       = true;
+		$originalQuery = is_object( $wp_query ) ? clone $wp_query : $wp_query;
+		$originalPost  = is_object( $post ) ? clone $post : $post;
+		$isNewPost     = ! empty( $originalPost ) && ! $originalPost->post_title && ! $originalPost->post_name && 'auto-draft' === $originalPost->post_status;
+
+		// Only modify the query if there is no post on it set yet.
+		// Otherwise page builders like Divi and Elementor can't seem to load their visual builder.
+		if ( empty( $originalQuery->post ) ) {
+			$post                        = $postObject;
+			$wp_query->post              = $postObject;
+			$wp_query->posts             = [ $postObject ];
+			$wp_query->post_count        = 1;
+			$wp_query->queried_object    = $postObject;
+			$wp_query->queried_object_id = $postId;
+			$wp_query->is_single         = true;
+			$wp_query->is_singular       = true;
+		}
 
 		$this->determineSmartGraphsAndContext();
 
-		return $this->generateSchema( $graphs, $customGraphs, $default, true );
+		$output = $this->generateSchema( $graphs, $customGraphs, $default, true );
+
+		// Reset the global objects.
+		if ( empty( $originalQuery->post ) ) {
+			$wp_query = $originalQuery;
+			$post     = $originalPost;
+		}
+
+		// We must reset the title for new posts because they will be given a "Auto Draft" one due to the schema class determining the schema output for the validator.
+		if ( $isNewPost ) {
+			$post->post_title = '';
+		}
+
+		return $output;
 	}
 }

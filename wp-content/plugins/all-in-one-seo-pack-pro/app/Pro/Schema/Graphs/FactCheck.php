@@ -59,7 +59,7 @@ class FactCheck extends CommonGraphs\Graph {
 
 			$data['reviewRating'] = [
 				'@type'         => 'Rating',
-				'ratingValue'   => $graphData->properties->claimRating,
+				'ratingValue'   => (float) $graphData->properties->claimRating,
 				'bestRating'    => 5,
 				'worstRating'   => 1,
 				'alternateName' => $alternateName
