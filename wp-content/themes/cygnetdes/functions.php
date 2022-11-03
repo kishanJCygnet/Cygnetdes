@@ -244,7 +244,7 @@ function testimonial_slider()
                                    </p>
 								   <?php if(get_field('video_url', $testimonial->ID)){ ?>
 										<div class="client_video">			
-											<a href="#" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#videoModal" data-tagVideo="<?php echo the_field('video_url', $testimonial->ID); ?>" ></a>
+											<a href="#" data-bs-toggle="modal" data-bs-target="#videoModal" data-tagVideo="<?php echo the_field('video_url', $testimonial->ID); ?>" ></a>
 										</div>
 									<?php } ?>
                                 </div> 

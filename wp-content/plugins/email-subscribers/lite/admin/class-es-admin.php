@@ -458,23 +458,12 @@ if ( ! class_exists( 'ES_Admin' ) ) {
 																});
 															}
 															jQuery(document).on('es_drag_and_drop_editor_loaded',()=>{
-																let dropdown = jQuery('#ig-es-dnd-merge-tags #ig-es-dnd-tags-dropdown').clone();
-																	
-																	jQuery('#ig-es-dnd-merge-tags-wrapper').append(dropdown);
-																	jQuery('#ig-es-dnd-merge-tags #ig-es-dnd-tags-dropdown').remove();
-																	jQuery(document).on("click", function (event) {
-																		var $trigger = jQuery("#ig-es-dnd-add-merge-tag-button");
-																		if ($trigger !== event.target && !$trigger.has(event.target).length) {
-																			//jQuery("#ig-es-dnd-merge-tags-wrapper #ig-es-dnd-tags-dropdown").hide();
-																		}
-																	});
-
-																	// Toggle Dropdown
-																	jQuery('#ig-es-dnd-add-merge-tag-button').click(function () {
-																		jQuery('#ig-es-dnd-merge-tags-wrapper #ig-es-dnd-tags-dropdown').toggle();
-																	});
-
-																	ig_es_add_dnd_rte_tags( '<?php echo esc_js( $template_type ); ?>' );
+																window.esVisualEditor.on('change:changesCount', (editorModel, changesCount) => {
+																	if (changesCount > 0) {
+																		ig_es_sync_dnd_editor_content('#campaign-dnd-editor-data');
+																	}
+																});
+																ig_es_add_dnd_rte_tags( '<?php echo esc_js( $template_type ); ?>' );
 															});
 														});
 													</script>

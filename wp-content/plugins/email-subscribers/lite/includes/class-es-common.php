@@ -2816,4 +2816,39 @@ class ES_Common {
 		return $attachment_url;
 	}
 
+	/**
+	 * Get list status(subscribed or unconfirmed) based on optin type(single optin or double optin)
+	 * 
+	 * @since 5.4.18
+	 * 
+	 * @return string
+	 */
+	public static function get_list_status_from_optin_type() {
+		$es_optin_type = get_option( 'ig_es_optin_type' );
+			
+		if ( in_array( $es_optin_type, array( 'double_opt_in', 'double_optin' ), true ) ) { 
+			$status = 'unconfirmed';
+		} else {
+			$status = 'subscribed';
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Check if WordPress has REST API support or not
+	 * 
+	 * @since 5.4.18
+	 * 
+	 * @return bool
+	 */
+	public static function is_rest_api_supported() {
+		global $wp_version;
+
+		if ( version_compare( $wp_version, '4.4.0', '<' ) ) {
+			return false;
+		}
+
+		return true;
+	}
 }

@@ -923,6 +923,9 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 				'lite/includes/workflows/triggers/class-es-trigger-campaign-failed.php',
 				'lite/includes/workflows/class-es-workflow-triggers.php',
 
+				// rest api
+				'lite/includes/rest-api/class-es-rest-api-handler.php',
+
 				// Abstracts workflow actions
 				'lite/includes/workflows/actions/abstracts/class-ig-es-action-send-email-abstract.php',
 
@@ -979,6 +982,8 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 
 				'lite/admin/class-es-form-admin.php',
 				'lite/admin/class-es-gb-subscription-form-block.php',
+
+				'lite/admin/class-es-rest-api-admin.php',
 
 				'starter/starter-class-email-subscribers.php',
 				'pro/pro-class-email-subscribers.php',
