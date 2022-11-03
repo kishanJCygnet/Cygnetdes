@@ -855,6 +855,7 @@
 //   }
  
 .icon-box-list{
+    justify-content: center;
     & > div{
         margin: 10px 0;
     }
@@ -983,13 +984,13 @@
         }
     }
     .icon-box-list{
-        min-width: calc(100% - 440px);
-        width: calc(100% - 440px);
+        min-width: calc(100% - 300px);
+        width: calc(100% - 300px);
         margin-left: auto;
         padding-left: 30px;
         @include bp(lg-max){
-            min-width: calc(100% - 340px);
-            width: calc(100% - 340px);
+            min-width: calc(100% - 240px);
+            width: calc(100% - 240px);
         }
         @include bp(md-max){
             width: calc(100% - 0px);

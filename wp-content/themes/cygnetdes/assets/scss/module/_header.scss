@@ -301,7 +301,6 @@ input[type="checkbox"]:after {
         color: #fff;
     }
 }
-
 //*************************** End Top Search Bar section*********************************
 
 // header
@@ -500,8 +499,7 @@ header {
                         opacity: 1;
                         @include bp(sm-max){
                             display: none;
-                        }
-                        
+                        }                        
                     }
                     a{
                         text-decoration: none !important;
@@ -581,6 +579,7 @@ header {
                                 height: auto;
                                 position: static;
                                 width: 100%;
+                            
                                 border-bottom: 1px solid #c4e6fd;
                             }
                             &:hover,
@@ -855,19 +854,20 @@ header {
         .primary-navigation {
             & > div {
                 & > .menu-wrapper {
-                    @include bp(xs-max) {
-                        top: 112px;
-                    }
-                  
+                                 
                     @include bp(md-max) {
-                       top: 68px; 
+                       top: 112px; 
                     }
-                    @include bp(sxxs-max) {
-                        top: 0px;
+                    @include bp(xs-max) {
+                        top: 63px;
                     }
                     @include bp(xxs-max) {
                         top: 0px;
                     }
+                    @include bp(sxxs-max) {
+                        top: 0px;
+                    }
+                   
                       
                 }
             }
@@ -881,10 +881,10 @@ header {
                             top: 49px; 
                         }
                         @include bp(sxxs-max) {
-                            top: 43px; 
+                            top: 33px; 
                         }
                         @include bp(xxs-max) {
-                            top: 33px; 
+                            top: 31px; 
                         }
                     }
                 }
@@ -895,10 +895,10 @@ header {
         & > div {
             & > .menu-wrapper {
                 @include bp(xs-max) {
-                    top: 112px;
+                    top: 99px;
                 }
                 @include bp(sxxs-max) {
-                    top: 82px;
+                    top: 69px;
                 }
                 @include bp(xxs-max) {
                     top: 68px;
@@ -1061,4 +1061,106 @@ header {
     &:hover{
         box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.279);
     }
+}
+.mega-menu{
+ &>.sub-menu{
+    width: 704px;
+    min-width: 704px;
+    display: flex !important;
+    left: -185px !important;
+    @include bp(md-max){
+        width: auto !important;
+        min-width: auto !important;
+        flex-wrap: wrap !important;
+        display: none !important;
+    }
+    &:after{
+        left: 205px !important;
+    }
+    &>li{
+       li{
+        @include bp(md-max){
+            background-color:transparent !important
+        }
+        &:last-child{
+            border-bottom: 0 !important;
+        }
+       }
+        a{
+            border-left: 0 !important;
+            padding-left: 0 !important; 
+            color: #505353 !important;            
+            padding-top: 2px !important;
+            padding-bottom: 2px !important;
+        }
+        & > a{
+            font-size: 15px !important;
+            padding-left: 12px !important; 
+            color: #505353 !important;
+            cursor: auto;
+            &:hover{
+                color: #505353 !important;
+            }
+        }
+        width: 33.33% !important;
+        @include bp(md-max){
+            width: 100% !important;
+        }
+        &:first-child{
+            border-top-right-radius:0 !important;
+            border-bottom-left-radius:0 !important;
+
+        }
+        &:last-child{
+            
+            position: absolute !important;
+            top: 115px;
+            right: 0;     
+            @include bp(md-max){
+                position: static !important;
+            }      
+        }
+        &:nth-last-child(2){
+            border-top-right-radius: 8px !important;
+            border-bottom-right-radius: 8px !important;
+        }
+        .second-level-menu{
+            & > a{
+                color: #0F3764 !important;
+                font-weight: 500 !important;
+                cursor: auto;
+                &:hover{
+                    color: #0F3764 !important;
+                }
+            }
+            .sub-menu{
+                margin: 0;
+                margin-top: 0 !important;
+                padding-left: 15px;
+                @include bp(md-max){
+                    padding-left: 20px;
+                }
+                & > li{
+                    position: relative;
+                    a{
+                        color: #666666;
+                        opacity: 0.7;
+                    }
+                    &::before{
+                        content: "";
+                        position: absolute;
+                        left: -12px;
+                        width: 1px;
+                        height: 13px;
+                        top: 7px;                    
+                        background-size: contain;
+                        transform: rotate(180deg);
+                        opacity: 0.7;
+                        background-color: #052d55;
+                    }
+                }
+            }
+        }
+    }
+ }
 }

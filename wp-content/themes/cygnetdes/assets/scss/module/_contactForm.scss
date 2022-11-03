@@ -138,6 +138,13 @@ option {
         }
         &.terms-condition-check {
              margin-top: 40px;
+             .t_and_c_acceptedDate{
+             .wpcf7-not-valid-tip{
+                @include bp(sm-max){
+                bottom: 4px;
+                }
+             }
+            }
         }
         &.whatup-check {
             margin: 0px 0 0px;
@@ -148,6 +155,11 @@ option {
             &:last-child {
                 margin-top: 30px;
                 margin-bottom: 0;
+                .contact-form-content &{
+                    @include bp(sm-max){
+                      margin-top: 0;
+                    }
+                }
             }
             .wpcf7-list-item {
                 margin-left: 0;
