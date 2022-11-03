@@ -79,6 +79,13 @@ a:focus {
 	text-align: center;
 }
 
+#es-settings-menu #menu-nav li svg {
+    stroke-width: 2;
+}
+
+tr#ig-es-no-api-keys-message:not(:only-child) {
+    display:none;
+}
 
 .help-info-content {
 	background: #FFF;
