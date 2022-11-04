@@ -467,8 +467,8 @@ header {
                     display: none;
                 }
                 a {
-                    font-size: 16px; 
-                    color: #3cb4e7;
+                    font-size: 15px; 
+                    color: #504c4c;
                     // text-transform: capitalize;
                     line-height: 28px; 
                     padding-top: 22px;
@@ -703,7 +703,7 @@ header {
                         a {
                             color: #504c4c;
                             padding: 5px 15px;
-                            font-weight: 500;
+                            font-weight: normal;
                             font-size: 13px;
                             @include bp(md-max) {
                                 color: #0c3761;
@@ -1064,8 +1064,8 @@ header {
 }
 .mega-menu{
  &>.sub-menu{
-    width: 704px;
-    min-width: 704px;
+    width: 600px;
+    min-width: 600px;
     display: flex !important;
     left: -185px !important;
     @include bp(md-max){
@@ -1102,7 +1102,7 @@ header {
                 color: #505353 !important;
             }
         }
-        width: 33.33% !important;
+        width: 50% !important;
         @include bp(md-max){
             width: 100% !important;
         }
@@ -1111,16 +1111,37 @@ header {
             border-bottom-left-radius:0 !important;
 
         }
-        &:last-child{
+        &:nth-last-child(2){
             
-            position: absolute !important;
-            top: 115px;
-            right: 0;     
+            position: absolute!important;
+            top: 162px;
+            right: 0;   
+            & > a{
+                cursor: pointer !important;
+                &:hover{
+                    color: #19c5e3 !important;
+                }
+            }
             @include bp(md-max){
                 position: static !important;
             }      
         }
-        &:nth-last-child(2){
+        &:last-child{
+            
+            position: absolute!important;
+            top: 195px;
+            right: 0;  
+            & > a{
+                cursor: pointer !important;
+                &:hover{
+                    color: #19c5e3 !important;
+                }
+            }
+            @include bp(md-max){
+                position: static !important;
+            }      
+        }
+        &:nth-last-child(3){
             border-top-right-radius: 8px !important;
             border-bottom-right-radius: 8px !important;
         }

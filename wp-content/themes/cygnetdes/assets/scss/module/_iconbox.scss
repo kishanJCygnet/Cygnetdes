@@ -872,6 +872,7 @@
         }
         @include bp(lg-max){
             padding: 15px;
+            padding-bottom: 54px;
         }
         .icon-box-title-content{
             margin-bottom: 15px;
@@ -948,8 +949,11 @@
                     width: 100%;
                     text-align: center;
                 }
+                @include bp(sm-max){
+                    font-size: 24px !important;
+                }
                 @include bp(xs-max){
-                    font-size: 28px !important;
+                    font-size: 20px !important;
                 }
                 span{
                     display: inline-block;
@@ -988,6 +992,7 @@
         width: calc(100% - 300px);
         margin-left: auto;
         padding-left: 30px;
+        justify-content: flex-start;
         @include bp(lg-max){
             min-width: calc(100% - 240px);
             width: calc(100% - 240px);
@@ -1023,6 +1028,30 @@
        .icon-box{
          text-align: center;
          box-shadow: 0 0 4px 0 #585757;
+         .description {
+            font-size: 16px !important;
+            margin-top: 20px !important;
+            @include bp(lg-max){
+                font-size: 14px !important;
+            }
+         }
+       }
+    } 
+}
+.icon-center-box{
+    .icon-box-list{
+        justify-content: center;
+        & > div{
+            width: 33.33%;
+            @include bp(sm-max){
+                width: 50%;
+            }
+            @include bp(xs-max){
+                width: 100%;
+            }
+        }
+       .icon-box{
+         text-align: center;
          .description {
             font-size: 16px !important;
             margin-top: 20px !important;
