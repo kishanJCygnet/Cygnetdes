@@ -390,7 +390,7 @@ trait Assets {
 		}
 
 		$manifestJson = ''; // This is set in the view.
-		require( $this->manifestFile );
+		require $this->manifestFile;
 
 		$file = json_decode( $manifestJson, true );
 
@@ -419,7 +419,7 @@ trait Assets {
 		}
 
 		$manifestJson = ''; // This is set in the view.
-		require( $this->assetManifestFile );
+		require $this->assetManifestFile;
 
 		$file = json_decode( $manifestJson, true );
 

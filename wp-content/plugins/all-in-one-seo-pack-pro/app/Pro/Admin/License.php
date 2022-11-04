@@ -345,21 +345,20 @@ class License {
 			<div class="notice notice-info <?php echo esc_attr( $belowH2 ); ?> aioseo-license-notice">
 				<p>
 					<?php
-					echo
-						wp_kses(
-							sprintf(
+					echo wp_kses(
+						sprintf(
 								// Translators: 1 - Opening link tag, 2 - Closing link tag, 4 - The plugin name ("All in One SEO").
-								esc_html__( 'Please %1$senter and activate%2$s your license key for %3$s to enable automatic updates.', 'aioseo-pro' ),
-								sprintf( '<a href="%1$s">', esc_url( add_query_arg( [ 'page' => 'aioseo-settings' ], admin_url( 'admin.php' ) ) ) ),
-								'</a>',
-								esc_html( AIOSEO_PLUGIN_NAME )
-							),
-							[
-								'a' => [
-									'href' => [],
-								],
-							]
-						)
+							esc_html__( 'Please %1$senter and activate%2$s your license key for %3$s to enable automatic updates.', 'aioseo-pro' ),
+							sprintf( '<a href="%1$s">', esc_url( add_query_arg( [ 'page' => 'aioseo-settings' ], admin_url( 'admin.php' ) ) ) ),
+							'</a>',
+							esc_html( AIOSEO_PLUGIN_NAME )
+						),
+						[
+							'a' => [
+								'href' => [],
+							],
+						]
+					)
 					?>
 				</p>
 			</div>

@@ -54,7 +54,7 @@ class Filesystem {
 	 * @return void
 	 */
 	public function init( $args = [] ) {
-		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		require_once ABSPATH . 'wp-admin/includes/file.php';
 		WP_Filesystem( $args );
 
 		global $wp_filesystem;
