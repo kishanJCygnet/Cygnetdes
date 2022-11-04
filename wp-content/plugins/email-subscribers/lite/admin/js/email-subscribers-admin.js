@@ -1543,6 +1543,99 @@
 				}
 			});
 
+			// Create rest API key for selected user
+			jQuery('#ig-es-generate-rest-api-key').click(function(e){
+				e.preventDefault();
+				let user_id = jQuery('#ig-es-rest-api-user-id').val();
+				let message_class = '';
+				if ( '' === user_id ) {
+					message_class = 'text-red-600';
+					jQuery('#response-messages').removeClass('hidden').find('div').attr('class', message_class).html(ig_es_js_data.i18n_data.select_user);
+					return;
+				}
+
+				let btn_elem = $(this);
+
+				jQuery.ajax({
+					type:'POST',
+					url:ajaxurl,
+					data:{
+						action:'ig_es_generate_rest_api_key',
+						user_id: user_id,
+						security:ig_es_js_data.security,
+					},
+					dataType:'json',
+					beforeSend:function(){
+						jQuery(btn_elem).addClass('loading');
+					},
+					success:function(response){
+						if( response.status ){
+							let status = response.status;
+							let message = response.message;
+							jQuery('.rest-api-response').removeClass('hidden').addClass(status).html(message);
+							message_class = '';
+							jQuery('#response-messages').removeClass('hidden').find('div').attr('class', message_class).html(message);
+						} else{
+							message_class = 'text-red-600';
+							jQuery('#response-messages').removeClass('hidden').find('div').attr('class', message_class).html(ig_es_js_data.i18n_data.ajax_error_message);
+						}
+					},
+					error:function(err){
+						alert(ig_es_js_data.i18n_data.ajax_error_message);
+					},
+				}).always(function(){
+					jQuery(btn_elem).removeClass('loading');
+				});
+
+			});
+			
+			// Delete rest API key for selected user
+			jQuery('.ig-es-delete-rest-api-key').click(function(e){
+				e.preventDefault();
+				let delete_rest_api = confirm( ig_es_js_data.i18n_data.delete_rest_api_confirmation );
+				if ( ! delete_rest_api ) {
+					return;
+				}
+				let rest_api_row = jQuery(this).closest('.ig-es-rest-api-row');
+				let user_id = jQuery(rest_api_row).data('user-id');
+				let api_index = jQuery(rest_api_row).data('api-index');
+
+				let btn_elem = $(this);
+
+				jQuery.ajax({
+					type:'POST',
+					url:ajaxurl,
+					data:{
+						action:'ig_es_delete_rest_api_key',
+						user_id: user_id,
+						api_index: api_index,
+						security:ig_es_js_data.security,
+					},
+					dataType:'json',
+					beforeSend:function(){
+						jQuery(btn_elem).addClass('loading');
+					},
+					success:function(response){
+						if( response.status ){
+							let status = response.status;
+							if ( 'success' === status ) {
+								jQuery(rest_api_row).remove();
+							} else {
+								alert( response.message );
+							}
+						} else{
+							alert( ig_es_js_data.i18n_data.ajax_error_message );
+						}
+					},
+					error:function(err){
+						alert( ig_es_js_data.i18n_data.ajax_error_message );
+					},
+				}).always(function(){
+					jQuery(btn_elem).removeClass('loading');
+				});
+
+			});
+
 			// Workflow JS
 			IG_ES_Workflows = {
 
@@ -3794,6 +3887,7 @@ function ig_es_sync_dnd_editor_content( data_field_id ) {
 		jQuery(data_field_id).val(dnd_editor_data.data);
 	}
 }
+window.ig_es_sync_dnd_editor_content = ig_es_sync_dnd_editor_content;
 
 function ig_es_load_iframe_preview( parent_selector, iframe_html ) {
 	jQuery( parent_selector + ' iframe').remove();

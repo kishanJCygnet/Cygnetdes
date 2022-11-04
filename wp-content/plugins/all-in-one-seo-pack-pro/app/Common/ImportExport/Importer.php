@@ -64,7 +64,7 @@ abstract class Importer {
 	 *
 	 * @var Object
 	 */
-	protected $helpers = null;
+	public $helpers = null;
 
 	/**
 	 * Starts the import.

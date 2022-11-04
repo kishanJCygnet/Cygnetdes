@@ -236,6 +236,8 @@ class Email_Subscribers_Admin {
 
 		if ( 'es_settings' === $get_page ) {
 			$ig_es_js_data['popular_domains'] = ES_Common::get_popular_domains();
+			$ig_es_js_data['i18n_data']['delete_rest_api_confirmation'] = __( 'Are you sure you want to delete this key? This action cannot be undone.', 'email-subscribers' );
+			$ig_es_js_data['i18n_data']['select_user'] = __( 'Please select a user.', 'email-subscribers' );
 		}
 
 		wp_localize_script( $this->email_subscribers, 'ig_es_js_data', $ig_es_js_data );

@@ -6,7 +6,7 @@ Tags: email marketing, subscription, autoresponder, post notification, welcome e
 Requires at least: 3.9
 Tested up to: 6.0.2
 Requires PHP: 5.6
-Stable tag: 5.4.17
+Stable tag: 5.4.18
 License: GPLv3
 License URI: http://www.gnu.org/licenses
 
@@ -310,13 +310,17 @@ Refer [here](https://www.icegram.com/documentation/es-faq/).
 
 == Upgrade Notice ==
 
-= 5.4.17 =
+= 5.4.18 =
 
-* New: Added Gutenberg block for subscription form
-* New: Added new workflow action to change subscriber's status in the list [PRO]
-* Enhancement: Small UI improvements
+* New: Rest API support for add/delete/edit subscriber
+* Fix: Gutenberg form block issue with ClassicPress plugin
 
 == Changelog ==
+
+**5.4.18 (02.11.2022)**
+
+* New: Rest API support for add/delete/edit subscriber
+* Fix: Gutenberg form block issue with ClassicPress plugin
 
 **5.4.17 (19.10.2022)**
 

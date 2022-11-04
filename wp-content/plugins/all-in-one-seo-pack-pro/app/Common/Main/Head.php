@@ -215,7 +215,7 @@ class Head {
 		) . " - aioseo.com -->\n";
 
 		foreach ( $views as $view ) {
-			require( $view );
+			require $view;
 		}
 
 		echo "\t\t<!-- " . esc_html( AIOSEO_PLUGIN_NAME ) . " -->\n\n";

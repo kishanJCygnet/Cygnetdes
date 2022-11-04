@@ -240,7 +240,7 @@ class Sitemap {
 			return;
 		}
 
-		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		require_once ABSPATH . 'wp-admin/includes/file.php';
 		$files = list_files( get_home_path(), 1 );
 		if ( ! count( $files ) ) {
 			return;
@@ -445,7 +445,7 @@ class Sitemap {
 			return;
 		}
 
-		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		require_once ABSPATH . 'wp-admin/includes/file.php';
 		if ( ! aioseo()->core->fs->exists( get_home_path() . $_SERVER['REQUEST_URI'] ) ) {
 			$this->scheduleRegeneration();
 		}
@@ -475,7 +475,7 @@ class Sitemap {
 		global $wp_query;
 		$wp_query->set_404();
 		status_header( 404 );
-		include( get_404_template() );
+		include get_404_template();
 		exit;
 	}
 

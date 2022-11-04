@@ -318,21 +318,22 @@ class WooCommerceProduct extends Product {
 		global $woocommerce;
 
 		// To prevent fatal errors, we can only run this on the frontend.
+		// We also only want to continue generating the shipping details schema if the cart is currently empty.
+		// That way, we don't get in the way of any visitors that are actively shopping.
 		if (
 			is_admin() ||
 			wp_doing_ajax() ||
 			wp_doing_cron() ||
+			! is_object( $woocommerce->customer ) ||
 			! is_object( $woocommerce->cart ) ||
-			! is_object( $woocommerce->customer )
+			! empty( $woocommerce->cart->cart_contents )
 		) {
 			return [];
 		}
 
-		$originalCart     = clone $woocommerce->cart;
 		$originalCustomer = clone $woocommerce->customer;
 
 		// First, clear the cart so that we can simulate the order.
-		$woocommerce->cart->empty_cart();
 		$woocommerce->cart->add_to_cart( $this->product->get_id() );
 
 		// Load the zones.
@@ -438,8 +439,8 @@ class WooCommerceProduct extends Product {
 			}
 		}
 
-		// Restore the original class instances before returning the data.
-		$woocommerce->cart     = $originalCart;
+		// Restore the original cart/class instance before returning the data.
+		$woocommerce->cart->empty_cart();
 		$woocommerce->customer = $originalCustomer;
 
 		return $shippingDetails;
