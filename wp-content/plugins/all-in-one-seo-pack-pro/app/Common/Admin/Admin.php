@@ -701,7 +701,6 @@ class Admin {
 				return;
 			}
 		}
-
 	}
 
 	/**

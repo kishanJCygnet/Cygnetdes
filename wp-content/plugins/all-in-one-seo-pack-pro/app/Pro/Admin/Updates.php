@@ -104,7 +104,6 @@ class Updates {
 		add_filter( 'pre_set_site_transient_update_plugins', [ $this, 'updatePluginsFilter' ], 1000 );
 		add_filter( 'http_request_args', [ $this, 'httpRequestArgs' ], 10, 2 );
 		add_filter( 'plugins_api', [ $this, 'pluginsApi' ], 10, 3 );
-
 	}
 
 	/**

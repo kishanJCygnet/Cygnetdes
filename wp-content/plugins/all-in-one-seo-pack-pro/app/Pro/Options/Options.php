@@ -561,7 +561,7 @@ class Options extends CommonOptions\Options {
 		$validLicenseKey = aioseo()->internalOptions->internal->validLicenseKey;
 		if ( $validLicenseKey ) {
 			// Save the key to our settings.
-			aioseo()->options->general->licenseKey = $validLicenseKey;
+			$this->general->licenseKey = $validLicenseKey;// @phpstan-ignore-line
 			$this->save( true );
 
 			// Reset the key coming in from lite.

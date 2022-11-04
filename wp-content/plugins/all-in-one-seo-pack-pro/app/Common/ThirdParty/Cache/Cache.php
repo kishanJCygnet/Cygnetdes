@@ -40,7 +40,7 @@ class Cache {
 	 */
 	public function __construct() {
 		if ( ! function_exists( 'is_plugin_active' ) ) {
-			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
 		$this->activePlugins = [];

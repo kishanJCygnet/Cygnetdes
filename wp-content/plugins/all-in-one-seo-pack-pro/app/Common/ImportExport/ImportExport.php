@@ -180,7 +180,7 @@ class ImportExport {
 		$excludedPosts        = [];
 		$sitemapExcludedPosts = [];
 
-		require_once( ABSPATH . 'wp-admin/includes/post.php' );
+		require_once ABSPATH . 'wp-admin/includes/post.php';
 		foreach ( $postData as $post => $values ) {
 			$postId = \post_exists( $values['post_title'], '', $values['post_date'] );
 			if ( ! $postId ) {

@@ -9,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-10-28T14:04:11+00:00\n"
+"POT-Creation-Date: 2022-11-03T13:50:59+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.6.0\n"
+"X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: aioseo-pro\n"
 
 #. Plugin Name of the plugin
@@ -24,7 +24,7 @@ msgid "https://aioseo.com/"
 msgstr ""
 
 #. Description of the plugin
-msgid "SEO for WordPress. Features like XML Sitemaps, SEO for custom post types, SEO for blogs, business sites, ecommerce sites, and much more. More than 80 million downloads since 2007."
+msgid "SEO for WordPress. Features like XML Sitemaps, SEO for custom post types, SEO for blogs, business sites, ecommerce sites, and much more. More than 100 million downloads since 2007."
 msgstr ""
 
 #. Author of the plugin
@@ -37,80 +37,80 @@ msgstr ""
 
 #. Translators: 1 - "Pro", 2 - The plugin name ("All in One SEO"), 3 - Opening bold tag, 4 - Closing bold tag.
 #: app/Pro/Admin/License.php:144
-#: app/Pro/Admin/License.php:395
+#: app/Pro/Admin/License.php:394
 msgid "An active license is needed to use any of the %1$s features of %2$s, including %3$sVideo and News sitemaps, Redirection Manager, Breadcrumb Templates%4$s and more. It also provides access to new features & addons, plugin updates (including security improvements), and our world class support!"
 msgstr ""
 
 #: app/Pro/Admin/License.php:152
-#: app/Pro/Admin/License.php:399
+#: app/Pro/Admin/License.php:398
 msgid "Renew Now"
 msgstr ""
 
 #: app/Pro/Admin/License.php:154
-#: app/Pro/Admin/License.php:400
+#: app/Pro/Admin/License.php:399
 msgid "Learn More"
 msgstr ""
 
 #. Translators: 1 - Opening link tag, 2 - Closing link tag, 4 - The plugin name ("All in One SEO").
-#: app/Pro/Admin/License.php:352
+#: app/Pro/Admin/License.php:351
 msgid "Please %1$senter and activate%2$s your license key for %3$s to enable automatic updates."
 msgstr ""
 
 #. Translators: 1 - The plugin name ("All in One SEO").
-#: app/Pro/Admin/License.php:389
+#: app/Pro/Admin/License.php:388
 msgid "Heads up! Your %1$s license has expired and your SEO is at risk!"
 msgstr ""
 
 #. Translators: 1 - The plugin name ("All in One SEO").
-#: app/Pro/Admin/License.php:414
+#: app/Pro/Admin/License.php:413
 msgid "Your license key for %1$s has been disabled. Please use a different key to continue receiving automatic updates."
 msgstr ""
 
 #. Translators: 1 - The plugin name ("All in One SEO").
-#: app/Pro/Admin/License.php:431
+#: app/Pro/Admin/License.php:430
 msgid "Your license key for %1$s is invalid. The key no longer exists or the user associated with the key has been deleted. Please use a different key to continue receiving automatic updates."
 msgstr ""
 
-#: app/Pro/Admin/License.php:435
-#: app/Pro/Admin/License.php:538
+#: app/Pro/Admin/License.php:434
+#: app/Pro/Admin/License.php:537
 msgid "Manage Licenses"
 msgstr ""
 
 #. Translators: 1 - Opening HTML bold tag, 2 - Closing HTML bold tag, 3 - The plugin name ("All in One SEO").
-#: app/Pro/Admin/License.php:467
+#: app/Pro/Admin/License.php:466
 msgid "A %1$svalid license key%2$s is required to download updates for %3$s."
 msgstr ""
 
-#: app/Pro/Admin/License.php:497
+#: app/Pro/Admin/License.php:496
 msgid "has not been entered"
 msgstr ""
 
-#: app/Pro/Admin/License.php:509
+#: app/Pro/Admin/License.php:508
 msgid "is expired"
 msgstr ""
 
-#: app/Pro/Admin/License.php:512
+#: app/Pro/Admin/License.php:511
 msgid "is disabled"
 msgstr ""
 
-#: app/Pro/Admin/License.php:515
+#: app/Pro/Admin/License.php:514
 msgid "is invalid"
 msgstr ""
 
 #. Translators: 1 - HTML Line break tags, 2 - "Pro", 3 - Opening bold tag, 4 - Closing bold tag, 5 - HTML Line break tags.
-#: app/Pro/Admin/License.php:520
+#: app/Pro/Admin/License.php:519
 msgid "and your SEO is at risk!%1$sAn active license is needed to use any of the %2$s features including %3$sVideo and News sitemaps, Redirection Manager, Breadcrumb Templates%4$s and more. It also provides access to new features & addons, plugin updates (including security improvements), and our world class support! %5$s"
 msgstr ""
 
-#: app/Pro/Admin/License.php:530
+#: app/Pro/Admin/License.php:529
 msgid "Your"
 msgstr ""
 
-#: app/Pro/Admin/License.php:531
+#: app/Pro/Admin/License.php:530
 msgid "license key"
 msgstr ""
 
-#: app/Pro/Admin/License.php:542
+#: app/Pro/Admin/License.php:541
 msgid "Purchase one now."
 msgstr ""
 

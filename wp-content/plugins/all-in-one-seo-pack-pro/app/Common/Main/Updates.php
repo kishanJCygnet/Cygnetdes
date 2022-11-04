@@ -800,7 +800,6 @@ class Updates {
 				$searchAppearanceTaxonomy['metaDescription']
 			);
 		}
-
 	}
 
 	/**

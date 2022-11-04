@@ -21,7 +21,7 @@ class Translations {
 	 *
 	 * @var array
 	 */
-	static private $installedTranslations = [];
+	private static $installedTranslations = [];
 
 	/**
 	 * List of available languages.
@@ -30,7 +30,7 @@ class Translations {
 	 *
 	 * @var array[string]
 	 */
-	static private $availableLanguages = [];
+	private static $availableLanguages = [];
 
 	/**
 	 * The project type.
