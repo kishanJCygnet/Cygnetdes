@@ -17,7 +17,7 @@
 			<?php $post_slug = $post->post_name;
 			if($post_slug != 'community-version' && $post_slug != 'download-enterprise' && $post_slug != 'sign-up' && $post_slug != 'thank-you-for-contacting-us' && $post_slug != 'thank-you-for-signing-up' && $post_slug != 'thank-you-for-your-interest' && $post_slug != 'thank-you-for-webinar-registration' && $post_slug != 'thank-you-for-downloading-case-study' && $post_slug != 'thank-you-for-signing-up-community' && $post_slug != 'thank-you-for-signing-up-enterprise' && !is_404()){  ?>				
 				<div class="title-heading">	
-					<h2>Book A No-obligation Discovery Session
+					<h2>Get in touch
 						<span class="heading-border"></span>
 					</h2>
 				</div>
