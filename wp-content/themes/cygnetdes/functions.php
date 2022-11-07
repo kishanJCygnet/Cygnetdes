@@ -486,7 +486,7 @@ function case_studies_slider()
 											  <a href="<?php echo $casestudy_url; ?>" title="Read More" target="_blank">Read More <img src="<?php echo THEME_PATH; ?>assets/images/Iconfeather-arrow-right.svg" alt="navigation right" /></a>											
 										<?php endif; */?>
 										<!--<a href="<?php echo esc_url( get_permalink($case_studies->ID) ); ?>" class="">Read More <img src="<?php echo THEME_PATH; ?>assets/images/Iconfeather-arrow-right.svg" alt="navigation right" /> </a>-->
-										<a href="<?php echo esc_url( get_permalink($case_studies->ID) ); ?>" class="download-casestudy-btn btn"><span class="text">DOWNLOAD CASESTUDY</span><span class="effect"></span></a>
+										<a href="<?php echo esc_url( get_permalink($case_studies->ID) ); ?>" class="download-casestudy-btn btn"><span class="text">DOWNLOAD NOW</span><span class="effect"></span></a>
 									</div>
 								</div>
 							</div>
