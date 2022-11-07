@@ -143,7 +143,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 					<?php endif;*/ ?>
 				</a>
                
-               <?php if($post->ID != 34046) { ?>
+               <?php /*if($post->ID != 34046) { ?>
                 <div class="collapse navbar-collapse" id="navbarScroll">
 					<?php if ( has_nav_menu( 'primary' ) ) : ?>
 						<nav id="site-navigation" class="primary-navigation" aria-label="<?php esc_attr_e( 'Primary menu', 'cygnetdes' ); ?>">
@@ -161,11 +161,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 						</nav><!-- #site-navigation -->
 					<?php endif; ?>
                 </div>	
-			   <?php } else { ?>
+			   <?php } else { */ ?>
 				<!-- New top menu -->
 				<div class="collapse navbar-collapse main-menu" id="navbarScroll">
 					<?php //if ( has_nav_menu( 'primary' ) ) : ?>
-						<nav id="site-navigation" class="primary-navigation">
+						<nav id="site-navigation" class="primary-navigation" aria-label="<?php esc_attr_e( 'Primary menu', 'cygnetdes' ); ?>">
 							<?php
 							wp_nav_menu( array( 
 								'theme_location' => 'main_menu', 
@@ -179,13 +179,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 						</nav><!-- #site-navigation -->
 					<?php //endif; ?>
                 </div>
-			   <?php } ?>
+			   <?php // } ?>
 				<!-- End New top menu -->
                
                <div class="right-content d-flex align-items-center">
                <?php $post_slug = $post->post_name;
 					if($post_slug != 'community-version' && $post_slug != 'download-enterprise' && $post_slug != 'sign-up' && $post_slug != 'thank-you-for-contacting-us' && $post_slug != 'thank-you-for-signing-up' && $post_slug != 'thank-you-for-your-interest' && $post_slug != 'thank-you-for-webinar-registration' && $post_slug != 'thank-you-for-downloading-case-study' && $post_slug != 'thank-you-for-signing-up-community' && $post_slug != 'thank-you-for-signing-up-enterprise' && !is_404()){  ?>
-                    <a id="contact_us" href="#contactus" class="btn contact-us ms-2 "><span class="text">Book Discovery Session</span></a>
+                    <a id="contact_us" href="#contactus" class="btn contact-us ms-2 "><span class="text">Get in touch</span></a>
                 <?php } ?>
 				<!-- <a id="contact_us" href="<?php echo site_url(); ?>/community-version" class="btn contact-us ms-2 community-version"><span class="text">Community Version</span></a> -->
 				<!-- <a href="#communityform" class="btn contact-us ms-2 d-none download-now"><span class="text">Download Now</span></a> -->

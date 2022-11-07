@@ -6,8 +6,8 @@
 				<?php if(get_field('banner_content')){ ?><div><?php echo the_field('banner_content'); ?> </div> <?php } ?>
 				<?php if(get_field('banner_top_title')){ ?><h1><?php echo the_field('banner_top_title'); ?> </h1> <?php } ?>
 				<span class="bottom-arrow"></span>  
-				<!--<div <?php if ( is_front_page() ) : ?> class="owl-carousel banner-slider" <?php endif; ?> >-->
-				<div class="owl-carousel banner-slider" >
+				<div <?php if ( is_front_page() ) : ?> class="owl-carousel banner-slider" <?php endif; ?> >
+				<!--<div class="owl-carousel banner-slider" >-->
 					<?php while (have_rows('banner')) : the_row(); ?>
 						<div class="banner-inner-content w-100" style="background-image:url('<?php echo the_sub_field('background_image'); ?>')">  
 							<div class="container">
