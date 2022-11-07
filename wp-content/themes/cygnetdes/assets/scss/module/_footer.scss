@@ -3,26 +3,27 @@
    
     color: #fff;   
     /* border-top: 1px solid rgba(255,255,255,.3); */
-    background-image: url(../../images/curve.png);
+    // background-image: url(../../images/curve.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top;
     background-size: cover;
+    background-color: #1f4875;
     @include bp(sm-max){
         background-size: contain;
     }
     .footer-container{
-        background: rgb(161 205 255 / 11%);
-        padding-top: 60px;
+        // background: rgb(161 205 255 / 11%);
+        padding-top: 30px;
         padding-bottom: 30px;
         text-align: right;
         @include bp(md-max) {
-            padding-top: 100px;
+            padding-top: 40px;
             
         }
         @include bp(sm-max) {
             padding-bottom: 0;
-            padding-top: 100px;
+            padding-top: 40px;
         }
         .container{
            
@@ -60,7 +61,7 @@
 .footer-logo {  
    margin-right: 0px;
     position: relative;
-    margin-bottom: 15px;
+    // margin-bottom: 15px;
     & + div{
         width: 100%;
     }
@@ -118,11 +119,14 @@
             left: -13px;
             top: 3px;
         }
+        &:last-child{
+            padding-right: 0;
+        }
     }
 }
 .footer-contents {
-    align-items: flex-end!important;
-    flex-direction: column;
+    // align-items: flex-end!important;
+    // flex-direction: column;
     @include bp(md-max) {
         flex-wrap: wrap;
         text-align: center;

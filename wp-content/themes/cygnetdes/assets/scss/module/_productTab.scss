@@ -333,6 +333,9 @@ sup{
                 }
                 .fcc-inner-content{
                     display: flex;
+                    br{
+                        display: none;
+                    }
                     .img-content{
                         width: 300px;
                         min-width: 300px;
